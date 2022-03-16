@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Schedules</title>
+</head>
+<body>
+    <table border="1">
+        {% for schedule in scheduleList %}
+        <tr>
+            <th>scheduleID</th>
+            <th>classID</th>
+            <th>tutorID</th>
+            <th>year</th>
+            <th>day</th>
+            <th>timing</th>
+            <th>studentID</th>
+        </tr>
+        <tr>
+            <td>{{schedule['scheduleID']}}</td>
+            <td>{{schedule['classID']}}</td>
+            <td>{{schedule['tutorID']}}</td>
+            <td>{{schedule['year']}}</td>
+            <td>{{schedule['day']}}</td>
+            <td>{{schedule['timing']}}</td>
+            <td>{{schedule['studentID']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
