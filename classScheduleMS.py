@@ -75,16 +75,24 @@ def schedule():
                             password='thisismypw',
                             cursorclass=pymysql.cursors.DictCursor)
     scheduleList = []
+    classDict = {}
     with connection:
         with connection.cursor() as cursor:
             sql = "USE classScheduleDB"
             cursor.execute(sql)
             connection.commit()
             sql = "SELECT * FROM classSchedule"
-            status = cursor.execute(sql)
-            if status > 0:
-                scheduleList = cursor.fetchall()
-        return render_template('adminViewSchedules.html', scheduleList=scheduleList)
+            cursor.execute(sql)
+            scheduleList = cursor.fetchall()
+            sql = "USE classDB"
+            cursor.execute(sql)
+            connection.commit()
+            sql = "SELECT classID, subject, grade FROM Class"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            for details in result:
+                classDict[details['classID']] = [details['subject'], details['grade']]
+        return render_template('adminViewSchedules.html', scheduleList=scheduleList, classDict=classDict)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=4000)

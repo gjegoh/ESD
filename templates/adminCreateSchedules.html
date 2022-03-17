@@ -13,6 +13,8 @@
                 window.alert('Successfully Created Schedule! \n\n Subjects Chosen: {{subjects}} \n Grades Chosen: {{grades}} \n Years Chosen: {{years}} \n Days Chosen: {{days}} \n Timings Chosen: {{timings}}')
             </script>
         {% endif %}
+        <a href="{{url_for('schedule')}}">View Schedules</a>
+        <br>
         <h2>Select Subject(s)</h2>
         {% for subject in subjectList %}
             <input type="checkbox" name="subjects[]" id="{{subject}}" value="{{subject}}">
