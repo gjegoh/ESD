@@ -1,8 +1,6 @@
-from asyncio import run_coroutine_threadsafe
 import pymysql.cursors
 import datetime
-from flask import Flask, render_template, request, template_rendered
-from sqlalchemy import DateTime
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -14,6 +12,12 @@ def index():
                             cursorclass=pymysql.cursors.DictCursor)
     with connection:
         with connection.cursor() as cursor:
+            status = 0
+            subjects = ''
+            grades = ''
+            years = ''
+            days = ''
+            timings = ''
             if request.method == 'POST':
                 submitted = request.form
                 chosenSubjects = submitted.getlist('subjects[]')
@@ -38,10 +42,17 @@ def index():
                     for year in chosenYears:
                         for day in chosenDays:
                             for timing in chosenTimings:
-                                sql = "INSERT INTO classSchedule (classID, year, day, timing) VALUES ({classID}, {year}, {day}, {timing})".format(classID=classID, year=year, day=day, timing=timing)
+                                sql = "INSERT INTO classSchedule (classID, year, day, timing) VALUES ({classID}, {year}, '{day}', {timing})".format(classID=classID, year=year, day=day, timing=timing)
                                 cursor.execute(sql)
                                 connection.commit()
-                return "Success!"
+                subjects = ", ".join(chosenSubjects)
+                grades = ", ".join(chosenGrades)
+                years = ", ".join(chosenYears)
+                days = ", ".join(chosenDays)
+                timings = ", ".join(chosenTimings)
+                status = 1
+                # return 'Successfully created class schedules for: \n subjects: {subjects} \n grades: {grades} \n years: {years} \n days: {days} \n timings: {timings}'.format(subjects=", ".join(chosenSubjects), grades=", ".join(chosenGrades), years=", ".join(chosenYears), days=", ".join(chosenDays), timings=", ".join(chosenTimings))
+                # return redirect(url_for('.index'))
             sql = "USE classDB"
             cursor.execute(sql)
             connection.commit()
@@ -55,7 +66,7 @@ def index():
             gradeList = [i['grade'] for i in result]
             currentYear = int(datetime.datetime.now().date().strftime("%Y"))
             yearList = [currentYear, currentYear+1, currentYear+2]
-            return render_template('adminCreateSchedules.html', subjectList=subjectList, gradeList=gradeList, yearList=yearList)
+            return render_template('adminCreateSchedules.html', subjectList=subjectList, gradeList=gradeList, yearList=yearList, status=status, subjects=subjects, grades=grades, years=years, days=days, timings=timings)
 
 @app.route('/schedule')
 def schedule():
