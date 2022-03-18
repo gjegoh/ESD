@@ -2,18 +2,20 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
- 
+
 app = Flask(__name__)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/book'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://admin:thisismypw@studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com:3306/studentDB'
+# using additional schema, can add more in the {}
+app.config['SQLALCHEMY_BINDS'] = {'class':'mysql+mysqlconnector://admin:thisismypw@studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com:3306/classDB'}
 # app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
- 
+
 db = SQLAlchemy(app)
 CORS(app)
 
- 
+
 class Student(db.Model):
     __tablename__ = 'student'
     
@@ -25,7 +27,6 @@ class Student(db.Model):
     phoneNumber = db.Column(db.Integer, nullable=False)
     password = db.Column(db.String(64), nullable=False)
 
- 
     # def __init__(self, student_id, firstName, lastName, grade, email, phoneNumber, password):
     #     self.student_id = student_id
     #     self.firstName = firstName
@@ -34,10 +35,22 @@ class Student(db.Model):
     #     self.email = email
     #     self.phoneNumber = phoneNumber
     #     self.password = password
- 
+
     def json(self):
         return {"student_id": self.student_id, "firstName": self.firstName, "lastName": self.lastName, "grade": self.grade, "email": self.email, "phoneNumber": self.phoneNumber}
- 
+
+class EducationInfo(db.Model):
+    #binding the second schema (classDB)
+    __bind_key__ = 'class'
+    __tablename__ = 'educationInfo'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    educationLevel = db.Column(db.String(45), nullable=False)
+    level = db.Column(db.String(45), nullable=False)
+
+    def json(self):
+        return {"id": self.id, "educationLevel": self.educationLevel, "level": self.level}
+
 @app.route("/student")
 def get_all():
     studentlist = Student.query.all()
@@ -89,6 +102,27 @@ def register_student():
             "data": student.json()
         }
     ), 201
- 
+
+@app.route("/educationInfo/<string:educationLevel>")
+def get_educationLevel(educationLevel):
+    educationList = EducationInfo.query.filter_by(educationLevel=educationLevel)
+
+    # educationList = EducationInfo.query.all()
+    if educationList:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "educationLevels": [education.json() for education in educationList]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no results."
+        }
+    ), 404
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
