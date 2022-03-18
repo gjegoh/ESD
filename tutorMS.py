@@ -23,7 +23,7 @@ def getPendingTutors():
             sql = "USE tutorDB"
             cursor.execute(sql)
             connection.commit()
-            sql = "SELECT firstName, lastName, email, phoneNumber, execSummary FROM tutor WHERE isApproved=0"
+            sql = "SELECT firstName, lastName, email, phoneNumber, eduLevel, taughtSubjects, execSummary FROM tutor WHERE isApproved=0"
             cursor.execute(sql)
             tutorList = cursor.fetchall()
             # sends data via response back to adminViewPendingTutors.html, in json
@@ -100,7 +100,7 @@ def getApprovedTutors():
             sql = "USE tutorDB"
             cursor.execute(sql)
             connection.commit()
-            sql = "SELECT firstName, lastName, email, phoneNumber, execSummary FROM tutor WHERE isApproved=1"
+            sql = "SELECT firstName, lastName, email, phoneNumber, eduLevel, taughtSubjects, execSummary FROM tutor WHERE isApproved=1"
             cursor.execute(sql)
             tutorList = cursor.fetchall()
             # sends data via response back to adminViewPendingTutors.html, in json
