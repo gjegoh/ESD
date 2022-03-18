@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="">
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- Bootstrap libraries -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -59,40 +59,25 @@
 
             <!-- <div class="mb-3 dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                  Select Highest Qualification
+                Select Highest Qualification
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li><a class="dropdown-item" href="#">'O' Levels</a></li>
-                  <li><a class="dropdown-item" href="#">'A' Levels</a></li>
-                  <li><a class="dropdown-item" href="#">Diploma</a></li>
-                  <li><a class="dropdown-item" href="#">Degree</a></li>
+                <li><a class="dropdown-item" href="#">'O' Levels</a></li>
+                <li><a class="dropdown-item" href="#">'A' Levels</a></li>
+                <li><a class="dropdown-item" href="#">Diploma</a></li>
+                <li><a class="dropdown-item" href="#">Degree</a></li>
                 </ul>
-              </div> -->
-            <div class="mb-3 dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="eduacationDdl"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    Education Level
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="eduacationDdl">
-                    <li><a class="dropdown-item" href="#">Primary</a></li>
-                    <li><a class="dropdown-item" href="#">Secondary</a></li>
-                    <li><a class="dropdown-item" href="#">Junior College</a></li>
-                </ul>
-
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="levelDdl" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Level
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="levelDdl">
-                    <li><a class="dropdown-item" href="#">1</a></li>
-                    <li><a class="dropdown-item" href="#">2</a></li>
-                    <li><a class="dropdown-item" href="#">3</a></li>
-                    <li><a class="dropdown-item" href="#">4</a></li>
-                    <li><a class="dropdown-item" href="#">5</a></li>
-                    <li><a class="dropdown-item" href="#">6</a></li>
-                </ul>
-            </div>
-
+            </div> -->
+            <select class="form-select mb-3" onchange="retrieveEduInfo()" id="educationLevel" label="Default select example">
+                <option selected>Select an Education Level</option>
+                <option value="Primary">Primary</option>
+                <option value="Secondary">Secondary</option>
+                <option value="Junior College">Junior College</option>
+            </select>
+            <select class="form-select mb-3" id="levels" aria-label="Default select example">
+                <option selected>Selected Levels</option>
+                <!-- <option value="1">1</option> -->
+            </select>
             <div class="mb-3 form-outline">
                 <label for="phoneNumberTb" class="form-label">Phone Number</label>
                 <input type="number" id="phoneNumberTb" class="form-control" />
@@ -127,46 +112,83 @@
                 .append("<label>" + message + "</label>");
         }
 
+        async function retrieveEduInfo() {
+            var educationLevel = document.getElementById("educationLevel").value
+            
+            document.getElementById("levels").innerHTML = "<option selected>Selected Levels</option>"
+            
+            if (educationLevel != 'Primary' && educationLevel != 'Secondary' && educationLevel != 'Junior College'){
+                return
+            }
+
+            var educationURL = `http://172.20.10.4:5000/educationInfo/${educationLevel}`;
+            
+            
+            try {
+                const response =
+                    await fetch(
+                        educationURL, {
+                        method: 'GET',
+                        headers: { "Content-Type": "application/json" }
+                    });
+                const data = await response.json();
+
+                if (response.ok) {
+                    //change levels accordingly to educational level chosen
+                    eduInfo = data.data.educationLevels
+                    eduInfo.forEach(eduLevel => {
+                        console.log(eduLevel.level)
+                        document.getElementById("levels").innerHTML += `<option value='${eduLevel.level}''>${eduLevel.level}</option> `
+                    });
+                } else {
+                    console.log(data);
+                    showError(data.message);
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError
+                    ('There is a problem retrieving books data, please try again later.<br />' + error);
+            } // error
+
+        }
+
         // anonymous async function 
         // - using await requires the function that calls it to be async
         $("#registerStudent").submit(async (event) => {
             //Prevents screen from refreshing when submitting
             event.preventDefault();
 
-            var serviceURL = "http://10.124.12.129:5000/student";
+            // var serviceURL = "http://10.124.12.129:5000/student";
+            var serviceURL = "http://172.20.10.4:5000/student";
 
-            //Get form data --- eileen send halp
-            var firstName = 'testing'
-            // $('#firstName').val();
-            var lastName = 'lastased'
-            // $('#lastName').val();
-            var email = 'test'
-            //$('#email').val();
-            var password = "pass"
-            // $('#password').val();
-            var grade = 'g5'
-            // $('#grade').val();
-            var phoneNumber = 123847
-            // parseInt($("#phoneNumber").val());
+            //Get form data ---
+            var firstName = document.getElementById("firstName").value
+            var lastName = document.getElementById("lastName").value
+            var email = document.getElementById("emailTb").value
+            var phoneNumber = document.getElementById("phoneNumberTb").value
+            var grade = document.getElementById("levelDdl").value
+            var password = document.getElementById("passwordTb").value
+
 
             // form the POST url which includes the dynamic isbnNumber
             try {
                 const response =
                     await fetch(
                         serviceURL, {
-                            method: 'POST',
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                'firstName': firstName,
-                                'lastName': lastName,
-                                'email': email,
-                                'password': password,
-                                'grade': grade,
-                                'phoneNumber': phoneNumber
-                            })
-                        });
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            'firstName': firstName,
+                            'lastName': lastName,
+                            'email': email,
+                            'password': password,
+                            'grade': grade,
+                            'phoneNumber': phoneNumber
+                        })
+                    });
                 const data = await response.json();
 
                 if (response.ok) {
@@ -192,7 +214,7 @@
     <!-- Bootstrap Javascript; at the end of the <body> -->
     <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
         integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' crossorigin='anonymous'>
-    </script>
+        </script>
 </body>
 
 </html>
