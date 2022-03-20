@@ -4,6 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Approved Tutors</title>
+    <link rel="stylesheet" href="style script.css">
 </head>
 
 <!-- 
@@ -13,7 +14,20 @@
 -->
 
 <body>
+    
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js">
+        // To resolve JQuery - $ is not defined
+    </script>
+
     <script>
+        
+        // show Errors
+        function showError(message) {
+            $('#errors')
+                .append("<label>" + message + "</label>");
+        }
+
+
         // stores "getApprovedTutors" route of tutor microservice
         // NOTE: if testing on your own PC, remember to modify
         // http://{your_IP_when_running_tutorMS}:5002/getApprovedTutors
@@ -22,9 +36,15 @@
         // async function that sends a GET request to tutor microservice and
         // receives the data in json to pass into the showApprovedTutors function
         async function getApprovedTutors(url) {
-            const response = await fetch(url)
-            let data = await response.json()
-            showApprovedTutors(data)
+            try {
+                const response = await fetch(url)
+                let data = await response.json()
+                showApprovedTutors(data)
+            } catch(error) {
+                document.getElementById('loadingmsg').style.display = 'none'
+                document.getElementById('tutor').style.display = 'block'
+                showError("There are issues with the display of approved tutors. Please try in a while.")
+            }
         }
         // processes data from GET request and populates table
         function showApprovedTutors(data) {
@@ -43,24 +63,38 @@
                     <td>${tutor['execSummary']}</td>
                 </tr>`
             }
-            document.getElementById('loadingmsg').style.display = 'none'
-            document.getElementById('tutor').style.display = 'block'
         }
         // hides loading message and displays populated table
         getApprovedTutors(getTutorsURL)
 
     </script>
-    <h1 id="loadingmsg">Loading... Please wait!</h1>
-    <a href="./adminViewPendingTutors.html">View Pending Tutors</a>
-    <table border="1" id="tutor" style="display:none">
-        <tr>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Educational Level</th>
-            <th>Taught Subjects</th>
-            <th>Executive Summary</th>
-        </tr>
-    </table>
+
+    
+
+    <main>
+        <div id="main-container">
+            <h1 id="loadingmsg">Loading... Please wait!</h1>
+            <div id="errors"></div>
+            <div>
+                <a href="./adminViewPendingTutors.html">View Pending Tutors</a>
+            </div>
+            
+            <div class="table-outer-div container">
+                <div class="table-inner-div container">
+                    <table id="tutor">
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Educational Level</th>
+                            <th>Taught Subjects</th>
+                            <th>Executive Summary</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </main>
 </body>
 </html>

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="style script.css">
 
     <title>Tuition Centre</title>
 
@@ -35,6 +36,7 @@
     <div id="main-container" class="container">
         <h1 class="display-4">Student Registration</h1>
         <p>Please fill in student's details below.</p>
+        <div id="errors"></div>
         <form id='registerStudent'>
             <div class="input-group mb-3">
                 <span class="input-group-text">Last Name</span>
@@ -91,7 +93,7 @@
                 <label for="passwordTb" class="form-label">Password</label>
                 <input type="password" class="form-control" id="passwordTb">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" onclick="printError()">Submit</button>
         </form>
         <label id="error" class="text-danger"></label>
     </div>
@@ -105,12 +107,16 @@
 
     <script>
         // Helper function to display error message
+        var errors = []
+
         function showError(message) {
 
             // Display an error under the main container
-            $('#main-container')
-                .append("<label>" + message + "</label>");
+            
+            $("#errors").append("<label>" + message + "</label><br>")
         }
+
+        
 
         async function retrieveEduInfo() {
             var educationLevel = document.getElementById("educationLevel").value
@@ -148,7 +154,7 @@
                 // Errors when calling the service; such as network error, 
                 // service offline, etc
                 showError
-                    ('There is a problem retrieving books data, please try again later.<br />' + error);
+                    ('There are issues with displaying education levels, please try again later.<br />' + error);
             } // error
 
         }
@@ -163,12 +169,16 @@
             var serviceURL = "http://172.20.10.4:5000/student";
 
             //Get form data ---
-            var firstName = document.getElementById("firstName").value
-            var lastName = document.getElementById("lastName").value
-            var email = document.getElementById("emailTb").value
-            var phoneNumber = document.getElementById("phoneNumberTb").value
-            var grade = document.getElementById("levelDdl").value
-            var password = document.getElementById("passwordTb").value
+            try {
+                var firstName = document.getElementById("firstName").value
+                var lastName = document.getElementById("lastName").value
+                var email = document.getElementById("emailTb").value
+                var phoneNumber = document.getElementById("phoneNumberTb").value
+                var grade = document.getElementById("levelDdl").value
+                var password = document.getElementById("passwordTb").value
+            } catch {
+                showError("There are issues with registering the student. Please try in a while.")
+            }
 
 
             // form the POST url which includes the dynamic isbnNumber
@@ -204,10 +214,12 @@
                 // Errors when calling the service; such as network error, 
                 // service offline, etc
                 showError
-                    ("There is a problem registering the students, please try again later. " + error);
+                    ("There is a problem registering the students, please try again later." + error);
 
             } // error
         });
+
+        
     </script>
 
 
