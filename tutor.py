@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
+import os
+import hashlib
 
 app = Flask(__name__)
 
@@ -89,10 +91,12 @@ def register_student():
     phoneNumber = data['phoneNumber']
     execSummary = data['execSummary']
     password = data['password']
-
-    #password to be hashed 
+    # generates salt, random password and then hashes it, [:32] is salt, [32:] is hash
+    salt = os.urandom(32)
+    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+    hashedpass = salt + key
     tutor = Tutor(firstName=firstName, lastName=lastName, email=email,eduLevel=eduLevel,taughtSubjects=taughtSubjects,
-                phoneNumber=phoneNumber, execSummary=execSummary, password=password)
+                phoneNumber=phoneNumber, execSummary=execSummary, password=hashedpass)
 
     try:
         db.session.add(tutor)
