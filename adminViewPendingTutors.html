@@ -33,7 +33,7 @@
         // NOTE: if testing on your own PC, remember to modify
         // http://{your_IP_when_running_tutorMS}:5002/getPendingTutors
         // accordingly!
-        const getTutorsURL = "http://172.31.96.1:5002/getPendingTutors"
+        const getTutorsURL = "http://192.168.86.129:5002/getPendingTutors"
         // async function that sends a GET request to tutor microservice and
         // receives the data in json to pass into the showPendingTutors function
         async function getPendingTutors(url) {
@@ -42,7 +42,6 @@
                 let data = await response.json()
                 showPendingTutors(data)
             } catch {
-                document.getElementById('loadingmsg').style.display = 'none'
                 showError("There are issues with displaying pending tutors. Please try in a while.")
             }
             
@@ -62,7 +61,7 @@
                 // NOTE: if testing on your own PC, remember to modify
                 // http://{your_IP_when_running_tutorMS}:5002/approveTutor
                 // accordingly! 
-                var approveTutorURL = "http://172.31.96.1:5002/approveTutor"
+                var approveTutorURL = "http://192.168.86.129:5002/approveTutor"
                 
                 document.getElementById('loadingmsg').style.display = 'none'
                 try {
@@ -111,7 +110,7 @@
                 // NOTE: if testing on your own PC, remember to modify
                 // http://{your_IP_when_running_tutorMS}:5002/rejectTutor
                 // accordingly! 
-                var approveTutorURL = "http://192.168.86.126:5002/rejectTutor"
+                var approveTutorURL = "http://192.168.86.129:5002/rejectTutor"
                 document.getElementById('loadingmsg').style.display = 'none'
                 
                 try {
@@ -176,7 +175,7 @@
             <div id="errors"></div>
             <div class="table-outer-div container">
                 <div class="table-inner-div container">
-                    <table id="tutor">
+                    <table id="tutor" style="display:none">
                         <tr>
                             <th>Full Name</th>
                             <th>Email</th>

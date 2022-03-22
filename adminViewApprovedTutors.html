@@ -32,7 +32,7 @@
         // NOTE: if testing on your own PC, remember to modify
         // http://{your_IP_when_running_tutorMS}:5002/getApprovedTutors
         // accordingly!
-        const getTutorsURL = "http://192.168.86.126:5002/getApprovedTutors"
+        const getTutorsURL = "http://192.168.86.129:5002/getApprovedTutors"
         // async function that sends a GET request to tutor microservice and
         // receives the data in json to pass into the showApprovedTutors function
         async function getApprovedTutors(url) {
@@ -41,8 +41,6 @@
                 let data = await response.json()
                 showApprovedTutors(data)
             } catch(error) {
-                document.getElementById('loadingmsg').style.display = 'none'
-                document.getElementById('tutor').style.display = 'block'
                 showError("There are issues with the display of approved tutors. Please try in a while.")
             }
         }
@@ -63,6 +61,8 @@
                     <td>${tutor['execSummary']}</td>
                 </tr>`
             }
+            document.getElementById('loadingmsg').style.display = 'none'
+            document.getElementById('tutor').style.display = 'block'
         }
         // hides loading message and displays populated table
         getApprovedTutors(getTutorsURL)
@@ -81,7 +81,7 @@
             
             <div class="table-outer-div container">
                 <div class="table-inner-div container">
-                    <table id="tutor">
+                    <table id="tutor" style='display:none'>
                         <tr>
                             <th>Full Name</th>
                             <th>Email</th>

@@ -26,7 +26,7 @@
         // NOTE: if testing on your own PC, remember to modify
         // http://{your_IP_when_running_classScheduleMS}:5001/getClassDetails
         // accordingly!
-        const getClassesURL = "http://10.124.9.182:5001/getClassDetails"
+        const getClassesURL = "http://192.168.86.129:5001/getClassDetails"
         // async function that sends a GET request to classSchedule microservice and
         // receives the data in json to pass into the showClassDetails function
         async function getClassDetails(url) {
@@ -134,7 +134,7 @@
             // NOTE: if testing on your own PC, remember to modify
             // http://{your_IP_when_running_classScheduleMS}:5001/createClassSchedule
             // accordingly!
-            var createClassesURL = "http://10.124.9.182:5001/createClassSchedule"
+            var createClassesURL = "http://192.168.86.129:5001/createClassSchedule"
             // retrieves all checked checkboxes of submitted form
             var subjects = new Array()
             $('input[name="subjects[]"]:checked').each(function() {
