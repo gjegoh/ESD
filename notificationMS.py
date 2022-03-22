@@ -8,6 +8,9 @@ from mailchimp_marketing.api_client import ApiClientError
 from urllib.parse import parse_qs
 import json
 
+############################
+# check how to test if email is sent properly/received etc
+############################
 
 app = Flask(__name__)
 
@@ -20,7 +23,7 @@ CORS(app)
 try:
   client = MailchimpMarketing.Client()
   client.set_config({
-    "api_key": "ccd8ccd2e76121c4fb60f120e9b6e643-us14",
+    "api_key": "149218c56ba8c2f24e05f157add74e6b-us14",
     "server": "us14"
   })
 
@@ -32,7 +35,7 @@ except ApiClientError as error:
 #Then, we can use the API key
 mailchimp = MailchimpMarketing.Client()
 mailchimp.set_config({
-  "api_key": "ccd8ccd2e76121c4fb60f120e9b6e643-us14",
+  "api_key": "149218c56ba8c2f24e05f157add74e6b-us14",
   "server": "us14"
 })
 
@@ -50,41 +53,12 @@ mailchimp.set_config({
 #3. Sync contacts from Mailchimp to your application
 #########################################################
 
-#step 1: create a audience (in reponse to a event of new class schedules being created)
-#tutorMS must call notificationMS to start off step 1
-@app.route("/createAudience")
-def createAudience():
-    body = {
-      "permission_reminder": "You signed up for updates on our website",
-      "email_type_option": False,
-      "campaign_defaults": {
-        "from_name": "tuitioncentre",
-        "from_email": "tuitioncentre@mailchimp.com",
-        "subject": "New Class Schedule",
-        "language": "EN_US"
-      },
-      "name": "New Class Schedule",
-      "contact": {
-        "company": "tuitioncentre",
-        "address1": "81 Victoria Street",
-        "address2": "",
-        "city": "singapore",
-        "state": "",
-        "zip": "188065",
-        "country": "singapore"
-      }
-    }
 
-    try:
-      response = mailchimp.lists.create_list(body)
-      return "Response: {}".format(response)
-    except ApiClientError as error:
-      return "An exception occurred: {}".format(error.text)
-
-#step 2: add contacts into audiences from tutor database using batch operation request -> instead of making many api calls, we can use a single call to add all the tutors into contacts.
-@app.route("/addContacts")
+#step 1: add contacts into audiences from tutor database using batch operation request
+#  -> instead of making many api calls, we can use a single call to add all the tutors into contacts.
+@app.route('/addContacts')
 def addContacts():
-    list_id = "1"
+    list_id = "d61191e75f"
     
     #a. get all tutor information from database
     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
@@ -101,6 +75,14 @@ def addContacts():
             cursor.execute(sql)
             tutorList = cursor.fetchall()
     
+    # member_info = {
+    # "email_address": "prudence.mcvankab@example.com",
+    # "status": "subscribed",
+    # "merge_fields": {
+    #   "FNAME": "Prudence",
+    #   "LNAME": "McVankab"
+    #   }
+    # }
     operations = []
     #b. reiterate through all tutors
     for tutor in tutorList:
@@ -124,12 +106,13 @@ def addContacts():
       except ApiClientError as error:
         return "An exception occurred: {}".format(error.text)
 
-#step 3: use a webhook to update the application UI that batch request to add all tutor into contacts is completed
-@app.route("/setUpWebhook")
+#step 2: use a webhook to update the application UI that batch request to add all tutor into contacts is completed
+@app.route('/setUpWebhook')
 def setUpWebhook():
     #a. webhook_url must be a valid website url
     # mailchimp will send a GET request to url to ensure validity
-    webhook_url = "YOUR_WEBHOOK_ABSOLUTE_URL"
+    #using youtube.com for now
+    webhook_url = "youtube.com"
     payload = {
         "url": webhook_url
     }
@@ -141,21 +124,21 @@ def setUpWebhook():
 
 
 
-#step 4: mailchimp will send info about completed batch operations, in an encoded text
+#step 3: mailchimp will send info about completed batch operations, in an encoded text
 #we can decode the text to get the info
-@app.route("/handleWebhook")
+@app.route('/handleWebhook')
 def handleWebhook(response_body):
     response_body_url = parse_qs(response_body)
     decoded_text = response_body_url['data[response_body_url]']
     return "You can fetch the gzipped response with" + decoded_text
 
-#step 5: send campaign emails to the contacts in the audience (informing them of new class schedule created)
-@app.route("/sendCampaignEmails")
+#step 4: send campaign emails to the contacts in the audience (informing them of new class schedule created)
+@app.route('/sendCampaignEmails')
 def sendCampaignEmails():
       campaignEmail = {
                         "type": "regular", 
                         "recipents": {
-                          "list_id": "1"
+                          "list_id": "d61191e75f"
                         }
                       }
       try:
@@ -165,4 +148,5 @@ def sendCampaignEmails():
         return "An exception occurred: {}".format(error.text)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5002, debug=True)
+
