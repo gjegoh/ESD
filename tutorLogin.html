@@ -44,9 +44,9 @@
                 // if response is successful
                 if (response.ok) {
                     var authenticated = data['status']
-                    var tutorID = data['tutorID']
                     if (authenticated) {
-                        window.location.replace(`./tutorViewPendingSchedules.html?tutorID=${tutorID}`)
+                        var token = data['token']
+                        window.location.replace(`./tutorViewPendingSchedules.html?token=${token}`)
                     }
                     else {
                         alert("Login Failed! Please re-login...")

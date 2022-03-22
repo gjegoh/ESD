@@ -13,7 +13,7 @@
         // Get tutorID from url
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        const tutorID = urlParams.get('tutorID')
+        const token = urlParams.get('token')
         // logout
         function logout() {
             window.location.replace(`./tutorLogin.html`)
@@ -27,7 +27,7 @@
         // NOTE: if testing on your own PC, remember to modify
         // http://{your_IP_when_running_tutorMS}:5002/getUnassignedClasses
         // accordingly!
-        const getUClassesURL = "http://192.168.86.129:5002/getUnassignedClasses" + `?tutorID=${tutorID}`
+        const getUClassesURL = "http://192.168.86.129:5002/getUnassignedClasses" + `?token=${token}`
         // async function that sends a GET request to tutor microservice and
         // receives the data in json to pass into the showPendingTutors function
         async function getUClasses(url) {
@@ -36,7 +36,7 @@
                 let data = await response.json()
                 showUClasses(data)
             } catch (error) {
-                showError("There are issues with displaying pending tutors. Please try in a while.")
+                showError("There are issues with displaying pending tutors. Please try again in a while.")
             }
             
         }
@@ -68,7 +68,7 @@
                                 },
                                 body: JSON.stringify({
                                     'scheduleID': scheduleID,
-                                    'tutorID': tutorID
+                                    'token': token
                                 })
                             })
                     const data = await response.json()
@@ -135,7 +135,7 @@
     </div>
 
     <script>
-        document.getElementById('anchor').innerHTML += `<a href='./tutorViewMySchedules.html?tutorID=${tutorID}'>View My Schedules</a>`
+        document.getElementById('anchor').innerHTML += `<a href='./tutorViewMySchedules.html?token=${token}'>View My Schedules</a>`
         document.getElementById('anchor').innerHTML += `<br><input type='submit' value='Logout' onclick="logout()">`
     </script>
 </body>
