@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 import os
 import hashlib
 import jwt
-from functools import wraps
 
 # instantiate flask app
 app = Flask(__name__)
@@ -39,119 +38,9 @@ def validateToken(token):
             'error': 'Invalid token. Please log in again.'
         }
 
-
-
-# functionality 1: (adminViewPendingTutors.html) Gets all tutors with isApproved=0, aka 
-# pending tutors via GET request to tutorDB
-@app.route('/getPendingTutors', methods=['GET'])
-def getPendingTutors():
-    # connects to RDS
-    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                            user='admin',
-                            password='thisismypw',
-                            cursorclass=pymysql.cursors.DictCursor)
-    with connection:
-        with connection.cursor() as cursor:
-            # accesses tutorDB to retrieve all tutor's details
-            sql = "USE tutorDB"
-            cursor.execute(sql)
-            connection.commit()
-            sql = "SELECT firstName, lastName, email, phoneNumber, eduLevel, taughtSubjects, execSummary FROM tutor WHERE isApproved=0"
-            cursor.execute(sql)
-            tutorList = cursor.fetchall()
-            # sends data via response back to adminViewPendingTutors.html, in json
-            return jsonify(
-                {
-                    "data": {
-                        "tutorList": tutorList
-                    }
-                }
-            )
-
-# functionality 2: (adminViewPendingTutors.html) Updates isApproved=1 for selected tutor 
-# via PATCH request to tutorDB
-@app.route('/approveTutor', methods=['PATCH'])
-def approveTutor():
-    # retrieves data of PATCH request from adminViewPendingTutors.html, in json
-    data = request.get_json()
-    # connects to RDS
-    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                            user='admin',
-                            password='thisismypw',
-                            cursorclass=pymysql.cursors.DictCursor)
-    with connection:
-        with connection.cursor() as cursor:
-            # processes data from PATCH request
-            email = data['email']
-            # accesses tutorDB 
-            sql = "USE tutorDB"
-            cursor.execute(sql)
-            connection.commit()
-            # updates selected tutor to be approved
-            sql = "UPDATE tutor SET isApproved=1 WHERE email='{email}'".format(email=email)
-            cursor.execute(sql)
-            connection.commit()
-            # sends received data from PATCH request, via response back to
-            # adminViewPendingTutors in json
-            return data
-
-# functionality 3: (adminViewPendingTutors.html) Deletes selected tutor
-# via DELETE request to tutorDB
-@app.route('/rejectTutor', methods=['DELETE'])
-def rejectTutor():
-    # retrieves data of DELETE request from adminViewPendingTutors.html, in json
-    data = request.get_json()
-    # connects to RDS
-    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                            user='admin',
-                            password='thisismypw',
-                            cursorclass=pymysql.cursors.DictCursor)
-    with connection:
-        with connection.cursor() as cursor:
-            # processes data of DELETE request
-            email = data['email']
-            # accesses tutorDB to delete selected tutor
-            sql = "USE tutorDB"
-            cursor.execute(sql)
-            connection.commit()
-            sql = "DELETE FROM tutor WHERE email='{email}'".format(email=email)
-            cursor.execute(sql)
-            connection.commit()
-            # sends received data from DELETE request, via response back to
-            # adminViewPendingTutors in json
-            return data
-
-# functionality 4: (adminViewPendingTutors.html) Gets all tutors with isApproved=1, aka 
-# approved tutors via GET request to tutorDB
-@app.route('/getApprovedTutors', methods=['GET'])
-def getApprovedTutors():
-    # connects to RDS
-    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                            user='admin',
-                            password='thisismypw',
-                            cursorclass=pymysql.cursors.DictCursor)
-    with connection:
-        with connection.cursor() as cursor:
-            # accesses tutorDB to retrieve all tutor's details
-            sql = "USE tutorDB"
-            cursor.execute(sql)
-            connection.commit()
-            sql = "SELECT firstName, lastName, email, phoneNumber, eduLevel, taughtSubjects, execSummary FROM tutor WHERE isApproved=1"
-            cursor.execute(sql)
-            tutorList = cursor.fetchall()
-            # sends data via response back to adminViewPendingTutors.html, in json
-            return jsonify(
-                {
-                    "data": {
-                        "tutorList": tutorList
-                    }
-                }
-            )
-
 # functionality 5: (tutorLogin.html) Authenticates tutor 
 @app.route('/tutorLogin', methods=['GET'])
 def tutorLogin():
-    # retrieves data of GET request from tutorLogin.html, in json
     # connects to RDS
     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
                             user='admin',
@@ -194,15 +83,20 @@ def tutorLogin():
                 else:
                     return jsonify(
                         {   
-                            'status': True
+                            'status': False
                         }
                     )
             else:
                 return jsonify(
                         {   
-                            'status': True
+                            'status': False
                         }
                     )
+                
+@app.route('/tutorLogout', methods=['GET'])
+def tutorLogout():
+    key = os.urandom(12)
+    app.config['SECRET_KEY'] = key
 
 # functionality 6: (tutorViewPendingSchedules.html) Gets all schedules compatible with current tutor
 # and no current assigned tutors 

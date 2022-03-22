@@ -14,11 +14,18 @@
 
 <body>
     <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const token = urlParams.get('token')
+        function logout() {
+            fetch("http://192.168.86.129:5001/adminLogout")
+            window.location.replace(`./adminLogin.html`)
+        }
         // stores "getClassSchedules" route of classSchedule microservice
         // NOTE: if testing on your own PC, remember to modify
         // http://{your_IP_when_running_classScheduleMS}:5001/getClassSchedules
         // accordingly!
-        const getSchedulesURL = "http://10.124.9.182:5001/getClassSchedules"
+        const getSchedulesURL = "http://192.168.86.129:5001/getClassSchedules" + `?token=${token}`
         // async function that sends a GET request to classSchedule microservice and
         // receives the data in json to pass into the showClassSchedules function
         async function getClassSchedules(url) {
@@ -52,8 +59,7 @@
         // calls async function
         getClassSchedules(getSchedulesURL)
     </script>
-    <a href="./adminCreateSchedules.html">Create Schedules</a>
-    <br>
+    <div id="anchor"></div>
     <h1 id="loadingmsg">Loading... Please wait!</h1>
     <table border="1" id="schedule" style="display:none">
         <tr>
@@ -67,5 +73,12 @@
             <th>studentID</th>
         </tr>
     </table>
+
+    <script>
+        document.getElementById('anchor').innerHTML += `<a href='./adminViewPendingTutors.html?token=${token}'>View Pending Tutors</a>`
+        document.getElementById('anchor').innerHTML += `<br><a href='./adminViewApprovedTutors.html?token=${token}'>View Approved Tutors</a>`
+        document.getElementById('anchor').innerHTML += `<br><a href='./adminCreateSchedules.html?token=${token}'>Create Class Schedules</a>`
+        document.getElementById('anchor').innerHTML += `<br><input type='submit' value='Logout' onclick="logout()">`
+    </script>
 </body>
 </html>

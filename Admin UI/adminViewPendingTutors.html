@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Pending Tutors</title>
-    <link rel="stylesheet" href="style script.css">
+    <link rel="stylesheet" href="../CSS/style script.css">
 </head>
 
 <!-- 
@@ -23,6 +23,13 @@
     </script>
 
     <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const token = urlParams.get('token')
+        function logout() {
+            fetch("http://192.168.86.129:5001/adminLogout")
+            window.location.replace(`./adminLogin.html`)
+        }
         // show Errors
         function showError(message) {
             $('#errors')
@@ -33,7 +40,7 @@
         // NOTE: if testing on your own PC, remember to modify
         // http://{your_IP_when_running_tutorMS}:5002/getPendingTutors
         // accordingly!
-        const getTutorsURL = "http://192.168.86.129:5002/getPendingTutors"
+        const getTutorsURL = "http://192.168.86.129:5001/getPendingTutors" + `?token=${token}`
         // async function that sends a GET request to tutor microservice and
         // receives the data in json to pass into the showPendingTutors function
         async function getPendingTutors(url) {
@@ -61,7 +68,7 @@
                 // NOTE: if testing on your own PC, remember to modify
                 // http://{your_IP_when_running_tutorMS}:5002/approveTutor
                 // accordingly! 
-                var approveTutorURL = "http://192.168.86.129:5002/approveTutor"
+                var approveTutorURL = "http://192.168.86.129:5001/approveTutor"
                 
                 document.getElementById('loadingmsg').style.display = 'none'
                 try {
@@ -74,7 +81,8 @@
                                     "Content-Type": "application/json"
                                 },
                                 body: JSON.stringify({
-                                    'email': email
+                                    'email': email,
+                                    'token': token
                                 })
                             })
                     const data = await response.json()
@@ -110,7 +118,7 @@
                 // NOTE: if testing on your own PC, remember to modify
                 // http://{your_IP_when_running_tutorMS}:5002/rejectTutor
                 // accordingly! 
-                var approveTutorURL = "http://192.168.86.129:5002/rejectTutor"
+                var approveTutorURL = "http://192.168.86.129:5001/rejectTutor"
                 document.getElementById('loadingmsg').style.display = 'none'
                 
                 try {
@@ -123,7 +131,8 @@
                                     "Content-Type": "application/json"
                                 },
                                 body: JSON.stringify({
-                                    'email': email
+                                    'email': email,
+                                    'token': token
                                 })
                             })
                     const data = await response.json()
@@ -136,7 +145,6 @@
                     }
                 } 
                 catch (error) {
-        
                     showError("Rejection fails. Please try in a while.")
                 } 
             }
@@ -170,7 +178,7 @@
 
     <main>
         <div id="main-container">
-            <a href="./adminViewApprovedTutors.html">View Approved Tutors</a>
+            <div id="anchor"></div>
             <h1 id="loadingmsg">Loading... Please wait!</h1>
             <div id="errors"></div>
             <div class="table-outer-div container">
@@ -191,5 +199,12 @@
             </div>
         </div>
     </main>
+
+    <script>
+        document.getElementById('anchor').innerHTML += `<a href='./adminViewApprovedTutors.html?token=${token}'>View Approved Tutors</a>`
+        document.getElementById('anchor').innerHTML += `<br><a href='./adminCreateSchedules.html?token=${token}'>Create Class Schedules</a>`
+        document.getElementById('anchor').innerHTML += `<br><a href='./adminViewSchedules.html?token=${token}'>View Class Schedules</a>`
+        document.getElementById('anchor').innerHTML += `<br><input type='submit' value='Logout' onclick="logout()">`
+    </script>
 </body>
 </html>

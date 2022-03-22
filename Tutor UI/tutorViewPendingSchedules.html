@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Unassigned Schedules</title>
-    <link rel="stylesheet" href="style script.css">
+    <link rel="stylesheet" href="../CSS/style script.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
@@ -16,32 +16,81 @@
         const token = urlParams.get('token')
         // logout
         function logout() {
+            fetch("http://192.168.86.129:5002/tutorLogout")
             window.location.replace(`./tutorLogin.html`)
         }
         // show Errors
         function showError(message) {
             $('#errors')
-                .append("<label>" + message + "</label>")
+                .append("<label>" + message + "</label>");
         }
         // stores "getUnassignedClasses" route of tutor microservice
         // NOTE: if testing on your own PC, remember to modify
         // http://{your_IP_when_running_tutorMS}:5002/getUnassignedClasses
         // accordingly!
-        const getMyClassesURL = "http://192.168.86.129:5002/getMySchedule" + `?token=${token}`
+        const getUClassesURL = "http://192.168.86.129:5002/getUnassignedClasses" + `?token=${token}`
         // async function that sends a GET request to tutor microservice and
         // receives the data in json to pass into the showPendingTutors function
-        async function getMySchedule(url) {
+        async function getUClasses(url) {
             try {
                 const response = await fetch(url)
                 let data = await response.json()
-                showMySchedules(data)
+                showUClasses(data)
             } catch (error) {
-                showError("There are issues with displaying pending tutors. Please try in a while.")
+                showError("There are issues with displaying pending tutors. Please try again in a while.")
             }
             
         }
+        // async event upon approve-button click that first confirms choice, 
+        // then sends PATCH request to update status of selected tutor to tutor microservice, 
+        // and displays notification if successful
+        async function register(event) {
+            // get email of tutor which is stored as id of table row
+            let scheduleID = event.parentNode.parentNode.id
+            // confirmation popup to confirm approval
+            let confirmation = window.confirm(`Are you sure to register for class schedule (${scheduleID})?`)
+            if (confirmation) {
+                // loading popup to notify user
+                window.alert("Registering... Please wait after clicking OK!")
+                // stores "approveTutor" route of tutor microservice
+                // NOTE: if testing on your own PC, remember to modify
+                // http://{your_IP_when_running_tutorMS}:5002/approveTutor
+                // accordingly! 
+                var approveTutorURL = "http://192.168.86.129:5002/registerClass"
+                document.getElementById('loadingmsg').style.display = 'none'
+                try {
+                    // stores response of PATCH request to tutor microservice
+                    const response =
+                        await fetch(
+                            approveTutorURL, {
+                                method: 'PATCH',
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    'scheduleID': scheduleID,
+                                    'token': token
+                                })
+                            })
+                    const data = await response.json()
+                    // if response is successful, removes row from table and displays notification 
+                    // if successful
+                    if (response.ok) {
+                        window.alert(`Successfully Registered for Class Schedule (${scheduleID})!`)
+                        var row = document.getElementById(`${scheduleID}`)
+                        row.parentNode.removeChild(row)
+                    }
+                } 
+                catch (error) {
+                    showError("Registration fails. Please try in a while.")
+                } 
+            }
+            else {
+
+            }
+        }
         // processes data from GET request and populates table
-        function showMySchedules(data) {
+        function showUClasses(data) {
             // processes data from GET request
             let scheduleList = data["scheduleList"]
             let classDict = data['classDict']
@@ -56,13 +105,14 @@
                     <td>${schedule['year']}</td>
                     <td>${schedule['day']}</td>
                     <td>${schedule['timing']}</td>
+                    <td><input type='submit' value='Register' onclick="register(this)"></td>
                 </tr>`
             }
             document.getElementById('loadingmsg').style.display = 'none'
             document.getElementById('schedules').style.display = 'block'
         }
         // hides loading message and displays populated table
-        getMySchedule(getMyClassesURL)
+        getUClasses(getUClassesURL)
     </script>
 
     <div id="main-container">
@@ -86,7 +136,7 @@
     </div>
 
     <script>
-        document.getElementById('anchor').innerHTML += `<a href='./tutorViewPendingSchedules.html?token=${token}'>View Pending Schedules</a>`
+        document.getElementById('anchor').innerHTML += `<a href='./tutorViewMySchedules.html?token=${token}'>View My Schedules</a>`
         document.getElementById('anchor').innerHTML += `<br><input type='submit' value='Logout' onclick="logout()">`
     </script>
 </body>
