@@ -14,6 +14,10 @@
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const tutorID = urlParams.get('tutorID')
+        // logout
+        function logout() {
+            window.location.replace(`./tutorLogin.html`)
+        }
         // show Errors
         function showError(message) {
             $('#errors')
@@ -131,8 +135,8 @@
     </div>
 
     <script>
-        document.getElementById('anchor').innerHTML = `<a href='./tutorViewMySchedules.html?tutorID=${tutorID}'>View My Schedules</a>`
-        document.getElementById('anchor').innerHTML = `<a href='./tutorLogin.html>Logout</a>`
+        document.getElementById('anchor').innerHTML += `<a href='./tutorViewMySchedules.html?tutorID=${tutorID}'>View My Schedules</a>`
+        document.getElementById('anchor').innerHTML += `<br><input type='submit' value='Logout' onclick="logout()">`
     </script>
 </body>
 </html>

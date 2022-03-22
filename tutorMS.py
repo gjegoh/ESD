@@ -242,7 +242,7 @@ def registerClass():
             # adminViewPendingTutors in json
             return data
 
-# functionality 6: (tutorViewOwnSchedules.html) Gets all schedules taken by current tutor
+# functionality 8: (tutorViewOwnSchedules.html) Gets all schedules taken by current tutor
 @app.route('/getMySchedule', methods=['GET'])
 def getMySchedule():
     # processes data of GET request
