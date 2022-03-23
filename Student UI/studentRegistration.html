@@ -46,9 +46,9 @@
             </div>
             <!-- date picker source -->
             <!-- https://github.com/Frontend-Paathshala/Datepicker-Bootstrap-4/blob/main/index.html -->
-            <div class="input-group mb-3">
-                <!-- <label class="input-group-text" for="datepicker">Date of Birth</label> -->
-                <!-- <label for="dateOfBirth" class="form-label">Date of Birth</label> -->
+            <!-- <div class="input-group mb-3">
+                <label class="input-group-text" for="datepicker">Date of Birth</label> 
+                <label for="dateOfBirth" class="form-label">Date of Birth</label> 
                 <div class="input-group date" id="datepicker">
                     <input type="text" class="form-control" placeholder="Date of Birth">
                     <span class="input-group-append">
@@ -57,7 +57,7 @@
                         </span>
                     </span>
                 </div>
-            </div>
+            </div> -->
 
             <!-- <div class="mb-3 dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -70,7 +70,13 @@
                 <li><a class="dropdown-item" href="#">Degree</a></li>
                 </ul>
             </div> -->
-            <select class="form-select mb-3" onchange="retrieveEduInfo()" id="educationLevel" label="Default select example">
+            <!-- <select class="form-select mb-3" onchange="retrieveEduInfo()" id="educationLevel" label="Default select example">
+                <option selected>Select an Education Level</option>
+                <option value="Primary">Primary</option>
+                <option value="Secondary">Secondary</option>
+                <option value="Junior College">Junior College</option>
+            </select> -->
+            <select class="form-select mb-3" onchange="showLevels()" id="educationLevel" label="Default select example">
                 <option selected>Select an Education Level</option>
                 <option value="Primary">Primary</option>
                 <option value="Secondary">Secondary</option>
@@ -93,7 +99,8 @@
                 <label for="passwordTb" class="form-label">Password</label>
                 <input type="password" class="form-control" id="passwordTb">
             </div>
-            <button type="submit" class="btn btn-primary" onclick="printError()">Submit</button>
+            <h2 id="loadingmsg" style="display:none">Loading... Please Wait!</h2>
+            <button type="submit" class="btn btn-primary" id="submit">Submit</button>
         </form>
         <label id="error" class="text-danger"></label>
     </div>
@@ -116,7 +123,28 @@
             $("#errors").append("<label>" + message + "</label><br>")
         }
 
-        
+        function showLevels() {
+            let pri = [1,2,3,4,5,6]
+            let sec = [1,2,3,4,5]
+            let jc = [1,2]
+            var educationLevel = document.getElementById("educationLevel").value
+            document.getElementById("levels").innerHTML = "<option selected>Selected Levels</option>"
+            if (educationLevel == 'Primary') {
+                for (let level of pri) {
+                    document.getElementById("levels").innerHTML += `<option value='${level}'>${level}</option>`
+                }
+            }
+            else if (educationLevel == 'Secondary') {
+                for (let level of sec) {
+                    document.getElementById("levels").innerHTML += `<option value='${level}'>${level}</option>`
+                }
+            }
+            else {
+                for (let level of jc) {
+                    document.getElementById("levels").innerHTML += `<option value='${level}'>${level}</option>`
+                }
+            }
+        }
 
         async function retrieveEduInfo() {
             var educationLevel = document.getElementById("educationLevel").value
@@ -127,7 +155,7 @@
                 return
             }
 
-            var educationURL = `http://172.20.10.4:5000/educationInfo/${educationLevel}`;
+            var educationURL = `http://192.168.86.129:5000/${educationLevel}`;
             
             
             try {
@@ -164,17 +192,20 @@
         $("#registerStudent").submit(async (event) => {
             //Prevents screen from refreshing when submitting
             event.preventDefault();
-
+            document.getElementById('submit').style.display = 'none'
+            document.getElementById('loadingmsg').style.display = 'block'
             // var serviceURL = "http://10.124.12.129:5000/student";
-            var serviceURL = "http://172.20.10.4:5000/student";
+            var serviceURL = "http://192.168.86.129:5000/studentRegister";
 
             //Get form data ---
             try {
                 var firstName = document.getElementById("firstName").value
                 var lastName = document.getElementById("lastName").value
+                var eduLevel = document.getElementById("educationLevel").value
+                var level = document.getElementById("levels").value
+                var grade = eduLevel + level
                 var email = document.getElementById("emailTb").value
                 var phoneNumber = document.getElementById("phoneNumberTb").value
-                var grade = document.getElementById("levelDdl").value
                 var password = document.getElementById("passwordTb").value
             } catch {
                 showError("There are issues with registering the student. Please try in a while.")
@@ -202,9 +233,12 @@
                 const data = await response.json();
 
                 if (response.ok) {
+                    alert("Successfully Registered!")
+                    document.getElementById('submit').style.display = 'block'
+                    document.getElementById('loadingmsg').style.display = 'none'
                     // relocate to home page
-                    showError("swee")
-                    console.log('hello')
+                    // showError("swee")
+                    // console.log('hello')
                     return false;
                 } else {
                     console.log(data);

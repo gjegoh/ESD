@@ -28,7 +28,14 @@
                 <span class="input-group-text">First Name</span>
                 <input type="text" id="firstName" class="form-control me-3" placeholder="" aria-label="firstName">
             </div>
-            <select class="form-select mb-3" onchange="retrieveEduInfo()" id="educationLevel"
+            <!-- <select class="form-select mb-3" onchange="retrieveEduInfo()" id="educationLevel"
+                label="Default select example">
+                <option selected>Select an Education Level</option>
+                <option value="Primary">Primary</option>
+                <option value="Secondary">Secondary</option>
+                <option value="Junior College">Junior College</option>
+            </select> -->
+            <select class="form-select mb-3" onchange="showSubjects()" id="educationLevel"
                 label="Default select example">
                 <option selected>Select an Education Level</option>
                 <option value="Primary">Primary</option>
@@ -38,7 +45,6 @@
             <!-- filter for tutor to choose what subject he/she teaching -->
             <div id="subjects" onclick="subjectSelected()" class="btn-group mb-3" role="group"
                 aria-label="Basic checkbox toggle button group">
-
             </div>
 
             <div class="mb-3">
@@ -59,7 +65,8 @@
                 <label for="passwordTb" class="form-label">Password</label>
                 <input type="password" class="form-control" id="passwordTb">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <h2 id="loadingmsg" style="display:none">Loading... Please Wait!</h2>
+            <button type="submit" class="btn btn-primary" id="submit">Submit</button>
         </form>
         <label id="error" class="text-danger"></label>
     </div>
@@ -87,6 +94,33 @@
             result = subjectSelected
             // console.log(result)
         }
+
+        function showSubjects() {
+            let pri = ['English', 'Mathematics', 'Science']
+            let sec = ['English', 'Mathematics', 'Science', 'History', 'Geography']
+            let jc = ['Mathematics', 'Chemistry', 'Biology', 'Physics', 'Economics']
+            var educationLevel = document.getElementById("educationLevel").value
+            document.getElementById("subjects").innerHTML = ""
+            if (educationLevel == 'Primary') {
+                for (let sub of pri) {
+                    document.getElementById("subjects").innerHTML += `  <input type="checkbox" class="btn-check" id="${sub}_opt" autocomplete="off" value="${sub}">
+                                                                        <label class="btn btn-outline-primary" for="${sub}_opt">${sub}</label>`
+                }
+            }
+            else if (educationLevel == 'Secondary') {
+                for (let sub of sec) {
+                    document.getElementById("subjects").innerHTML += `  <input type="checkbox" class="btn-check" id="${sub}_opt" autocomplete="off" value="${sub}">
+                                                                        <label class="btn btn-outline-primary" for="${sub}_opt">${sub}</label>`
+                }
+            }
+            else {
+                for (let sub of jc) {
+                    document.getElementById("subjects").innerHTML += `  <input type="checkbox" class="btn-check" id="${sub}_opt" autocomplete="off" value="${sub}">
+                                                                        <label class="btn btn-outline-primary" for="${sub}_opt">${sub}</label>`
+                }
+            }
+        }
+
         async function retrieveEduInfo() {
             var educationLevel = document.getElementById("educationLevel").value
 
@@ -135,10 +169,10 @@
         $("#registerTutor").submit(async (event) => {
             //Prevents screen from refreshing when submitting
             event.preventDefault()
-
+            document.getElementById('submit').style.display = 'none'
+            document.getElementById('loadingmsg').style.display = 'block'
             // var serviceURL = "http://10.124.12.129:5000/tutor";
-            var serviceURL = "http://192.168.86.129:5000/tutor"
-
+            var serviceURL = "http://192.168.86.129:5000/tutorRegister"
             //Get form data --- 
             var firstName = document.getElementById("firstName").value
             var lastName = document.getElementById("lastName").value
@@ -172,9 +206,13 @@
                 const data = await response.json();
 
                 if (response.ok) {
+                    alert('Successfully registered!')
+                    document.getElementById('submit').style.display = 'block'
+                    document.getElementById('loadingmsg').style.display = 'none'
+
                     // relocate to home page
-                    showError("swee")
-                    console.log('hello')
+                    // showError("swee")
+                    // console.log('hello')
                     return false;
                 } else {
                     console.log(data);
