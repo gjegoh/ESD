@@ -27,7 +27,6 @@
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
         function logout() {
-            fetch("http://192.168.86.129:5001/adminLogout")
             window.location.replace(`./adminLogin.html`)
         }
         // show Errors

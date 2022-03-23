@@ -92,11 +92,6 @@ def tutorLogin():
                             'status': False
                         }
                     )
-                
-@app.route('/tutorLogout', methods=['GET'])
-def tutorLogout():
-    key = os.urandom(12)
-    app.config['SECRET_KEY'] = key
 
 # functionality 6: (tutorViewPendingSchedules.html) Gets all schedules compatible with current tutor
 # and no current assigned tutors 

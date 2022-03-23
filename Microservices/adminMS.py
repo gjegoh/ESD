@@ -36,12 +36,6 @@ def validateToken(token):
             'status': False,
             'error': 'Invalid token. Please log in again.'
         }
-        
-# functionality 5: (tutorLogin.html) Authenticates tutor 
-@app.route('/adminLogout', methods=['GET'])
-def adminLogout():
-    key = os.urandom(12)
-    app.config['SECRET_KEY'] = key
     
 # functionality 5: (tutorLogin.html) Authenticates tutor 
 @app.route('/adminLogin', methods=['GET'])
