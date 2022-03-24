@@ -6,8 +6,12 @@
 # id = admin
 # pw = thisismypw
 
-mailchimp (use postman to send requests):
+<!-- mailchimp (use postman to send requests):
 1. select authorization
 2. enter username and password
   - username: jenniferwxe
-  - password: 149218c56ba8c2f24e05f157add74e6b-us14
+  - password: 149218c56ba8c2f24e05f157add74e6b-us14 -->
+
+# pip install pyjwt
+# pip install jwt
+# pip install pymysql
