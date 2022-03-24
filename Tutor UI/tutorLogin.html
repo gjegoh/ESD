@@ -1,0 +1,64 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Tutor Login</title>
+</head>
+<body>
+    <form method="POST" id="tutorLogin">
+        <h1>Tutor Login</h1>
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email">
+        <br>
+        <label for="pass">Password</label>
+        <input type="password" name="pass" id="pass">
+        <br>
+        <input type="submit" value="Login" id="submit">
+        <h2 id="submitmsg" style="display:none">Logging In... Please wait!</h2>
+    </form>
+
+    <script>
+        // async event upon form submission that sends GET request of form inputs
+        // to tutor microservice to authenticate tutor
+        $("#tutorLogin").submit(async (event) => {
+            // prevents page from refreshing to avoid HTTP 405 error
+            event.preventDefault()
+            // hides submit button and display submitting message for user
+            document.getElementById('submit').style.display = 'none'
+            document.getElementById('submitmsg').style.display = 'block'
+            // retrieves all checked checkboxes of submitted form
+            var email = $("#email").val()
+            var pass = $("#pass").val()
+            // stores "tutorLogin" route of tutor microservice
+            // NOTE: if testing on your own PC, remember to modify
+            // http://{your_IP_when_running_tutorMS}:5002/tutorLogin
+            // accordingly!
+            var tutorLoginURL = "http://192.168.86.129:5002/tutorLogin" + `?email=${email}&pass=${pass}`
+            
+            try {
+                // stores response of GET request to tutor microservice
+                const response = await fetch(tutorLoginURL)
+                const data = await response.json()
+                // if response is successful
+                if (response.ok) {
+                    var authenticated = data['status']
+                    if (authenticated) {
+                        var token = data['token']
+                        window.location.replace(`./tutorViewPendingSchedules.html?token=${token}`)
+                    }
+                    else {
+                        alert("Login Failed! Please re-login...")
+                        document.getElementById('submit').style.display = 'block'
+                        document.getElementById('submitmsg').style.display = 'none'
+                    }
+                }
+            } 
+            catch (error) {
+
+            } 
+        })
+    </script>
+</body>
+</html>
