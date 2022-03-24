@@ -1,23 +1,67 @@
-version: "3.8"
+version: '3'
 
-services:
-# under services, is all the containers u will build
+user:
+  image: student:0.21
+  build: 
+    context: .
+    dockerfile: './Docker/Dockerfile.student'
+  ports:
+    - "5001:5001"
 
-  #################################
-  # Book: The Book microservice
-  #################################
-  book:
-    image: eileengoh/book:1.0
-    restart: always
-    environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/book
+tutor:
+  image: tutor:0.21
+  build: 
+    context: .
+    dockerfile: './Docker/Dockerfile.tutor'
+  ports:
+    - "5002:5002"
 
-  ###############################################
-  # callbook: The test_invoke_http.py program
-  ###############################################
-  callbook:
-    image: eileengoh/callbook:1.0
-    depends_on:
-      - book
-    environment:
-      bookURL: http://book:5000/book
+admin:
+  image: admin:0.21
+  build: 
+    context: .
+    dockerfile: './Docker/Dockerfile.admin'
+  ports:
+    - "5003:5003"
+
+class:
+  image: class:0.21
+  build: 
+    context: .
+    dockerfile: './Docker/Dockerfile.class'
+  ports:
+    - "5004:5004"
+
+class_schedule:
+  image: class_schedule:0.21
+  build: 
+    context: .
+    dockerfile: './Docker/Dockerfile.class_schedule'
+  ports:
+    - "5005:5005"
+
+notification:
+  image: notification:0.21
+  build:
+    context: .
+    dockerfile: './Docker/Dockerfile.notification'
+  ports:
+    - "5006:5006"
+ 
+stripe:
+  image: stripe:0.21
+  build:   
+    context: .
+    dockerfile: './Docker/Dockerfile.stripe'
+  ports:
+    - "5007:5007"
+
+# services:
+#   frontend:
+#     image: frontend:0.21
+#     build:
+#       context: .
+#       dockerfile: './Docker/Dockerfile.frontend'
+#     ports:
+#       - "5000:5000"
+
