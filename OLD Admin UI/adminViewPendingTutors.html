@@ -1,30 +1,47 @@
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Pending Tutors</title>
     <link rel="stylesheet" href="../CSS/style script.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
-<body>
-    <script>
-        const queryString = window.location.search
-        const urlParams = new URLSearchParams(queryString)
-        const token = urlParams.get('token')
-        const url = "http://10.124.9.182:5003/getPendingTutors" + `?token=${token}`
+<!-- 
+    To Do:
+        1. Catching errors in API
+        2. Auto-refreshing of page
+        3. Non-intrusive notification of approving/deleting tutors
+        4. Front-end
+ -->
 
+ 
+
+<body>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js">
+        // To resolve JQuery - $ is not defined
+    </script>
+
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const token = urlParams.get('token')
         function logout() {
             window.location.replace(`./adminLogin.html`)
         }
-
+        // show Errors
         function showError(message) {
             $('#errors')
                 .append("<label>" + message + "</label>");
         }
 
+        // stores "getPendingTutors" route of tutor microservice
+        // NOTE: if testing on your own PC, remember to modify
+        // http://{your_IP_when_running_tutorMS}:5002/getPendingTutors
+        // accordingly!
+        const getTutorsURL = "http://192.168.86.129:5001/getPendingTutors" + `?token=${token}`
+        // async function that sends a GET request to tutor microservice and
+        // receives the data in json to pass into the showPendingTutors function
         async function getPendingTutors(url) {
             try {
                 const response = await fetch(url)
@@ -35,18 +52,29 @@
             }
             
         }
-
+        // async event upon approve-button click that first confirms choice, 
+        // then sends PATCH request to update status of selected tutor to tutor microservice, 
+        // and displays notification if successful
         async function approveTutor(event) {
+            // get email of tutor which is stored as id of table row
             let email = event.parentNode.parentNode.id
+            // confirmation popup to confirm approval
             let confirmation = window.confirm(`Are you sure to approve tutor (${email})?`)
             if (confirmation) {
+                // loading popup to notify user
                 window.alert("Approving... Please wait after clicking OK!")
-                var url = "http://10.124.9.182:5001/approveTutor"
+                // stores "approveTutor" route of tutor microservice
+                // NOTE: if testing on your own PC, remember to modify
+                // http://{your_IP_when_running_tutorMS}:5002/approveTutor
+                // accordingly! 
+                var approveTutorURL = "http://192.168.86.129:5001/approveTutor"
+                
                 document.getElementById('loadingmsg').style.display = 'none'
                 try {
+                    // stores response of PATCH request to tutor microservice
                     const response =
                         await fetch(
-                            url, {
+                            approveTutorURL, {
                                 method: 'PATCH',
                                 headers: {
                                     "Content-Type": "application/json"
@@ -57,6 +85,9 @@
                                 })
                             })
                     const data = await response.json()
+                    // if response is successful, removes row from table and displays notification 
+                    // if successful
+                    
                     if (response.ok) {
                         window.alert(`Successfully Approved Tutor (${email})!`)
                         var row = document.getElementById(`${email}`)
@@ -71,15 +102,26 @@
 
             }
         }
-
+        // async event upon reject-button click that first confirms choice, 
+        // then sends DELETE request to delete selected tutor to tutor microservice, 
+        // and displays notification if successful
         async function rejectTutor(event) {
+            // get email of tutor which is stored as id of table row
             let email = event.parentNode.parentNode.id
+            // confirmation popup to confirm rejection
             let confirmation = window.confirm(`Are you sure to reject tutor (${email})?`)
             if (confirmation) {
+                // loading popup to notify user
                 window.alert("Approving... Please wait after clicking OK!")
-                var approveTutorURL = "http://10.124.9.182:5001/rejectTutor"
+                // stores "rejectTutor" route of tutor microservice
+                // NOTE: if testing on your own PC, remember to modify
+                // http://{your_IP_when_running_tutorMS}:5002/rejectTutor
+                // accordingly! 
+                var approveTutorURL = "http://192.168.86.129:5001/rejectTutor"
                 document.getElementById('loadingmsg').style.display = 'none'
+                
                 try {
+                    // stores response of PATCH request to tutor microservice
                     const response =
                         await fetch(
                             approveTutorURL, {
@@ -93,6 +135,8 @@
                                 })
                             })
                     const data = await response.json()
+                    // if response is successful, removes row from table and displays notification 
+                    // if successful
                     if (response.ok) {
                         window.alert(`Successfully Rejected Tutor (${email})!`)
                         var row = document.getElementById(`${email}`)
@@ -104,9 +148,12 @@
                 } 
             }
         }
-
+        // processes data from GET request and populates table
         function showPendingTutors(data) {
+            // processes data from GET request
             let tutorList = data["data"]["tutorList"]
+            // populates table via document manipulation,
+            // this assumes that email is unique and there are no duplicate records in DB
             for (let tutor of tutorList) {
                 document.getElementById('tutor').innerHTML += 
                 `<tr id="${tutor['email']}">
@@ -123,8 +170,8 @@
             document.getElementById('loadingmsg').style.display = 'none'
             document.getElementById('tutor').style.display = 'block'
         }
-
-        getPendingTutors(url)
+        // hides loading message and displays populated table
+        getPendingTutors(getTutorsURL)
 
     </script>
 

@@ -8,23 +8,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../CSS/style script.css">
 </head>
+<!-- To Do: 
+        1. Form Validation
+        2. Catching errors in APIs
+        3. Front-end
+-->
 
 <body>
     <script>
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
-        const getClassesURL = "http://10.124.9.182:5004/getClassDetails" + `?token=${token}`
-
         function logout() {
             window.location.replace(`./adminLogin.html`)
         }
-
+        // show Errors
         function showError(message) {
             $('#errors')
                 .append("<label>" + message + "</label>");
         }
 
+        // stores "getClassDetails" route of classSchedule microservice
+        // NOTE: if testing on your own PC, remember to modify
+        // http://{your_IP_when_running_classScheduleMS}:5001/getClassDetails
+        // accordingly!
+        const getClassesURL = "http://192.168.86.129:5001/getClassDetails" + `?token=${token}`
+        // async function that sends a GET request to classSchedule microservice and
+        // receives the data in json to pass into the showClassDetails function
         async function getClassDetails(url) {
             try {
                 const response = await fetch(url)
@@ -35,12 +45,15 @@
                 showError("There are issues with the display of class details. Please try in a while.")
             }
         }
-
+        // processes data from GET request and populates form details
         function showClassDetails(data) {
+            // processes data from GET request
             let subjectList = data['data']['subject']
             let gradeList = data['data']['grade']
+            // creates list of current year and the following 3 years
             let currentYear = new Date().getFullYear()
             let yearList = [currentYear, currentYear+1, currentYear+2, currentYear+3]
+            // populates form details via document manipulation
             for (let subject of subjectList) {
                 document.getElementById('subjects').innerHTML += `<input type="checkbox" name="subjects[]" id="${subject}" value="${subject}"><label for="${subject}">${subject}</label>`
             }
@@ -50,10 +63,11 @@
             for (let year of yearList) {
                 document.getElementById('years').innerHTML += `<input type="checkbox" name="years[]" id="${year}" value="${year}"><label for="${year}">${year}</label>`
             }
+            // hides loading message and displays populated form
             document.getElementById('loadingmsg').style.display = 'none'
             document.getElementById('createSchedule').style.display = 'block'
         }
-
+        // calls async function
         getClassDetails(getClassesURL)
     </script>
 
@@ -117,12 +131,21 @@
         document.getElementById('anchor').innerHTML += `<br><a href='./adminViewApprovedTutors.html?token=${token}'>View Approved Tutors</a>`
         document.getElementById('anchor').innerHTML += `<br><a href='./adminViewSchedules.html?token=${token}'>View Class Schedules</a>`
         document.getElementById('anchor').innerHTML += `<br><input type='submit' value='Logout' onclick="logout()">`
-
+        // async event upon form submission that sends POST request of form inputs
+        // to classSchedule microservice, and displays confirmation notification
+        // of successful class schedule creation
         $("#createSchedule").submit(async (event) => {
+            // prevents page from refreshing to avoid HTTP 405 error
             event.preventDefault()
+            // hides submit button and display submitting message for user
             document.getElementById('submit').style.display = 'none'
             document.getElementById('submitmsg').style.display = 'block'
-            var url = "http://10.124.9.182:5002/scheduleCreation"
+            // stores "createClassSchedule" route of classSchedule microservice
+            // NOTE: if testing on your own PC, remember to modify
+            // http://{your_IP_when_running_classScheduleMS}:5001/createClassSchedule
+            // accordingly!
+            var createClassesURL = "http://192.168.86.129:5001/createClassSchedule"
+            // retrieves all checked checkboxes of submitted form
             var subjects = new Array()
             $('input[name="subjects[]"]:checked').each(function() {
                 subjects.push(this.value);
@@ -143,10 +166,12 @@
             $('input[name="timings[]"]:checked').each(function() {
                 timings.push(this.value);
             })
+            
             try {
+                // stores response of POST request to classSchedule microservice
                 const response =
                     await fetch(
-                        url, {
+                        createClassesURL, {
                             method: 'POST',
                             headers: {
                                 "Content-Type": "application/json"
@@ -161,6 +186,9 @@
                             })
                         })
                 const data = await response.json()
+                // if response is successful, unchecks all checkboxes and hides 
+                // submitting message, and re-displays submit button. Also,
+                // displays popup notification of submitted form inputs
                 if (response.ok) {
                     $('#createSchedule').find('input:checkbox').prop('checked', false)
                     document.getElementById('submitmsg').style.display = 'none'
@@ -175,5 +203,6 @@
         })
 
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

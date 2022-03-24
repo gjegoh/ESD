@@ -1,5 +1,4 @@
 <html lang="en">
-    
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +6,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Admin Login</title>
 </head>
-
 <body>
     <form method="POST" id="adminLogin">
         <h1>Admin Login</h1>
@@ -22,18 +20,31 @@
     </form>
 
     <script>
+        // async event upon form submission that sends GET request of form inputs
+        // to tutor microservice to authenticate tutor
         $("#adminLogin").submit(async (event) => {
+            // prevents page from refreshing to avoid HTTP 405 error
             event.preventDefault()
+            // hides submit button and display submitting message for user
             document.getElementById('submit').style.display = 'none'
             document.getElementById('submitmsg').style.display = 'block'
+            // retrieves all checked checkboxes of submitted form
             var email = $("#email").val()
             var pass = $("#pass").val()
-            var url = "http://10.124.9.182:5000/adminLogin" + `?email=${email}&pass=${pass}`
+            // stores "tutorLogin" route of tutor microservice
+            // NOTE: if testing on your own PC, remember to modify
+            // http://{your_IP_when_running_tutorMS}:5002/tutorLogin
+            // accordingly!
+            var adminLoginURL = "http://192.168.86.129:5001/adminLogin" + `?email=${email}&pass=${pass}`
+            
             try {
-                const response = await fetch(url)
+                // stores response of GET request to tutor microservice
+                const response = await fetch(adminLoginURL)
                 const data = await response.json()
+                // if response is successful
                 if (response.ok) {
                     var authenticated = data['status']
+                    console.log(authenticated)
                     if (authenticated) {
                         var token = data['token']
                         window.location.replace(`./adminViewPendingTutors.html?token=${token}`)
@@ -51,5 +62,4 @@
         })
     </script>
 </body>
-
 </html>
