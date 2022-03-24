@@ -1,8 +1,16 @@
 # Digitalize Tuition Records
 
 # Business Scenario
+Tuition centres in Singapore rely on tedious manual processes to enrol students, schedule classes, distribute workload among tutors and collect payment. This often leads to a loss in revenue due to the extra manpower required to carry out these processes. 
+
+Furthermore, tutors often lack the ability to choose their preferred class schedules and lack flexibility in deciding on their preferred workload, leading to unhappiness among tutors and a barrier to entry for many aspiring tutors.
 
 # Solution 
+We aim to digitally transform the traditional tuition centres, eliminating the majority of manual work required from both parties by streamlining and automating majority of the processes. 
+
+Additionally, we would also provide the ability and flexibility for tutors to decide on their own schedule and workload easily, within the constraints of their contract. Thereby, making it more appealing to both new and existing tutors.
+
+This will be done via a UX-first approach, through the use of our web application that can be easily accessed and utilized by all stakeholders. Furthermore, it will be deployable for any tuition centre as their enterprise solution.
 
 # Database connections on RDS
 Database_connection URL = studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com
