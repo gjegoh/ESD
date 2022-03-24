@@ -15,10 +15,10 @@ This will be done via a UX-first approach, through the use of our web applicatio
 ![Business Scenario Demo!](images/Business_Scenario.png)
 
 # Database connections on RDS
-Database_connection URL = studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com
-port_no = 3306
-hostname = admin
-password = thisismypw
+- Database_connection URL = studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com 
+- Port Number = 3306 
+- Hostname = admin 
+- Password = thisismypw
 
 # Mailchimp (use postman to send requests):
 1. select authorization
