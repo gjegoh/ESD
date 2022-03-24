@@ -1,4 +1,4 @@
-# Digitalize Tuition Records
+## Digitalize Tuition Records
 
 # Business Scenario
 Tuition centres in Singapore rely on tedious manual processes to enrol students, schedule classes, distribute workload among tutors and collect payment. This often leads to a loss in revenue due to the extra manpower required to carry out these processes. 
@@ -11,6 +11,8 @@ We aim to digitally transform the traditional tuition centres, eliminating the m
 Additionally, we would also provide the ability and flexibility for tutors to decide on their own schedule and workload easily, within the constraints of their contract. Thereby, making it more appealing to both new and existing tutors.
 
 This will be done via a UX-first approach, through the use of our web application that can be easily accessed and utilized by all stakeholders. Furthermore, it will be deployable for any tuition centre as their enterprise solution.
+
+![Business Scenario Demo!](images/Business_Scenario.png)
 
 # Database connections on RDS
 Database_connection URL = studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com
@@ -26,7 +28,6 @@ password = thisismypw
 
 
 # Technologies and features
-
 - [x] Python & Flask & MySQL Database
 - [x] Stripe Subscriptions (Create, Cancel, Reactivate, Update supported)
 - [x] HTML theme 
@@ -35,7 +36,6 @@ password = thisismypw
 - [x] Notifications for users (Student, Tutor and Admin)
 
 # How To Run The Application (After Installation)
-
 You should make sure that your database is running first and foremost, else the following will fail. Look under installation for Windows or Mac/Linux for how to run the database locally. It just needs to be running in the background, all the databases and tables are created programmatically.
 
 1. Simply navigate (in a terminal) into the ~/app folder.
@@ -47,12 +47,21 @@ Please configure `~/app/setup_app/config.py` as needed. I recommend making a mod
 Note that scaling is very easy, you can just convert your `docker-compose.yml` file to Kubernetes files, and you can easily get set up and running in Google Cloud Platform or Amazon Web Services. [Read this tutorial for more](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/).
 
 # Microservices
+| Microservice | Ports |
+| ------ | ------ |
+| studentMS | 5001 |
+| tutorMS | 5002 |
+| adminMS | 5003 |
+| classMS | 5004 |
+| classScheduleMS | 5005 |
+| NotificationMS | 5006 |
+| stripeMS | 5007 |
 
-1. studentMS.py - Port 5001
+<!-- 1. studentMS.py - Port 5001
 2. tutorMS.py - Port 5002
 3. adminMS.py - Port 5003
 4. classMS.py - Port 5004
 5. classSchedule.py - Port 5005
 6. NotificationMS.py - Port 5006
-7. stripeMS.py - Port 5007
+7. stripeMS.py - Port 5007 -->
 

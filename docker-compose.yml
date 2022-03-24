@@ -1,6 +1,25 @@
 version: '3'
 
-user:
+volumes:
+  rabbitmq_data:
+
+####################################
+# RabbitMQ: The messaging broker   
+####################################
+rabbitmq:
+  image: rabbitmq:3-management
+  hostname: esd-rabbit
+  restart: always
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+  volumes: 
+    - rabbitmq_data:/var/lib/rabbitmq
+
+###################################
+# Student: The Student microservice
+###################################
+student:
   image: student:0.21
   build: 
     context: .
@@ -8,6 +27,9 @@ user:
   ports:
     - "5001:5001"
 
+###################################
+# Tutor: The Tutor microservice
+###################################
 tutor:
   image: tutor:0.21
   build: 
@@ -16,6 +38,9 @@ tutor:
   ports:
     - "5002:5002"
 
+###################################
+# Admin: The Admin microservice
+###################################
 admin:
   image: admin:0.21
   build: 
@@ -24,6 +49,9 @@ admin:
   ports:
     - "5003:5003"
 
+###################################
+# Class: The Class microservice
+###################################
 class:
   image: class:0.21
   build: 
@@ -32,6 +60,9 @@ class:
   ports:
     - "5004:5004"
 
+###################################
+# Class_Schedule: The Class_Schedule microservice
+###################################
 class_schedule:
   image: class_schedule:0.21
   build: 
@@ -40,6 +71,9 @@ class_schedule:
   ports:
     - "5005:5005"
 
+###################################
+# Notification: The Notification microservice
+###################################
 notification:
   image: notification:0.21
   build:
@@ -47,7 +81,10 @@ notification:
     dockerfile: './Docker/Dockerfile.notification'
   ports:
     - "5006:5006"
- 
+
+###################################
+# Stripe: The Stripe microservice
+###################################
 stripe:
   image: stripe:0.21
   build:   
