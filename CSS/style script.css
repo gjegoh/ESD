@@ -1,5 +1,28 @@
 
+
+/* header*/
+html, body {
+    background-color: #17457A;
+}
+
+
 /* body */
+.navbar a {
+    color: white;
+}
+
+p {
+    color: white;
+    font-family: mulish;
+
+}
+
+/* horizontal alignment */
+.inner {
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
 
 #errors {
   color: red;

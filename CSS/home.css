@@ -1,0 +1,15 @@
+#home_title {
+    color: white;
+    font-family: Montserrat;
+    font-weight: bold;
+}
+
+#home_image {
+    position:relative;
+    width: 80%;
+    border-radius: 15px;
+}
+
+.dropdown-item {
+    color: black;
+}
