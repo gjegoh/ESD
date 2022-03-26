@@ -22,7 +22,7 @@ def scheduleCreation():
     url = "http://10.124.9.182:5000/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
-    if (validation['status']): 
+    if (validation['status'] and validation['token']['isAdmin']): 
         payload = data
         url = "http://10.124.9.182:5004/createClassSchedule"
         response = requests.post(url, data=payload)

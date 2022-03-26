@@ -10,26 +10,20 @@
 <body>
 
     <script>
-        // Get tutorID from url
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
-        // logout
+        const url = "http://192.168.86.129:5004/getMySchedule" + `?token=${token}`
+
         function logout() {
             window.location.replace(`./tutorLogin.html`)
         }
-        // show Errors
+
         function showError(message) {
             $('#errors')
                 .append("<label>" + message + "</label>")
         }
-        // stores "getUnassignedClasses" route of tutor microservice
-        // NOTE: if testing on your own PC, remember to modify
-        // http://{your_IP_when_running_tutorMS}:5002/getUnassignedClasses
-        // accordingly!
-        const getMyClassesURL = "http://192.168.86.129:5002/getMySchedule" + `?token=${token}`
-        // async function that sends a GET request to tutor microservice and
-        // receives the data in json to pass into the showPendingTutors function
+
         async function getMySchedule(url) {
             try {
                 const response = await fetch(url)
@@ -40,13 +34,10 @@
             }
             
         }
-        // processes data from GET request and populates table
+
         function showMySchedules(data) {
-            // processes data from GET request
             let scheduleList = data["scheduleList"]
             let classDict = data['classDict']
-            // populates table via document manipulation,
-            // this assumes that email is unique and there are no duplicate records in DB
             for (let schedule of scheduleList) {
                 document.getElementById('schedules').innerHTML += 
                 `<tr id="${schedule['scheduleID']}">
@@ -61,8 +52,8 @@
             document.getElementById('loadingmsg').style.display = 'none'
             document.getElementById('schedules').style.display = 'block'
         }
-        // hides loading message and displays populated table
-        getMySchedule(getMyClassesURL)
+
+        getMySchedule(url)
     </script>
 
     <div id="main-container">
