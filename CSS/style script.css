@@ -1,13 +1,17 @@
 
 
 /* header*/
-html, body {
-    background-color: #17457A;
-}
-
 
 
 /* navbar */
+.navbar {
+    margin-bottom: 20px;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
 @media (min-width: 320px) {
     .navbar {
         margin-left: 10px;
@@ -29,9 +33,7 @@ html, body {
     }
 }
 
-.navbar a, .nav-item, .nav-brand {
-    color: white !important; 
-}
+
 
 .nav-link {
     margin-left: 20px;
@@ -48,7 +50,7 @@ html, body {
 
 .dropdown-item:hover, .dropdown-item:focus {
     color: white;
-    background-color: rgb(228, 228, 228);
+    background-color: #BBD8FB;
 }
 
 
@@ -68,6 +70,8 @@ p {
 
 #errors {
   color: red;
+  margin-top: 10px;
+  margin-bottom:10px
 }
 
 /* table */
@@ -79,21 +83,21 @@ p {
 }
 
 table {
-    border: 1px solid black;
+    border: 1px solid #17457A;
     border-spacing: 7px;
 }
 
 
 th {
-    border: 1px solid black;
+    border: 1px solid #17457A;
     font-weight: bold;
-    background-color: #041346;
+    background-color: #17457A;
     color: whitesmoke;
     padding: 7px;
 }
 
 td {
-    border: 1px solid black;
+    border: 1px solid #17457A;
     background-color: rgb(245, 245, 240);
     padding: 5px;
 }

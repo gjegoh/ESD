@@ -1,15 +1,58 @@
-.navbar {
-    margin-bottom: 20px;
+html, body {
+    background-color: #17457A;
 }
+
+/* navbar */
 
 .navbar-toggler {
     border: none;
 }
 
-.navbar-toggler-icon {
-    color: white;
+@media (min-width: 320px) {
+    .navbar {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 }
 
+@media (min-width: 767px) {
+    .navbar {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+}
+
+@media (min-width: 768px) {
+    .navbar {
+        margin-left: 55px;
+        margin-right: 55px;
+    }
+}
+
+.navbar a, .nav-item, .nav-brand {
+    color: white !important; 
+}
+
+.nav-link {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.drop-menu:hover {
+    display: block;
+}
+
+#nav-dropdown .dropdown-item {
+    color: black !important;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: white;
+    background-color: #BBD8FB;
+}
+
+
+/* body */
 #home_title {
     color: white;
     font-family: Montserrat;
