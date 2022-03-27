@@ -1,3 +1,15 @@
+.navbar {
+    margin-bottom: 20px;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    color: white;
+}
+
 #home_title {
     color: white;
     font-family: Montserrat;
@@ -10,6 +22,21 @@
     border-radius: 15px;
 }
 
-.dropdown-item {
-    color: black;
+.btn {
+    border-radius: 20px;
+}
+
+.btn-light {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.btn-light:hover {
+    background-color: #17457A;
+    color: white;
+}
+
+.btn-outline-light {
+    padding-left: 30px;
+    padding-right: 30px;
 }
