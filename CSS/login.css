@@ -1,0 +1,21 @@
+.regContainer{
+    background-color: rgba(159, 186, 216, 0.4);
+    /* opacity: 0.5;; */
+    width: 50%;
+    margin: auto;
+    margin-top: 45px;
+    margin-bottom: 20px;
+    border-radius: 25px;
+    font-family: 'Montserrat';
+
+}
+.childContainer{
+    margin-bottom: 20px;
+    height: auto;
+}
+.logText{
+    color: white;
+}
+.buttonsubmit{
+    border-radius: 10px;
+}
