@@ -12,7 +12,7 @@
     border: none;
 }
 
-@media (min-width: 320px) {
+/* @media (min-width: 320px) {
     .navbar {
         margin-left: 10px;
         margin-right: 10px;
@@ -31,8 +31,7 @@
         margin-left: 55px;
         margin-right: 55px;
     }
-}
-
+} */
 
 
 .nav-link {
@@ -55,6 +54,10 @@
 
 
 /* body */
+html,body{
+    background-color: #17457A ;
+}
+
 .bodyContent { /*this has to contain the main contents and footer*/
     display: flex;
     min-height: 100vh;
