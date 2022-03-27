@@ -1,20 +1,198 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Schedules</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' rel='stylesheet'
+        integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' crossorigin='anonymous'>
+    <!-- stylesheets -->
     <link rel="stylesheet" href="../CSS/style script.css">
+    <link rel="stylesheet" href="../CSS/admin.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
+    <div class="">
+        <!-- standard nav bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../home.html">Brand Name</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <!-- right navbar links -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a id="navbar" class="nav-link active" aria-current="page" href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="navbar" class="nav-link" href="#">About</a>
+                        </li>
+                    </ul>
+
+                    <!-- left navbar links -->
+                    <ul class="navbar-nav ms-auto">
+                        <div class="container">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bi bi-person"></i> Admin
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <div id="logout"></div>
+                                </div>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mainBody">
+            <div class="row">
+                <div class="col-4">
+                    <h4 class="textColor">Tutor Management</h4>
+                    <h6 id="pending"></h6>
+                    <h6 id="approved"></h6>
+                    <h4 class="textColor">Schedule Management</h4>
+                    <h6 class="current"><a href='./adminCreateSchedules.html'></a>Create Class Schedules</h6>
+                    <h6 id="viewSchedule"></h6>
+                </div>
+                <div class="col-8">
+                    <h2 class="textColor">Create Class Schedules</h3>
+                        <main>
+                            <div id="main-container">
+                                <h1 id="loadingmsg">Loading... Please wait!</h1>
+                                <div id="errors"></div>
+                                <form method="POST" id="createSchedule" style="display: none">
+
+                                    <h4>Select Subject(s)</h4>
+                                    <div class="btn-group mb-3" role="group" id="subjects"
+                                        aria-label="Basic checkbox toggle button group">
+                                        <!-- <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="btncheck1">Checkbox 1</label> -->
+                                    </div>
+                                    <h4>Select Grade(s)</h4>
+                                    <div class="btn-group mb-3" role="group" id="grades"
+                                        aria-label="Basic checkbox toggle button group">
+
+                                    </div>
+                                    <h4>Select Year(s)</h4>
+                                    <div class="btn-group mb-3" role="years" id="years"
+                                        aria-label="Basic checkbox toggle button group">
+                                    </div>
+
+                                    <h4>Select Date(s)</h4>
+                                    <div class="btn-group mb-3" role="group"
+                                        aria-label="Basic checkbox toggle button group">
+                                        <input type="checkbox" class="btn-check" name="days[]" id="1" value="Monday"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="1">Monday</label>
+                                        <input type="checkbox" class="btn-check" name="days[]" id="2" value="Tuesday"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="2">Tuesday</label>
+                                        <input type="checkbox" class="btn-check" name="days[]" id="3" value="Wednesday"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="3">Wednesday</label>
+                                        <input type="checkbox" class="btn-check" name="days[]" id="4" value="Thursday"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="4">Thursday</label>
+                                        <input type="checkbox" class="btn-check" name="days[]" id="5" value="Friday"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="5">Friday</label>
+                                        <input type="checkbox" class="btn-check" name="days[]" id="6" value="Saturday"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="6">Saturday</label>
+                                        <input type="checkbox" class="btn-check" name="days[]" id="7" value="Sunday"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="7">Sunday</label>
+                                    </div>
+                                    <!-- <input type="checkbox" name="days[]" id="1" value="Monday">
+                                    <label for="1">Monday</label>
+                                    <input type="checkbox" name="days[]" id="2" value="Tuesday">
+                                    <label for="2">Tuesday</label>
+                                    <input type="checkbox" name="days[]" id="3" value="Wednesday">
+                                    <label for="3">Wednesday</label>
+                                    <input type="checkbox" name="days[]" id="4" value="Thursday">
+                                    <label for="4">Thursday</label>
+                                    <input type="checkbox" name="days[]" id="5" value="Friday">
+                                    <label for="5">Friday</label>
+                                    <input type="checkbox" name="days[]" id="6" value="Saturday">
+                                    <label for="6">Saturday</label>
+                                    <input type="checkbox" name="days[]" id="7" value="Sunday">
+                                    <label for="7">Sunday</label>
+                                    <br> -->
+                                    <h4>Select Timing(s)</h4>
+                                    <div class="btn-group mb-3" role="group"
+                                        aria-label="Basic checkbox toggle button group">
+                                        <input type="checkbox" class="btn-check" name="timings[]" id="1000" value="1000"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="1000">10am-12pm</label>
+                                        <input type="checkbox" class="btn-check" name="timings[]" id="1200" value="1200"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="1200">12pm-2pm</label>
+                                        <input type="checkbox" class="btn-check" name="timings[]" id="1200" value="1200"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="1400">2pm-4pm</label>
+                                        <input type="checkbox" class="btn-check" name="timings[]" id="1600" value="1600"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="1600">4pm-6pm</label>
+                                        <input type="checkbox" class="btn-check" name="timings[]" id="1800" value="1800"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="1800">6pm-8pm</label>
+                                        <input type="checkbox" class="btn-check" name="timings[]" id="2000" value="2000"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="2000">8pm-10pm</label>
+
+                                    </div>
+                                    <!-- <input type="checkbox" name="timings[]" id="1000" value="1000">
+                                    <label for="1000">10am-12pm</label>
+                                    <input type="checkbox" name="timings[]" id="1200" value="1200">
+                                    <label for="1200">12pm-2pm</label>
+                                    <input type="checkbox" name="timings[]" id="1400" value="1400">
+                                    <label for="1400">2pm-4pm</label>
+                                    <input type="checkbox" name="timings[]" id="1600" value="1600">
+                                    <label for="1600">4pm-6pm</label>
+                                    <input type="checkbox" name="timings[]" id="1800" value="1800">
+                                    <label for="1800">6pm-8pm</label>
+                                    <input type="checkbox" name="timings[]" id="2000" value="2000">
+                                    <label for="2000">8pm-10pm</label>
+                                    <br>
+                                    <br> -->
+                                    <div class="mt-3">
+
+                                        <button type="submit" id='submit' class="btn btn-primary">Create
+                                            Schedules</button>
+                                    </div>
+
+                                    <!-- <input type="submit" value="Create Schedule" id='submit'> -->
+                                    <h1 id="submitmsg" style="display:none">Submitting... Please wait!</h1>
+                                </form>
+                            </div>
+                        </main>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <script>
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
-        const getClassesURL = "http://10.124.9.182:5004/getClassDetails" + `?token=${token}`
+        // const getClassesURL = "http://10.124.9.182:5004/getClassDetails" + `?token=${token}`
+        const getClassesURL = "http://192.168.1.8:5004/getClassDetails" + `?token=${token}`
 
         function logout() {
             window.location.replace(`./adminLogin.html`)
@@ -40,15 +218,22 @@
             let subjectList = data['data']['subject']
             let gradeList = data['data']['grade']
             let currentYear = new Date().getFullYear()
-            let yearList = [currentYear, currentYear+1, currentYear+2, currentYear+3]
+            let yearList = [currentYear, currentYear + 1, currentYear + 2, currentYear + 3]
             for (let subject of subjectList) {
-                document.getElementById('subjects').innerHTML += `<input type="checkbox" name="subjects[]" id="${subject}" value="${subject}"><label for="${subject}">${subject}</label>`
+                document.getElementById('subjects').innerHTML += `
+                <input type="checkbox" class="btn-check" name="subjects[]" id="${subject}" value="${subject}" autocomplete="off">
+                <label class="btn btn-outline-primary" for="${subject}">${subject}</label>
+                `
             }
             for (let grade of gradeList) {
-                document.getElementById('grades').innerHTML += `<input type="checkbox" name="grades[]" id="${grade}" value="${grade}"><label for="${grade}">${grade}</label>`
+                document.getElementById('grades').innerHTML += `
+                <input type="checkbox" class="btn-check" name="grades[]" id="${grade}" value="${grade}" autocomplete="off">
+                <label class="btn btn-outline-primary" for="${grade}">${grade}</label>`
             }
             for (let year of yearList) {
-                document.getElementById('years').innerHTML += `<input type="checkbox" name="years[]" id="${year}" value="${year}"><label for="${year}">${year}</label>`
+                document.getElementById('years').innerHTML += `
+                <input type="checkbox" class="btn-check" name="years[]" id="${year}" value="${year}" autocomplete="off">
+                <label class="btn btn-outline-primary" for="${year}">${year}</label>`
             }
             document.getElementById('loadingmsg').style.display = 'none'
             document.getElementById('createSchedule').style.display = 'block'
@@ -57,109 +242,57 @@
         getClassDetails(getClassesURL)
     </script>
 
-    <main>
-        <div id="main-container">
-            <div id="anchor"></div>
-            <h1 id="loadingmsg">Loading... Please wait!</h1>
-            <div id="errors"></div>
-
-            <form method="POST" id="createSchedule" style="display: none">    
-                <br>
-                <h2>Select Subject(s)</h2>
-                <div id="subjects"></div>
-                <br>
-                <h2>Select Grade(s)</h2>
-                <div id="grades"></div>
-                <br>
-                <h2>Select Year(s)</h2>
-                <div id="years"></div>
-                <br>
-                <h2>Select Date(s)</h2>
-                <input type="checkbox" name="days[]" id="1" value="Monday">
-                <label for="1">Monday</label>
-                <input type="checkbox" name="days[]" id="2" value="Tuesday">
-                <label for="2">Tuesday</label>
-                <input type="checkbox" name="days[]" id="3" value="Wednesday">
-                <label for="3">Wednesday</label>
-                <input type="checkbox" name="days[]" id="4" value="Thursday">
-                <label for="4">Thursday</label>
-                <input type="checkbox" name="days[]" id="5" value="Friday">
-                <label for="5">Friday</label>
-                <input type="checkbox" name="days[]" id="6" value="Saturday">
-                <label for="6">Saturday</label>
-                <input type="checkbox" name="days[]" id="7" value="Sunday">
-                <label for="7">Sunday</label>
-                <br>
-                <h2>Select Timing(s)</h2>
-                <input type="checkbox" name="timings[]" id="1000" value="1000">
-                <label for="1000">10am-12pm</label>
-                <input type="checkbox" name="timings[]" id="1200" value="1200">
-                <label for="1200">12pm-2pm</label>
-                <input type="checkbox" name="timings[]" id="1400" value="1400">
-                <label for="1400">2pm-4pm</label>
-                <input type="checkbox" name="timings[]" id="1600" value="1600">
-                <label for="1600">4pm-6pm</label>
-                <input type="checkbox" name="timings[]" id="1800" value="1800">
-                <label for="1800">6pm-8pm</label>
-                <input type="checkbox" name="timings[]" id="2000" value="2000">
-                <label for="2000">8pm-10pm</label>
-                <br>
-                <br>
-                <input type="submit" value="Create Schedule" id='submit'>
-                <h1 id="submitmsg" style="display:none">Submitting... Please wait!</h1>
-            </form>
-        </div>
-    </main>
 
 
     <script>
-        document.getElementById('anchor').innerHTML += `<a href='./adminViewPendingTutors.html?token=${token}'>View Pending Tutors</a>`
-        document.getElementById('anchor').innerHTML += `<br><a href='./adminViewApprovedTutors.html?token=${token}'>View Approved Tutors</a>`
-        document.getElementById('anchor').innerHTML += `<br><a href='./adminViewSchedules.html?token=${token}'>View Class Schedules</a>`
-        document.getElementById('anchor').innerHTML += `<br><input type='submit' value='Logout' onclick="logout()">`
+        document.getElementById('pending').innerHTML += `<a href='./adminViewPendingTutors.html?token=${token}'>View Pending Tutors</a>`
+        document.getElementById('approved').innerHTML += `<a href='./adminViewApprovedTutors.html?token=${token}'>View Approved Tutors</a>`
+        document.getElementById('viewSchedule').innerHTML += `<a href='./adminViewSchedules.html?token=${token}'>View Class Schedules</a>`
+        document.getElementById('logout').innerHTML += `<a class="dropdown-item  text-dark" ><button type="submit" class="btn btn-light" onclick="logout()">Logout</button></a>`
 
         $("#createSchedule").submit(async (event) => {
             event.preventDefault()
             document.getElementById('submit').style.display = 'none'
             document.getElementById('submitmsg').style.display = 'block'
-            var url = "http://10.124.9.182:5002/scheduleCreation"
+            // var url = "http://10.124.9.182:5002/scheduleCreation"
+            var url = "http://192.168.1.8:5002/scheduleCreation"
             var subjects = new Array()
-            $('input[name="subjects[]"]:checked').each(function() {
+            $('input[name="subjects[]"]:checked').each(function () {
                 subjects.push(this.value);
             })
             var grades = new Array()
-            $('input[name="grades[]"]:checked').each(function() {
+            $('input[name="grades[]"]:checked').each(function () {
                 grades.push(this.value);
             })
             var years = new Array()
-            $('input[name="years[]"]:checked').each(function() {
+            $('input[name="years[]"]:checked').each(function () {
                 years.push(this.value);
             })
             var days = new Array()
-            $('input[name="days[]"]:checked').each(function() {
+            $('input[name="days[]"]:checked').each(function () {
                 days.push(this.value);
             })
             var timings = new Array()
-            $('input[name="timings[]"]:checked').each(function() {
+            $('input[name="timings[]"]:checked').each(function () {
                 timings.push(this.value);
             })
             try {
                 const response =
                     await fetch(
                         url, {
-                            method: 'POST',
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                'subjects': subjects,
-                                'grades': grades,
-                                'years': years,
-                                'days': days,
-                                'timings': timings,
-                                'token': token
-                            })
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            'subjects': subjects,
+                            'grades': grades,
+                            'years': years,
+                            'days': days,
+                            'timings': timings,
+                            'token': token
                         })
+                    })
                 const data = await response.json()
                 if (response.ok) {
                     $('#createSchedule').find('input:checkbox').prop('checked', false)
@@ -167,13 +300,14 @@
                     document.getElementById('submit').style.display = 'block'
                     window.alert(`Successfully Created Class Schedules!\nChosen Subjects: ${data['subjects'].join(", ")}\nChosen Grades: ${data['grades'].join(", ")}\nChosen Years: ${data['years'].join(", ")}\nChosen Days: ${data['days'].join(", ")}\nChosen Timings: ${data['timings'].join(", ")}`)
                 }
-            } 
+            }
             catch (error) {
                 document.getElementById('loadingmsg').style.display = 'none'
                 showError("Schedule creation fails. Please try in a while.")
-            } 
+            }
         })
 
     </script>
 </body>
+
 </html>

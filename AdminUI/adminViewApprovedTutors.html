@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -6,14 +7,115 @@
     <title>View Approved Tutors</title>
     <link rel="stylesheet" href="../CSS/style script.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' rel='stylesheet'
+        integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' crossorigin='anonymous'>
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../CSS/style script.css">
+    <link rel="stylesheet" href="../CSS/admin.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
+    <div class="">
+        <!-- standard nav bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../home.html">Brand Name</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <!-- right navbar links -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a id="navbar" class="nav-link active" aria-current="page" href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="navbar" class="nav-link" href="#">About</a>
+                        </li>
+                    </ul>
+
+                    <!-- left navbar links -->
+                    <ul class="navbar-nav ms-auto">
+                        <div class="container">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bi bi-person"></i> Admin
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <div id="logout"></div>
+                                </div>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mainBody ">
+            <div class="row">
+                <div class="col-4">
+                    <h3 class="textColor">Tutor Management</h3>
+                    <h6 id="pending"></h6>
+                    <h6 class="current"><a href='./adminViewApprovedTutors.html'></a>View Approved Tutors</h6>
+                    <h3 class="textColor">Schedule Management</h3>
+                    <h6 id="createSchedules"></h6>
+                    <h6 id="viewSchedules"></h6>
+                </div>
+
+                <div class="col-8">
+                    <h2 class="textColor">View Approved Tutors</h3>
+                        <main>
+                            <div id="main-container">
+                                <h3 id="loadingmsg">Loading... Please wait!</h3>
+                                <div id="errors"></div>
+                                <div class="table-outer-div container">
+                                    <div class="table-inner-div container">
+                                        <table class="table" id="tutor" style="display:none">
+                                            <thead>
+                                                <tr>
+                                                    <th>Full Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Educational Level</th>
+                                                    <th>Taught Subjects</th>
+                                                    <th>Executive Summary</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                        <!-- <table id="tutor" style='display:none'>
+                                            <tr>
+                                                <th>Full Name</th>
+                                                <th>Email</th>
+                                                <th>Phone Number</th>
+                                                <th>Educational Level</th>
+                                                <th>Taught Subjects</th>
+                                                <th>Executive Summary</th>
+                                            </tr>
+                                        </table> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const queryString = window.location.search
         const urlParams = new URLSearchParams(queryString)
         const token = urlParams.get('token')
-        const url = "http://10.124.9.182:5003/getApprovedTutors" + `?token=${token}`
+        // const url = "http://10.124.9.182:5003/getApprovedTutors" + `?token=${token}`
+        const url = "http://192.168.1.8:5003/getApprovedTutors" + `?token=${token}`
 
         function logout() {
             window.location.replace(`./adminLogin.html`)
@@ -29,7 +131,7 @@
                 const response = await fetch(url)
                 let data = await response.json()
                 showApprovedTutors(data)
-            } catch(error) {
+            } catch (error) {
                 showError("There are issues with the display of approved tutors. Please try in a while.")
             }
         }
@@ -37,15 +139,17 @@
         function showApprovedTutors(data) {
             let tutorList = data["data"]["tutorList"]
             for (let tutor of tutorList) {
-                document.getElementById('tutor').innerHTML += 
-                `<tr id="${tutor['email']}">
-                    <td>${tutor["firstName"] + " " + tutor["lastName"]}</td>
-                    <td>${tutor['email']}</td>
-                    <td>${tutor['phoneNumber']}</td>
-                    <td>${tutor['eduLevel']}</td>
-                    <td>${tutor['taughtSubjects']}</td>
-                    <td>${tutor['execSummary']}</td>
-                </tr>`
+                document.getElementById('tutor').innerHTML +=
+                    `<tbody>
+                    <tr id="${tutor['email']}">
+                        <td>${tutor["firstName"] + " " + tutor["lastName"]}</td>
+                        <td>${tutor['email']}</td>
+                        <td>${tutor['phoneNumber']}</td>
+                        <td>${tutor['eduLevel']}</td>
+                        <td>${tutor['taughtSubjects']}</td>
+                        <td>${tutor['execSummary']}</td>
+                    </tr>               
+                </tbody>`
             }
             document.getElementById('loadingmsg').style.display = 'none'
             document.getElementById('tutor').style.display = 'block'
@@ -54,35 +158,13 @@
         getApprovedTutors(url)
     </script>
 
-    <main>
-        <div id="main-container">
-            <div id="anchor"></div>
-            <h1 id="loadingmsg">Loading... Please wait!</h1>
-            <div id="errors"></div>
-            
-            <div class="table-outer-div container">
-                <div class="table-inner-div container">
-                    <table id="tutor" style='display:none'>
-                        <tr>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th>Educational Level</th>
-                            <th>Taught Subjects</th>
-                            <th>Executive Summary</th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            
-        </div>
-    </main>
-
     <script>
-        document.getElementById('anchor').innerHTML += `<a href='./adminViewPendingTutors.html?token=${token}'>View Pending Tutors</a>`
-        document.getElementById('anchor').innerHTML += `<br><a href='./adminCreateSchedules.html?token=${token}'>Create Class Schedules</a>`
-        document.getElementById('anchor').innerHTML += `<br><a href='./adminViewSchedules.html?token=${token}'>View Class Schedules</a>`
-        document.getElementById('anchor').innerHTML += `<br><input type='submit' value='Logout' onclick="logout()">`
+        document.getElementById('pending').innerHTML += `<a href='./adminViewPendingTutors.html?token=${token}'>View Pending Tutors</a>`
+        document.getElementById('createSchedules').innerHTML += `<a href='./adminCreateSchedules.html?token=${token}'>Create Class Schedules</a>`
+        document.getElementById('viewSchedules').innerHTML += `<a href='./adminViewSchedules.html?token=${token}'>View Class Schedules</a>`
+        document.getElementById('logout').innerHTML += `<a class="dropdown-item  text-dark" ><button type="submit" class="btn btn-light" onclick="logout()">Logout</button></a>`
     </script>
+
 </body>
+
 </html>
