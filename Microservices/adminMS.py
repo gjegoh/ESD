@@ -52,7 +52,7 @@ def adminLogin():
     with connection:
         with connection.cursor() as cursor:
             email = request.args.get('email')
-            password = request.args.get('pass')
+            password = request.args.get('password')
             sql = "USE tutorDB"
             cursor.execute(sql)
             connection.commit()
