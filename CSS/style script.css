@@ -55,6 +55,22 @@
 
 
 /* body */
+.bodyContent { /*this has to contain the main contents and footer*/
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+footer{
+    width: 100%;
+    height: 250px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
 p {
     color: white;
     font-family: mulish;
@@ -69,9 +85,9 @@ p {
 }
 
 #errors {
-  color: red;
-  margin-top: 10px;
-  margin-bottom:10px
+    color: red;
+    margin-top: 10px;
+    margin-bottom:10px
 }
 
 /* table */
@@ -84,12 +100,18 @@ p {
 
 table {
     border: 1px solid #17457A;
-    border-spacing: 7px;
 }
+/* table {
+    border: 1px solid black;
+    border-spacing: 7px;
+} */
 
 
 th {
     border: 1px solid #17457A;
+};
+/* th {
+    border: 1px solid black;
     font-weight: bold;
     background-color: #17457A;
     color: whitesmoke;
@@ -100,6 +122,6 @@ td {
     border: 1px solid #17457A;
     background-color: rgb(245, 245, 240);
     padding: 5px;
-}
+} */
 
 
