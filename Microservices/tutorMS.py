@@ -53,7 +53,8 @@ def manageTutor():
 def getPendingTutors():
     token = request.args.get('token')
     payload = {'token': token}
-    url = "http://10.124.9.182:5000/validateToken"
+    # url = "http://10.124.9.182:5000/validateToken"
+    url = "http://192.168.1.8:5000/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
     if (validation['status']):
@@ -81,7 +82,8 @@ def getPendingTutors():
 def getApprovedTutors():
     token = request.args.get('token')
     payload = {'token': token}
-    url = "http://10.124.9.182:5000/validateToken"
+    # url = "http://10.124.9.182:5000/validateToken"
+    url = "http://192.168.1.8:5000/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
     if (validation['status']):

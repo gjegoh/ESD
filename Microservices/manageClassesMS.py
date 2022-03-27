@@ -19,12 +19,15 @@ def scheduleCreation():
     data = request.get_json()
     token = data['token']
     payload = {'token': token}
-    url = "http://10.124.9.182:5000/validateToken"
+    # url = "http://10.124.9.182:5000/validateToken"
+    url = "http://192.168.1.8:5000/validateToken"
+
     response = requests.get(url, params=payload)
     validation = response.json()
     if (validation['status'] and validation['token']['isAdmin']): 
         payload = data
-        url = "http://10.124.9.182:5004/createClassSchedule"
+        # url = "http://10.124.9.182:5004/createClassSchedule"
+        url = "http://192.168.1.8:5004/createClassSchedule"
         response = requests.post(url, data=payload)
         data = response.json()
         # include notiMS
