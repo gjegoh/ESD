@@ -1,0 +1,42 @@
+html, body {
+    background-color: white;
+}
+
+/* .navbar */
+.navbar a, .nav-item, .nav-brand {
+    color: #17457A !important; 
+}
+
+#user-nav-item {
+    margin-right: 20px;
+    margin-left: 20px;
+    padding: 8px 0px 8px 0px;
+} 
+
+#user-container {
+    margin: 0px;
+    padding: 0px;
+}
+
+#user-col {
+    padding: 0px;
+}
+
+#user-img {
+    display: block;
+    max-width:30px;
+    max-height:30px;
+    min-width: 10px;
+    min-height: 10px;
+    width: 100%;
+    height: auto;
+}
+
+#user-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+

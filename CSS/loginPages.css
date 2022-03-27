@@ -1,0 +1,50 @@
+.navbar {
+    margin-bottom: 60px !important;
+}
+
+.login-container {
+    background-color: #466992;
+    padding: 30px 60px;
+    border-radius: 15px;
+}
+
+.login-title, .login-subtitle  {
+    color: white;
+    font-family: Montserrat;
+    text-align: center;
+}
+
+.login-title  {
+    font-weight: 700;
+}
+
+.login-subtitle {
+    font-weight: 500;
+    margin-bottom: 60px;
+}
+
+.login-subtitle a {
+    color: white;
+}
+
+.form-check-label {
+    color: white;
+    font-family: Montserrat;
+}
+
+.form-control {
+    margin-bottom: 20px;
+    font-family: Montserrat;
+}
+
+#submit {
+    border-radius: 20px;
+    padding: 6px 25px;
+}
+
+#submitMsg {
+    color: white;
+    text-align: center;
+    font-family: Montserrat;
+    font-weight: 300;
+}
