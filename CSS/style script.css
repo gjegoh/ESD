@@ -94,25 +94,24 @@ p {
 }
 
 /* table */
-.table-outer-div {
-    /* padding: 15px; */
+/* .table-outer-div {
     width:100%;
     display: flex;
     justify-content: center;
-}
+} */
 
-table {
+/* table {
     border: 1px solid #17457A;
-}
+} */
 /* table {
     border: 1px solid black;
     border-spacing: 7px;
 } */
-
+/* 
 
 th {
     border: 1px solid #17457A;
-};
+}; */
 /* th {
     border: 1px solid black;
     font-weight: bold;

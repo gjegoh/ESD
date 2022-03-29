@@ -37,6 +37,35 @@ html, body {
     justify-content: center;
     align-items: center;
 }
+.mainBody{
+    margin-top: 60px;
+}
+
+a{
+    color: black;
+}
+
+a:link{
+    text-decoration: none;
+
+}
+
+.textColor{
+    color: #17457A;
+}
+
+.current{
+    font-weight: bold;
+}
+
+h4,h6,h2,h3{
+    margin-top: 20px;
+}
+
+.nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+}
 
 
 

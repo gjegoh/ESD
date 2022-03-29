@@ -43,7 +43,7 @@ html, body {
 }
 
 #nav-dropdown .dropdown-item {
-    color: black !important;
+    color: #17457A !important;
 }
 
 .dropdown-item:hover, .dropdown-item:focus {
