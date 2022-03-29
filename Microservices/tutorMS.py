@@ -204,8 +204,7 @@ def tutorRegister():
             sql = "USE tutorDB"
             cursor.execute(sql)
             connection.commit()
-            sql = "INSERT INTO tutor (firstName, lastName, email, eduLevel, taughtSubjects, phoneNumber, execSummary, password) VALUES ({firstName}, {lastName}, {email}, {eduLevel}, {taughtSubjects}, {phoneNumber}, {execSummary}, {password})".format(firstName=firstName, lastName=lastName, email=email, eduLevel=eduLevel, taughtSubjects=taughtSubjects, phoneNumber=phoneNumber, execSummary=execSummary, password=hashedpass)
-            cursor.execute(sql)
+            cursor.execute(f"""INSERT INTO tutor (firstName, lastName, email, eduLevel, taughtSubjects, phoneNumber, execSummary, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", (firstName, lastName, email, eduLevel, taughtSubjects, phoneNumber, execSummary, hashedpass))
             connection.commit()
             return jsonify(
                 {
