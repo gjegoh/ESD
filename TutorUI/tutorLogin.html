@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <!-- stylesheets -->
     <link rel="stylesheet" href="../CSS/style script.css">
+    <link rel="stylesheet" href="../CSS/darkPages.css">
     <link rel="stylesheet" href="../CSS/regLog.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
@@ -23,21 +24,12 @@
 
     <!-- using CDN -->
     <script src="https://unpkg.com/vue@next"></script>
-
-    <!-- stylesheets -->
-    <!-- <link rel="stylesheet" href="../CSS/loginPages.css">
-    <link rel="stylesheet" href="../CSS/darkPages.css">
-    <link rel="stylesheet" href="../CSS/style script.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,500,700" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Mulish' rel='stylesheet'> 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script> -->
 </head>
 
 <body>
     <div class="bodyContent">
         <!-- standard nav bar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="../home.html">Brand Name</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -66,7 +58,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Register
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="nav-dropdown">
                                 <a class="dropdown-item  text-dark"
                                     href="../StudentUI/studentRegistration.html">Register
                                     as
@@ -75,13 +67,12 @@
                                     Tutor</a>
                             </div>
                         </li>
-
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Login
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="nav-dropdown">
                                 <a class="dropdown-item text-dark" href="../StudentUI/studentlogin.html">Login as
                                     Student</a>
                                 <a class="dropdown-item text-dark" href="tutorLogin.html">Login as Tutor</a>
@@ -149,7 +140,7 @@
             <!-- Section: Links  -->
 
             <!-- Copyright -->
-            <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            <div class="text-center p-4" style="background-color: #F8F9FA;">
                 © 2022 Copyright:
                 <a class="text-reset fw-bold" href="../home.html">tutor.com</a>
             </div>
@@ -165,7 +156,8 @@
             document.getElementById('submitmsg').style.display = 'block'
             var email = $("#email").val()
             var password = $("#password").val()
-            var url = "http://192.168.86.129:5003/tutorLogin" + `?email=${email}&password=${password}`
+            // var url = "http://192.168.86.129:5003/tutorLogin" + `?email=${email}&password=${password}`
+            var url = "http://10.124.141.82:5003/tutorLogin" + `?email=${email}&password=${password}`
             try {
                 const response = await fetch(url)
                 const data = await response.json()

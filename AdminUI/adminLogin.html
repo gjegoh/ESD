@@ -10,6 +10,7 @@
         integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' crossorigin='anonymous'>
     <!-- stylesheets -->
     <link rel="stylesheet" href="../CSS/style script.css">
+    <link rel="stylesheet" href="../CSS/darkPages.css">
     <link rel="stylesheet" href="../CSS/regLog.css">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
@@ -21,7 +22,7 @@
 
 <body>
     <div class="bodyContent">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="../home.html">Brand Name</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -50,7 +51,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Register
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="nav-dropdown">
                                 <a class="dropdown-item  text-dark"
                                     href="../StudentUI/studentRegistration.html">Register
                                     as
@@ -65,7 +66,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Login
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="nav-dropdown">
                                 <a class="dropdown-item text-dark" href="../StudentUI/studentlogin.html">Login as
                                     Student</a>
                                 <a class="dropdown-item text-dark" href="../TutorUI/tutorLogin.html">Login as Tutor</a>
@@ -133,7 +134,7 @@
             <!-- Section: Links  -->
 
             <!-- Copyright -->
-            <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            <div class="text-center p-4" style="background-color: #F8F9FA;">
                 © 2022 Copyright:
                 <a class="text-reset fw-bold" href="../home.html">tutor.com</a>
             </div>
@@ -148,7 +149,7 @@
             var email = $("#email").val()
             var password = $("#password").val()
             // var url = "http://10.124.9.182:5000/adminLogin" + `?email=${email}&password=${password}`
-            var url = "http://192.168.1.8:5000/adminLogin" + `?email=${email}&password=${password}`
+            var url = "http://10.124.141.82:5000/adminLogin" + `?email=${email}&password=${password}`
             try {
                 const response = await fetch(url)
                 const data = await response.json()

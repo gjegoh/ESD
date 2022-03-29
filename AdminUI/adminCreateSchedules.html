@@ -12,6 +12,7 @@
         integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' crossorigin='anonymous'>
     <!-- stylesheets -->
     <link rel="stylesheet" href="../CSS/style script.css">
+    <link rel="stylesheet" href="../CSS/lightPages.css">
     <link rel="stylesheet" href="../CSS/admin.css">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
@@ -23,7 +24,7 @@
 <body>
     <div class="">
         <!-- standard nav bar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="../home.html">Brand Name</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -62,10 +63,10 @@
         <div class="container mainBody">
             <div class="row">
                 <div class="col-4">
-                    <h4 class="textColor">Tutor Management</h4>
+                    <h3 class="textColor">Tutor Management</h3>
                     <h6 id="pending"></h6>
                     <h6 id="approved"></h6>
-                    <h4 class="textColor">Schedule Management</h4>
+                    <h3 class="textColor">Schedule Management</h3>
                     <h6 class="current"><a href='./adminCreateSchedules.html'></a>Create Class Schedules</h6>
                     <h6 id="viewSchedule"></h6>
                 </div>
@@ -192,7 +193,7 @@
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
         // const getClassesURL = "http://10.124.9.182:5004/getClassDetails" + `?token=${token}`
-        const getClassesURL = "http://192.168.1.8:5004/getClassDetails" + `?token=${token}`
+        const getClassesURL = "http://10.124.141.82:5004/getClassDetails" + `?token=${token}`
 
         function logout() {
             window.location.replace(`./adminLogin.html`)
@@ -255,7 +256,7 @@
             document.getElementById('submit').style.display = 'none'
             document.getElementById('submitmsg').style.display = 'block'
             // var url = "http://10.124.9.182:5002/scheduleCreation"
-            var url = "http://192.168.1.8:5002/scheduleCreation"
+            var url = "http://10.124.141.82:5002/scheduleCreation"
             var subjects = new Array()
             $('input[name="subjects[]"]:checked').each(function () {
                 subjects.push(this.value);
