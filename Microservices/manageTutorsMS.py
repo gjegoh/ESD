@@ -19,13 +19,15 @@ def approveTutor():
     data = request.get_json()
     token = data['token']
     payload = {'token': token}
-    url = "http://10.124.9.182:5000/validateToken"
+    # url = "http://10.124.9.182:5000/validateToken"
+    url = "http://10.124.141.82:5000/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
     if (validation['status'] and validation['token']['isAdmin']):
         email = data['email']
         payload = {'email': email, "action": "approve"}
-        url = "http://10.124.9.182:5003/manageTutor"
+        # url = "http://10.124.9.182:5003/manageTutor"
+        url = "http://10.124.141.82:5003/manageTutor"
         response = requests.patch(url, params=payload)
         status = response.json()
         if (status['status']):
@@ -36,13 +38,15 @@ def rejectTutor():
     data = request.get_json()
     token = data['token']
     payload = {'token': token}
-    url = "http://10.124.9.182:5000/validateToken"
+    # url = "http://10.124.9.182:5000/validateToken"
+    url = "http://10.124.141.82:5000/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
     if (validation['status'] and validation['token']['isAdmin']):
         email = data['email']
         payload = {'email': email, "action": "delete"}
-        url = "http://10.124.9.182:5003/manageTutor"
+        # url = "http://10.124.9.182:5003/manageTutor"
+        url = "http://10.124.141.82:5000/validateToken"
         response = requests.delete(url, params=payload)
         status = response.json()
         if (status['status']):

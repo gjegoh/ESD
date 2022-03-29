@@ -54,7 +54,7 @@ def getPendingTutors():
     token = request.args.get('token')
     payload = {'token': token}
     # url = "http://10.124.9.182:5000/validateToken"
-    url = "http://192.168.1.8:5000/validateToken"
+    url = "http://10.124.141.82:5003/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
     if (validation['status']):
@@ -83,7 +83,7 @@ def getApprovedTutors():
     token = request.args.get('token')
     payload = {'token': token}
     # url = "http://10.124.9.182:5000/validateToken"
-    url = "http://192.168.1.8:5000/validateToken"
+    url = "http://10.124.141.82:5003/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
     if (validation['status']):
@@ -140,7 +140,7 @@ def tutorLogin():
     with connection:
         with connection.cursor() as cursor:
             email = request.args.get('email')
-            password = request.args.get('pass')
+            password = request.args.get('password')
             sql = "USE tutorDB"
             cursor.execute(sql)
             connection.commit()
