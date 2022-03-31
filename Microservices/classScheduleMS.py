@@ -190,53 +190,57 @@ def getTutorSchedule():
                     "classDict": classDict
                 }
             )
-                
-@app.route('/getStudentSchedule', methods=['GET'])
-def getStudentSchedule():
-    token = request.args.get('token')
-    payload = {'token': token}
-    url = "http://10.124.9.182:5005/validateToken"
-    response = requests.get(url, params=payload)
-    validation = response.json()
-    if (validation['status']):
-        grade = validation['token']['grade']
-        connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                                    user='admin',
-                                    password='thisismypw',
-                                    cursorclass=pymysql.cursors.DictCursor)
-        scheduleList = []
-        newScheduleList = []
-        classDict = {}
-        relevantSchedules = []
-        with connection:
-            with connection.cursor() as cursor:
-                sql = "USE classScheduleDB"
-                cursor.execute(sql)
-                connection.commit()
-                sql = "SELECT classID, subject, grade FROM Class"
-                cursor.execute(sql)
-                result = cursor.fetchall()
-                classDict = {i['classID']: [i['subject'], i['grade']]
-                            for i in result}
-                relevantSchedules = tuple([i['classID'] for i in result if i['grade']==grade])
-                sql = "SELECT * from classSchedule WHERE classID IN {relevantSchedules} AND tutorID IS NOT NULL".format(relevantSchedules=relevantSchedules)
-                cursor.execute(sql)
-                scheduleList = cursor.fetchall()
-                tutorList = list(set([i['tutorID'] for i in scheduleList]))
-                payload = {'tutorList': tutorList}
-                url = "http://10.124.9.182:5003/getTutorName"
-                response = requests.get(url, params=payload)
-                data = response.json()
-                tutorDict = {i['tutorID']: i['firstName'] + " " + i['lastName'] for i in data}
-                for schedule in scheduleList:
-                    schedule['tutorName'] = tutorDict[schedule['tutorID']]
-                    newScheduleList.append(schedule)
-                return jsonify(
-                    {
-                        "scheduleList": newScheduleList,
-                        "classDict": classDict
-                    }
-                )
+
+@app.route('/getClassTutors', methods=['GET'])
+def getClassTutors():
+    grade = request.args.get('grade')
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
+    scheduleList = []
+    relevantSchedules = []
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE classScheduleDB"
+            cursor.execute(sql)
+            connection.commit()
+            sql = "SELECT classID, subject, grade FROM Class"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            classDict = {i['classID']: [i['subject'], i['grade']]
+                        for i in result}
+            relevantSchedules = tuple([i['classID'] for i in result if i['grade']==grade])
+            sql = "SELECT * from classSchedule WHERE classID IN {relevantSchedules} AND tutorID IS NOT NULL".format(relevantSchedules=relevantSchedules)
+            cursor.execute(sql)
+            scheduleList = cursor.fetchall()
+            tutorList = list(set([i['tutorID'] for i in scheduleList]))
+            return jsonify(
+                {
+                    'classDict': classDict,
+                    'tutorList': tutorList,
+                    'scheduleList': scheduleList
+                }
+            )
+
+# @app.route('/getStudentSchedule', methods=['GET','POST'])
+# def getStudentSchedule():
+#     data = request.get_json()
+#     print("\n\n{}\n\n".format(data))
+#     classDict = data['classDict']
+#     tutorList = data['tutorList']
+#     scheduleList = data['scheduleList']
+#     # print("\n\n{}\n\n".format(classDict))
+#     # print("\n\n{}\n\n".format(tutorList))
+#     # print("\n\n{}\n\n".format(scheduleList))
+#     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+#                                 user='admin',
+#                                 password='thisismypw',
+#                                 cursorclass=pymysql.cursors.DictCursor)
+#     newScheduleList = []
+#     with connection:
+#         with connection.cursor() as cursor:
+            
 
 
 

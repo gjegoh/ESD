@@ -49,6 +49,37 @@ def showTutorClasses():
         response = requests.get(url, params=payload)
         data = response.json()
         return jsonify(data)
-
+    
+@app.route('/showAvailableClasses', methods=['GET'])
+def showAvailableClasses():
+    newScheduleList = []
+    token = request.args.get('token')
+    payload = {'token': token}
+    url = "http://10.124.9.182:5005/validateToken"
+    response = requests.get(url, params=payload)
+    validation = response.json()
+    if (validation['status']):
+        grade = validation['token']['grade']
+        payload = {'grade': grade}
+        url = "http://10.124.9.182:5004/getClassTutors"
+        response = requests.get(url, params=payload)
+        data = response.json()
+        classDict = data['classDict']
+        tutorList = data['tutorList']
+        scheduleList = data['scheduleList']
+        payload = {'tutorList': tutorList}
+        url = "http://10.124.9.182:5003/getTutorName"
+        response = requests.get(url, params=payload)
+        data = response.json()
+        tutorDict = {i['tutorID']: i['firstName'] + " " + i['lastName'] for i in data}
+        for schedule in scheduleList:
+            schedule['tutorName'] = tutorDict[schedule['tutorID']]
+            newScheduleList.append(schedule)
+        return jsonify(
+            {
+                "scheduleList": newScheduleList,
+                "classDict": classDict
+            }
+        )
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5008, debug=True)

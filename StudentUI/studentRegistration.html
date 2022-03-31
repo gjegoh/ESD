@@ -181,13 +181,9 @@
 
 
     <script>
-        // Helper function to display error message
         var errors = []
 
         function showError(message) {
-
-            // Display an error under the main container
-
             $("#errors").append("<label>" + message + "</label><br>")
         }
 
@@ -214,58 +210,11 @@
             }
         }
 
-        async function retrieveEduInfo() {
-            var educationLevel = document.getElementById("educationLevel").value
-
-            document.getElementById("levels").innerHTML = "<option selected>Selected Levels</option>"
-
-            if (educationLevel != 'Primary' && educationLevel != 'Secondary' && educationLevel != 'Junior College') {
-                return
-            }
-
-            var educationURL = `http://192.168.86.129:5000/${educationLevel}`;
-
-
-            try {
-                const response =
-                    await fetch(
-                        educationURL, {
-                        method: 'GET',
-                        headers: { "Content-Type": "application/json" }
-                    });
-                const data = await response.json();
-
-                if (response.ok) {
-                    //change levels accordingly to educational level chosen
-                    eduInfo = data.data.educationLevels
-                    eduInfo.forEach(eduLevel => {
-                        console.log(eduLevel.level)
-                        document.getElementById("levels").innerHTML += `<option value='${eduLevel.level}''>${eduLevel.level}</option> `
-                    });
-                } else {
-                    console.log(data);
-                    showError(data.message);
-                }
-            } catch (error) {
-                // Errors when calling the service; such as network error, 
-                // service offline, etc
-                showError
-                    ('There are issues with displaying education levels, please try again later.<br />' + error);
-            } // error
-
-        }
-
-        // anonymous async function 
-        // - using await requires the function that calls it to be async
         $("#registerStudent").submit(async (event) => {
-            //Prevents screen from refreshing when submitting
-            event.preventDefault();
+            event.preventDefault()
             document.getElementById('submit').style.display = 'none'
             document.getElementById('loadingmsg').style.display = 'block'
-            // var serviceURL = "http://10.124.12.129:5000/student";
-            var serviceURL = "http://192.168.86.129:5000/studentRegister";
-
-            //Get form data ---
+            var url = "http://192.168.86.129:5005/studentRegister"
             try {
                 var firstName = document.getElementById("firstName").value
                 var lastName = document.getElementById("lastName").value
@@ -275,16 +224,14 @@
                 var email = document.getElementById("emailTb").value
                 var phoneNumber = document.getElementById("phoneNumberTb").value
                 var password = document.getElementById("passwordTb").value
-            } catch {
+            } 
+            catch {
                 showError("There are issues with registering the student. Please try in a while.")
             }
-
-
-            // form the POST url which includes the dynamic isbnNumber
             try {
                 const response =
                     await fetch(
-                        serviceURL, {
+                        url, {
                         method: 'POST',
                         headers: {
                             "Content-Type": "application/json"
@@ -304,21 +251,18 @@
                     alert("Successfully Registered!")
                     document.getElementById('submit').style.display = 'block'
                     document.getElementById('loadingmsg').style.display = 'none'
-                    // relocate to home page
-                    // showError("swee")
-                    // console.log('hello')
                     return false;
-                } else {
+                } 
+                else {
                     console.log(data);
                     showError(data.message);
                 }
-            } catch (error) {
-                // Errors when calling the service; such as network error, 
-                // service offline, etc
+            } 
+            catch (error) {
                 showError
                     ("There is a problem registering the students, please try again later." + error);
 
-            } // error
+            }
         });
 
 

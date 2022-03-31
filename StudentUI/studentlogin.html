@@ -80,7 +80,7 @@
         </nav>
         <div class="regContainer loginContainer">
             <div id="main-container" class="container childContainer pt-3 ">
-                <form method="POST" id="tutorLogin">
+                <form method="POST" id="studentLogin">
                     <h1 class="display-6 text-center regText">Student Login</h1>
                     <div class="mb-3">
                         <label for="email" class="form-label regText">Email address</label>
@@ -146,6 +146,35 @@
     <!-- Bundled Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script>
+        $("#studentLogin").submit(async (event) => {
+            event.preventDefault()
+            document.getElementById('submit').style.display = 'none'
+            document.getElementById('submitmsg').style.display = 'block'
+            var email = $("#email").val()
+            var password = $("#password").val()
+            var url = "http://10.124.9.182:5005/studentLogin" + `?email=${email}&password=${password}`
+            try {
+                const response = await fetch(url)
+                const data = await response.json()
+                if (response.ok) {
+                    var authenticated = data['status']
+                    if (authenticated) {
+                        var token = data['token']
+                        window.location.replace(`./studentViewSchedules.html?token=${token}`)
+                    }
+                    else {
+                        alert("Login Failed! Please re-login...")
+                        document.getElementById('submit').style.display = 'block'
+                        document.getElementById('submitmsg').style.display = 'none'
+                    }
+                }
+            }
+            catch (error) {
+
+            }
+        })
     </script>
 </body>
 

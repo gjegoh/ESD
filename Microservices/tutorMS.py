@@ -51,61 +51,47 @@ def manageTutor():
 
 @app.route('/getPendingTutors', methods=['GET'])
 def getPendingTutors():
-    token = request.args.get('token')
-    payload = {'token': token}
-    # url = "http://10.124.9.182:5000/validateToken"
-    url = "http://10.124.141.82:5003/validateToken"
-    response = requests.get(url, params=payload)
-    validation = response.json()
-    if (validation['status']):
-        connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                                user='admin',
-                                password='thisismypw',
-                                cursorclass=pymysql.cursors.DictCursor)
-        with connection:
-            with connection.cursor() as cursor:
-                sql = "USE tutorDB"
-                cursor.execute(sql)
-                connection.commit()
-                sql = "SELECT firstName, lastName, email, phoneNumber, eduLevel, taughtSubjects, execSummary FROM tutor WHERE isApproved=0 AND isAdmin=0"
-                cursor.execute(sql)
-                tutorList = cursor.fetchall()
-                return jsonify(
-                    {
-                        "data": {
-                            "tutorList": tutorList
-                        }
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                            user='admin',
+                            password='thisismypw',
+                            cursorclass=pymysql.cursors.DictCursor)
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE tutorDB"
+            cursor.execute(sql)
+            connection.commit()
+            sql = "SELECT firstName, lastName, email, phoneNumber, eduLevel, taughtSubjects, execSummary FROM tutor WHERE isApproved=0 AND isAdmin=0"
+            cursor.execute(sql)
+            tutorList = cursor.fetchall()
+            return jsonify(
+                {
+                    "data": {
+                        "tutorList": tutorList
                     }
-                )
+                }
+            )
 
 @app.route('/getApprovedTutors', methods=['GET'])
 def getApprovedTutors():
-    token = request.args.get('token')
-    payload = {'token': token}
-    # url = "http://10.124.9.182:5000/validateToken"
-    url = "http://10.124.141.82:5003/validateToken"
-    response = requests.get(url, params=payload)
-    validation = response.json()
-    if (validation['status']):
-        connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                                user='admin',
-                                password='thisismypw',
-                                cursorclass=pymysql.cursors.DictCursor)
-        with connection:
-            with connection.cursor() as cursor:
-                sql = "USE tutorDB"
-                cursor.execute(sql)
-                connection.commit()
-                sql = "SELECT firstName, lastName, email, phoneNumber, eduLevel, taughtSubjects, execSummary FROM tutor WHERE isApproved=1 AND isAdmin=0"
-                cursor.execute(sql)
-                tutorList = cursor.fetchall()
-                return jsonify(
-                    {
-                        "data": {
-                            "tutorList": tutorList
-                        }
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                            user='admin',
+                            password='thisismypw',
+                            cursorclass=pymysql.cursors.DictCursor)
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE tutorDB"
+            cursor.execute(sql)
+            connection.commit()
+            sql = "SELECT firstName, lastName, email, phoneNumber, eduLevel, taughtSubjects, execSummary FROM tutor WHERE isApproved=1 AND isAdmin=0"
+            cursor.execute(sql)
+            tutorList = cursor.fetchall()
+            return jsonify(
+                {
+                    "data": {
+                        "tutorList": tutorList
                     }
-                )
+                }
+            )
                 
 @app.route('/validateToken', methods=['GET'])
 def validateToken():
