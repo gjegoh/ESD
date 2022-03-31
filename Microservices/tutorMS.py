@@ -229,5 +229,24 @@ def getTutorInfo():
             result = cursor.fetchall()
             return result[0]
 
+@app.route("/getTutorName", methods=['GET'])
+def getTutorName():
+    tutorList = request.args.getlist('tutorList')
+    tutorList = tuple([int(i) for i in tutorList])
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE tutorDB"
+            cursor.execute(sql)
+            connection.commit()
+            sql = "SELECT tutorID, firstName, lastName FROM tutor WHERE tutorID IN {tutorList}".format(tutorList=tutorList)
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            return jsonify(result)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5003, debug=True)

@@ -34,7 +34,7 @@
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
         // const url = "http://192.168.1.2:5004/getUnassignedClasses" + `?token=${token}`
-        const url = "http://10.124.141.82:5004/getUnassignedClasses" + `?token=${token}`
+        const url = "http://10.124.9.182:5008/showUnassignedClasses" + `?token=${token}`
 
         function logout() {
             window.location.replace(`./tutorLogin.html`)
@@ -57,17 +57,17 @@
         }
 
         async function register(event) {
-            let scheduleID = event.parentNode.parentNode.id
+            let scheduleID = event.parentNode.parentNode.parentNode.id
             let confirmation = window.confirm(`Are you sure to register for class schedule (${scheduleID})?`)
             if (confirmation) {
                 window.alert("Registering... Please wait after clicking OK!")
                 // var approveTutorURL = "http://192.168.1.2:5004/registerClass"
-                var approveTutorURL = "http://10.124.141.82:5004/registerClass"
+                var url = "http://10.124.9.182:5009/registerClass"
                 document.getElementById('loadingmsg').style.display = 'none'
                 try {
                     const response =
                         await fetch(
-                            approveTutorURL, {
+                            url, {
                             method: 'PATCH',
                             headers: {
                                 "Content-Type": "application/json"
