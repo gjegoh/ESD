@@ -52,6 +52,18 @@
     background-color: #BBD8FB;
 }
 
+/* logout button */
+#logout {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    font-family: arial, sans-serif;
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+  }
 
 /* body */
 html,body{
@@ -78,6 +90,13 @@ p {
     color: white;
     font-family: mulish;
 
+}
+
+.sign-up-btn {
+    background-color: #17457A;
+    color: white;
+    font-family: Montserrat;
+    font-size: smaller;
 }
 
 /* horizontal alignment */
