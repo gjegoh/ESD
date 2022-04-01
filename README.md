@@ -13,7 +13,7 @@ Additionally, we would also provide the ability and flexibility for tutors to de
 This will be done via a UX-first approach, through the use of our web application that can be easily accessed and utilized by all stakeholders. Furthermore, it will be deployable for any tuition centre as their enterprise solution.
 
 ![Business Scenario Demo!](images/Business_Scenario.png)
-
+   
 # Database connections on RDS
 - Database_connection URL = studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com 
 - Port Number = 3306 
@@ -26,6 +26,25 @@ This will be done via a UX-first approach, through the use of our web applicatio
   - Username: jenniferwxe
   - Password: 149218c56ba8c2f24e05f157add74e6b-us14
 
+# Stateless Architecture (Token-Based Authentication)
+Token-based authentication is stateless. The server does not keep a record of which users are logged in or which JWTs have been issued. Instead, every request to the server is accompanied by a token which the server uses to verify the authenticity of the request. The token is generally sent as an addition Authorization header in form of Bearer {JWT}, but can additionally be sent in the body of a POST request or even as a query parameter. Let's see how this flow works:
+
+    1- User enters their login credentials
+    2- Server verifies the credentials are correct and returns a signed token
+    3- This token is stored client-side, most commonly in local storage - but can be stored in session storage
+    or acookie as well
+    4- Subsequent requests to the server include this token as an additional Authorization header or through
+    one of the other methods mentioned above
+    5- The server decodes the JWT and if the token is valid processes the request
+    6- Once a user logs out, the token is destroyed client-side, no interaction with the server is necessary.
+
+   ## Stateless advantages:
+
+**1.Reduces memory usage** - Token instead of sessions. Imagine if a company stored session information of their users.
+
+**2.Reduce session expiration issues** - Expiring sessions can cause issues that are hard to find. Token based applications don't have this problem.
+
+**3.Url Linkability** Some sites store the ID of what the user is looking at in the sessions. This makes it impossible for users to simply copy and paste the URL or send it to friends.
 
 # Technologies and features
 - [x] Python & Flask & MySQL Database
@@ -35,33 +54,28 @@ This will be done via a UX-first approach, through the use of our web applicatio
 - [x] User sign up and login (Email Address)
 - [x] Notifications for users (Student, Tutor and Admin)
 
-# How To Run The Application (After Installation)
+# How To Run The Application
 You should make sure that your database is running first and foremost, else the following will fail. Look under installation for Windows or Mac/Linux for how to run the database locally. It just needs to be running in the background, all the databases and tables are created programmatically.
 
-1. Simply navigate (in a terminal) into the ~/app folder.
-2. Run `docker-compose build` for your first build and when you have made changes.
-3. Run `docker-compose up` to run all the services.
+1. Run `docker-compose build` for your first build and when you have made changes.
+2. Run `docker-compose up` to run all the services.
 
-Please configure `~/app/setup_app/config.py` as needed. I recommend making a mode for development and production (staging if necessary) with all the needed credentials. The file is very easy to extend with new config secrets.
-
-Note that scaling is very easy, you can just convert your `docker-compose.yml` file to Kubernetes files, and you can easily get set up and running in Google Cloud Platform or Amazon Web Services. [Read this tutorial for more](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/).
+Scaling is made easy with `docker-compose.yml` file.
 
 # Microservices
-| Microservice | Ports |
+| Simple | Ports |
 | ------ | ------ |
 | studentMS | 5001 |
 | tutorMS | 5002 |
-| adminMS | 5003 |
-| classMS | 5004 |
-| classScheduleMS | 5005 |
-| NotificationMS | 5006 |
-| stripeMS | 5007 |
+| classScheduleMS | 5004 |
+| adminMS | 5008 |
+| NotificationMS | 5009 |
 
-<!-- 1. studentMS.py - Port 5001
-2. tutorMS.py - Port 5002
-3. adminMS.py - Port 5003
-4. classMS.py - Port 5004
-5. classSchedule.py - Port 5005
-6. NotificationMS.py - Port 5006
-7. stripeMS.py - Port 5007 -->
+| Complex | Ports |
+| ------ | ------ |
+| registerClassMS | 5003 |
+| showClassesMS | 5005 |
+| manageTutorsMS | 5006 |
+| manageClassesMS | 5007 |
+
 

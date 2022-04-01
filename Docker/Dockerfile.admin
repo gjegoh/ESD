@@ -1,12 +1,12 @@
 FROM python:3-slim
 
-COPY ./requirements.txt /app/requirements.txt
+WORKDIR /usr/src/app
 
-WORKDIR /app
+COPY requirements.txt ./
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m pip install --no-cache-dir -r requirements.txt
 
-WORKDIR ./Microservices
+COPY Microservices/adminMS.py ./
 
-EXPOSE 5003
+EXPOSE 5008
 CMD [ "python", "./adminMS.py" ]

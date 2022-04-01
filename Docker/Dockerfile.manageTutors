@@ -6,7 +6,7 @@ COPY requirements.txt ./
 
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
-COPY Microservices/tutorMS.py ./
+COPY Microservices/manageTutorsMS.py ./
 
-EXPOSE 5002
-CMD [ "python", "./tutorMS.py" ]
+EXPOSE 5006
+CMD [ "python", "./manageTutorsMS.py" ]

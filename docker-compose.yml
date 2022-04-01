@@ -1,104 +1,120 @@
-version: '3'
+version: '3.8'
 
 volumes:
   rabbitmq_data:
 
-####################################
-# RabbitMQ: The messaging broker   
-####################################
-rabbitmq:
-  image: rabbitmq:3-management
-  hostname: esd-rabbit
-  restart: always
-  ports:
-    - "5672:5672"
-    - "15672:15672"
-  volumes: 
-    - rabbitmq_data:/var/lib/rabbitmq
+services:
+  ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   hostname: esd-rabbit
+  #   restart: always
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   volumes: 
+  #     - rabbitmq_data:/var/lib/rabbitmq
 
-###################################
-# Student: The Student microservice
-###################################
-student:
-  image: student:0.21
-  build: 
-    context: .
-    dockerfile: './Docker/Dockerfile.student'
-  ports:
-    - "5001:5001"
+  # ###################################
+  # # Student: The Student microservice
+  # ###################################
+  # student:
+  #   image: student:0.21
+  #   build: 
+  #     context: .
+  #     dockerfile: './Docker/Dockerfile.student'
+  #   ports:
+  #     - "5001:5001"
 
-###################################
-# Tutor: The Tutor microservice
-###################################
-tutor:
-  image: tutor:0.21
-  build: 
-    context: .
-    dockerfile: './Docker/Dockerfile.tutor'
-  ports:
-    - "5002:5002"
+  ###################################
+  # Tutor: The Tutor microservice
+  ###################################
+  tutor:
+    image: tutor:0.21
+    build: 
+      context: .
+      dockerfile: './Docker/Dockerfile.tutor'
+    ports:
+      - "5002:5002"
 
-###################################
-# Admin: The Admin microservice
-###################################
-admin:
-  image: admin:0.21
-  build: 
-    context: .
-    dockerfile: './Docker/Dockerfile.admin'
-  ports:
-    - "5003:5003"
+  # ###################################
+  # # registerClass: The registerClass microservice
+  # ###################################
+  # registerClass:
+  #   image: registerclass:0.21
+  #   build: 
+  #     context: .
+  #     dockerfile: './Docker/Dockerfile.registerClass'
+  #   ports:
+  #     - "5003:5003"
 
-###################################
-# Class: The Class microservice
-###################################
-class:
-  image: class:0.21
-  build: 
-    context: .
-    dockerfile: './Docker/Dockerfile.class'
-  ports:
-    - "5004:5004"
+  # ###################################
+  # # classSchedule: The classSchedule microservice
+  # ###################################
+  # classSchedule:
+  #   image: classschedule:0.21
+  #   build: 
+  #     context: .
+  #     dockerfile: './Docker/Dockerfile.classSchedule'
+  #   ports:
+  #     - "5004:5004"
 
-###################################
-# Class_Schedule: The Class_Schedule microservice
-###################################
-class_schedule:
-  image: class_schedule:0.21
-  build: 
-    context: .
-    dockerfile: './Docker/Dockerfile.class_schedule'
-  ports:
-    - "5005:5005"
+  # ###################################
+  # # ShowClasses: The ShowClasses microservice
+  # ###################################
+  # showClasses:
+  #   image: showclasses:0.21
+  #   build:
+  #     context: .
+  #     dockerfile: './Docker/Dockerfile.showClasses'
+  #   ports:
+  #     - "5005:5005"
 
-###################################
-# Notification: The Notification microservice
-###################################
-notification:
-  image: notification:0.21
-  build:
-    context: .
-    dockerfile: './Docker/Dockerfile.notification'
-  ports:
-    - "5006:5006"
+  ###################################
+  # manageTutors: The manageTutors microservice
+  ###################################
+  manageTutors:
+    image: managetutors:0.21
+    build:
+      context: .
+      dockerfile: './Docker/Dockerfile.manageTutors'
+    ports:
+      - "5006:5006"
 
-###################################
-# Stripe: The Stripe microservice
-###################################
-stripe:
-  image: stripe:0.21
-  build:   
-    context: .
-    dockerfile: './Docker/Dockerfile.stripe'
-  ports:
-    - "5007:5007"
+  # ###################################
+  # # manageClasses: The manageClasses microservice
+  # ###################################
+  # manageClasses:
+  #   image: manageclasses:0.21
+  #   build:
+  #     context: .
+  #     dockerfile: './Docker/Dockerfile.manageClasses'
+  #   ports:
+  #     - "5007:5007"
 
-# services:
-#   frontend:
-#     image: frontend:0.21
-#     build:
-#       context: .
-#       dockerfile: './Docker/Dockerfile.frontend'
-#     ports:
-#       - "5000:5000"
+
+  ###################################
+  # Admin: The Admin microservice
+  ###################################
+  admin:
+    image: admin:0.21
+    build: 
+      context: .
+      dockerfile: './Docker/Dockerfile.admin'
+    ports:
+      - "5008:5008"
+
+  # ###################################
+  # # Notification: The Notification microservice
+  # ###################################
+  # notification:
+  #   image: notification:0.21
+  #   build:
+  #     context: .
+  #     dockerfile: './Docker/Dockerfile.notification'
+  #   ports:
+  #     - "5009:5009"
+
 

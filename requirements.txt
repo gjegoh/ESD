@@ -9,3 +9,5 @@ requests==2.27.1
 PyMySQL==1.0.2
 mailchimp-marketing==3.0.74
 urllib3==1.26.9
+PyMySQL==1.0.2
+PyJWT==2.3.0
