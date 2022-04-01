@@ -8,5 +8,4 @@ RUN python -m pip install --no-cache-dir -r requirements.txt
 
 COPY Microservices/adminMS.py ./
 
-EXPOSE 5008
 CMD [ "python", "./adminMS.py" ]

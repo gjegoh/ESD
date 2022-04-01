@@ -8,5 +8,4 @@ RUN python -m pip install --no-cache-dir -r requirements.txt
 
 COPY Microservices/tutorMS.py ./
 
-EXPOSE 5002
 CMD [ "python", "./tutorMS.py" ]
