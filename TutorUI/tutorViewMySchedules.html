@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Unassigned Schedules</title>
+    <title>View My Class Schedules</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -36,8 +36,7 @@
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
-        // const url = "http://192.168.86.129:5004/getMySchedule" + `?token=${token}`
-        const url = "http://10.124.9.182:5008/showTutorClasses" + `?token=${token}`
+        const url = "http://10.124.139.76:5008/showTutorClasses" + `?token=${token}`
         function logout() {
             window.location.replace(`./tutorLogin.html`)
         }
@@ -53,7 +52,7 @@
                 let data = await response.json()
                 showMySchedules(data)
             } catch (error) {
-                showError("There are issues with displaying pending tutors. Please try in a while.")
+                showError("There are issues with displaying my classes. Please try in a while.")
             }
 
         }
@@ -122,11 +121,11 @@
                 <div class="col-4">
                     <h3 class="textColor">Tutor</h3>
                     <h6 id="pending"></h6>
-                    <h6 id="viewPending"></h6>
-                    <h6 class="current"><a href='tutorViewMySchedules.html'></a>View My Schedules</h6>
+                    <h6 id="viewClasses"></h6>
+                    <h6 class="current"><a href='tutorViewMySchedules.html'></a>View My Class Schedules</h6>
                 </div>
                 <div class="col-8">
-                    <h2 class="textColor">View My Schedules</h2>
+                    <h2 class="textColor">View My Class Schedules</h2>
                     <div id="main-container">
                         <h3 id="loadingmsg">Loading... Please wait!</h3>
                         <div id="errors"></div>
@@ -153,7 +152,7 @@
     </div>
 
     <script>
-        document.getElementById('viewPending').innerHTML += `<a href='./tutorViewPendingSchedules.html?token=${token}'>View Pending Schedules</a>`
+        document.getElementById('viewClasses').innerHTML += `<a href='./tutorViewUnassignedClasses.html?token=${token}'>View Unassigned Classes</a>`
         document.getElementById('logout').innerHTML += `<a class="dropdown-item  text-dark" ><button type="submit" class="btn btn-light" onclick="logout()">Logout</button></a>`
     </script>
 

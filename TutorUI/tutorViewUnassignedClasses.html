@@ -35,7 +35,7 @@
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
         // const url = "http://192.168.1.2:5004/getUnassignedClasses" + `?token=${token}`
-        const url = "http://10.124.9.182:5008/showUnassignedClasses" + `?token=${token}`
+        const url = "http://10.124.139.76:5008/showUnassignedClasses" + `?token=${token}`
 
         function logout() {
             window.location.replace(`./tutorLogin.html`)
@@ -52,7 +52,7 @@
                 let data = await response.json()
                 showUClasses(data)
             } catch (error) {
-                showError("There are issues with displaying pending tutors. Please try again in a while.")
+                showError("There are issues with displaying unassigned classes. Please try again in a while.")
             }
 
         }
@@ -63,7 +63,7 @@
             if (confirmation) {
                 window.alert("Registering... Please wait after clicking OK!")
                 // var approveTutorURL = "http://192.168.1.2:5004/registerClass"
-                var url = "http://10.124.9.182:5009/registerClass"
+                var url = "http://10.124.139.76:5009/registerClass"
                 document.getElementById('loadingmsg').style.display = 'none'
                 try {
                     const response =
@@ -161,11 +161,11 @@
                 <div class="col-4">
                     <h3 class="textColor">Tutor</h3>
                     <h6 id="pending"></h6>
-                    <h6 class="current"><a href='tutorViewPendingSchedules.html'></a>View Pending Schedules</h6>
+                    <h6 class="current"><a href='tutorViewUnassignedClasses.html'></a>View Unassigned Classes</h6>
                     <h6 id="viewSchedule"></h6>
                 </div>
                 <div class="col-8">
-                    <h2 class="textColor">View Pending Schedules</h2>
+                    <h2 class="textColor">View Unassigned Classes</h2>
                     <div id="main-container">
                         <h3 id="loadingmsg">Loading... Please wait!</h3>
                         <div id="errors"></div>
