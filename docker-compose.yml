@@ -26,7 +26,7 @@ services:
   #     context: .
   #     dockerfile: './Docker/Dockerfile.student'
   #   ports:
-  #     - "5001:5001"
+  #     - "5005:5005"
 
   ###################################
   # Tutor: The Tutor microservice
@@ -48,7 +48,7 @@ services:
   #     context: .
   #     dockerfile: './Docker/Dockerfile.registerClass'
   #   ports:
-  #     - "5003:5003"
+  #     - "5009:5009"
 
   # ###################################
   # # classSchedule: The classSchedule microservice
@@ -92,7 +92,7 @@ services:
   #     context: .
   #     dockerfile: './Docker/Dockerfile.manageClasses'
   #   ports:
-  #     - "5007:5007"
+  #     - "5002:5002"
 
 
   ###################################
