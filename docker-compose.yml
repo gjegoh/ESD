@@ -37,7 +37,7 @@ services:
       context: .
       dockerfile: './Docker/Dockerfile.tutor'
     ports:
-      - "5002:5002"
+      - "5003:5003"
 
   # ###################################
   # # registerClass: The registerClass microservice
@@ -53,24 +53,24 @@ services:
   # ###################################
   # # classSchedule: The classSchedule microservice
   # ###################################
-  # classSchedule:
-  #   image: classschedule:0.21
-  #   build: 
-  #     context: .
-  #     dockerfile: './Docker/Dockerfile.classSchedule'
-  #   ports:
-  #     - "5004:5004"
+  classSchedule:
+    image: classschedule:0.21
+    build: 
+      context: .
+      dockerfile: './Docker/Dockerfile.classSchedule'
+    ports:
+      - "5004:5004"
 
   # ###################################
   # # ShowClasses: The ShowClasses microservice
   # ###################################
-  # showClasses:
-  #   image: showclasses:0.21
-  #   build:
-  #     context: .
-  #     dockerfile: './Docker/Dockerfile.showClasses'
-  #   ports:
-  #     - "5005:5005"
+  showClasses:
+    image: showclasses:0.21
+    build:
+      context: .
+      dockerfile: './Docker/Dockerfile.showClasses'
+    ports:
+      - "5008:5008"
 
   ###################################
   # manageTutors: The manageTutors microservice
@@ -81,7 +81,7 @@ services:
       context: .
       dockerfile: './Docker/Dockerfile.manageTutors'
     ports:
-      - "5006:5006"
+      - "5001:5001"
 
   # ###################################
   # # manageClasses: The manageClasses microservice
@@ -104,7 +104,7 @@ services:
       context: .
       dockerfile: './Docker/Dockerfile.admin'
     ports:
-      - "5008:5008"
+      - "5000:5000"
 
   # ###################################
   # # Notification: The Notification microservice
