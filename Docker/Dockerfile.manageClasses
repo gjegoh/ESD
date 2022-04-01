@@ -8,5 +8,4 @@ RUN python -m pip install --no-cache-dir -r requirements.txt
 
 COPY Microservices/manageClassesMS.py ./
 
-EXPOSE 5007
 CMD [ "python", "./manageClassesMS.py" ]

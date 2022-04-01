@@ -8,5 +8,4 @@ RUN python -m pip install --no-cache-dir -r requirements.txt
 
 COPY Microservices/studentMS.py ./
 
-EXPOSE 5001
 CMD [ "python", "./studentMS.py" ]

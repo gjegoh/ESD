@@ -17,16 +17,27 @@ services:
   #   volumes: 
   #     - rabbitmq_data:/var/lib/rabbitmq
 
+  ###################################
+  # Admin: The Admin microservice
+  ###################################
+  admin:
+    image: admin:0.21
+    build: 
+      context: ./
+      dockerfile: './Docker/Dockerfile.admin'
+    ports:
+      - "5000:5000"
+
   # ###################################
   # # Student: The Student microservice
   # ###################################
-  # student:
-  #   image: student:0.21
-  #   build: 
-  #     context: .
-  #     dockerfile: './Docker/Dockerfile.student'
-  #   ports:
-  #     - "5005:5005"
+  student:
+    image: student:0.21
+    build: 
+      context: ./
+      dockerfile: './Docker/Dockerfile.student'
+    ports:
+      - "5005:5005"
 
   ###################################
   # Tutor: The Tutor microservice
@@ -34,21 +45,10 @@ services:
   tutor:
     image: tutor:0.21
     build: 
-      context: .
+      context: ./
       dockerfile: './Docker/Dockerfile.tutor'
     ports:
       - "5003:5003"
-
-  # ###################################
-  # # registerClass: The registerClass microservice
-  # ###################################
-  # registerClass:
-  #   image: registerclass:0.21
-  #   build: 
-  #     context: .
-  #     dockerfile: './Docker/Dockerfile.registerClass'
-  #   ports:
-  #     - "5009:5009"
 
   # ###################################
   # # classSchedule: The classSchedule microservice
@@ -56,19 +56,38 @@ services:
   classSchedule:
     image: classschedule:0.21
     build: 
-      context: .
+      context: ./
       dockerfile: './Docker/Dockerfile.classSchedule'
     ports:
       - "5004:5004"
 
+  # ###################################
+  # # registerClass: The registerClass microservice
+  # ###################################
+  registerClass:
+    image: registerclass:0.21
+    build: 
+      context: ./
+      dockerfile: './Docker/Dockerfile.registerClass'
+    depends_on:
+      - tutor
+      - classSchedule
+    ports:
+      - "5009:5009"
+
+  
   # ###################################
   # # ShowClasses: The ShowClasses microservice
   # ###################################
   showClasses:
     image: showclasses:0.21
     build:
-      context: .
+      context: ./
       dockerfile: './Docker/Dockerfile.showClasses'
+    depends_on:
+      - tutor
+      - classSchedule
+      - student
     ports:
       - "5008:5008"
 
@@ -78,33 +97,28 @@ services:
   manageTutors:
     image: managetutors:0.21
     build:
-      context: .
+      context: ./
       dockerfile: './Docker/Dockerfile.manageTutors'
+    depends_on:
+      - admin
+      - tutor
     ports:
       - "5001:5001"
 
   # ###################################
   # # manageClasses: The manageClasses microservice
   # ###################################
-  # manageClasses:
-  #   image: manageclasses:0.21
-  #   build:
-  #     context: .
-  #     dockerfile: './Docker/Dockerfile.manageClasses'
-  #   ports:
-  #     - "5002:5002"
-
-
-  ###################################
-  # Admin: The Admin microservice
-  ###################################
-  admin:
-    image: admin:0.21
-    build: 
-      context: .
-      dockerfile: './Docker/Dockerfile.admin'
+  manageClasses:
+    image: manageclasses:0.21
+    build:
+      context: ./
+      dockerfile: './Docker/Dockerfile.manageClasses'
+    depends_on:
+      - admin
+      - classSchedule
     ports:
-      - "5000:5000"
+      - "5002:5002"
+
 
   # ###################################
   # # Notification: The Notification microservice

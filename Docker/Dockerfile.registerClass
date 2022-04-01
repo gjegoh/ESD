@@ -8,5 +8,4 @@ RUN python -m pip install --no-cache-dir -r requirements.txt
 
 COPY Microservices/registerClassMS.py ./
 
-EXPOSE 5004
 CMD [ "python", "./registerClassMS.py" ]
