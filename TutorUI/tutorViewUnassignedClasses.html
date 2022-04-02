@@ -17,6 +17,7 @@
     <!-- stylesheets -->
     <link rel="stylesheet" href="../CSS/style script.css">
     <link rel="stylesheet" href="../CSS/lightPages.css">
+    <link rel="stylesheet" href="../CSS/tutorView.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,500,700" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Mulish' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
@@ -35,7 +36,6 @@
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
         // const url = "http://192.168.1.2:5004/getUnassignedClasses" + `?token=${token}`
-        // const url = "http://10.124.139.76:5008/showUnassignedClasses" + `?token=${token}`
         const url = "http://localhost:5008/showUnassignedClasses" + `?token=${token}`
 
         function logout() {
@@ -64,9 +64,7 @@
             if (confirmation) {
                 window.alert("Registering... Please wait after clicking OK!")
                 // var approveTutorURL = "http://192.168.1.2:5004/registerClass"
-                // var url = "http://10.124.139.76:5009/registerClass"
                 var url = "http://localhost:5009/registerClass"
-
                 document.getElementById('loadingmsg').style.display = 'none'
                 try {
                     const response =
@@ -101,18 +99,36 @@
             let scheduleList = data["scheduleList"]
             let classDict = data['classDict']
             for (let schedule of scheduleList) {
+                // document.getElementById('schedules').innerHTML +=
+                //     `<tr id="${schedule['scheduleID']}">
+                //     <td>${schedule['scheduleID']}</td>
+                //     <td>${classDict[schedule['classID']][0]}</td>
+                //     <td>${classDict[schedule['classID']][1]}</td>
+                //     <td>${schedule['year']}</td>
+                //     <td>${schedule['day']}</td>
+                //     <td>${schedule['timing']}</td>
+                //     <td>
+                //         <a class="dropdown-item  text-dark" ><button type="submit" class="btn btn-light" onclick="register(this)">Register</button></a>
+                //     </td>
+                // </tr>`
                 document.getElementById('schedules').innerHTML +=
-                    `<tr id="${schedule['scheduleID']}">
-                    <td>${schedule['scheduleID']}</td>
-                    <td>${classDict[schedule['classID']][0]}</td>
-                    <td>${classDict[schedule['classID']][1]}</td>
-                    <td>${schedule['year']}</td>
-                    <td>${schedule['day']}</td>
-                    <td>${schedule['timing']}</td>
-                    <td>
-                        <a class="dropdown-item  text-dark" ><button type="submit" class="btn btn-light" onclick="register(this)">Register</button></a>
-                    </td>
-                </tr>`
+                    `<div class="col" m-0>
+                    <div class="card" style="width: 18rem;" id="${schedule['scheduleID']}">
+                        <div class="card-body">
+                            <h5 class="card-title" id="Grade">${classDict[schedule['classID']][1]}</h5>
+                            <h6 class="card-title" id="Subject">${classDict[schedule['classID']][0]}</h6>
+                            <p class="card-text">
+                                <ul class="list-unstyled">
+                                    <li id="ScheduleID">ScheduleID: ${schedule['scheduleID']}</li>
+                                    <li id="Year">Year: ${schedule['year']}</li>
+                                    <li id="Day">Day: ${schedule['day']}</li>
+                                    <li id="Timing">Timing: ${schedule['timing']}</li>
+                                </ul>
+                            </p>
+                            <a><button type="submit" class="btn btn-light" onclick="register(this)">Register</button></a>
+                        </div>
+                    </div>
+                    </div>`
             }
             document.getElementById('loadingmsg').style.display = 'none'
             document.getElementById('schedules').style.display = 'block'
@@ -172,7 +188,7 @@
                     <div id="main-container">
                         <h3 id="loadingmsg">Loading... Please wait!</h3>
                         <div id="errors"></div>
-                        <div class="table-outer-div container nopadding">
+                        <!-- <div class="table-outer-div container nopadding">
                             <div class="table-inner-div container nopadding">
                                 <table class="table" id="schedules" style="display:none">
                                     <thead>
@@ -188,6 +204,10 @@
                                     </thead>
                                 </table>
                             </div>
+                        </div> -->
+            
+                        <div class="row row-cols-2 row-cols-md-3 g-4 mt-3" id="schedules"  style="display:none">
+                            
                         </div>
                     </div>
                 </div>
@@ -204,7 +224,7 @@
     <!-- Bundled Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
+        </script>
 
 </body>
 
