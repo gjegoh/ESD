@@ -74,7 +74,6 @@ services:
       - classSchedule
     ports:
       - "5009:5009"
-
   
   # ###################################
   # # ShowClasses: The ShowClasses microservice
@@ -118,7 +117,6 @@ services:
       - classSchedule
     ports:
       - "5002:5002"
-
 
   # ###################################
   # # Notification: The Notification microservice

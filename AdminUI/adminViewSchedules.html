@@ -122,7 +122,8 @@
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
         // const url = "http://10.124.9.182:5004/getClassSchedules" + `?token=${token}`
-        const url = "http://10.124.141.82:5004/getClassSchedules" + `?token=${token}`
+        // const url = "http://10.124.141.82:5004/getClassSchedules" + `?token=${token}`
+        const url = "http://localhost:5004/getClassSchedules" + `?token=${token}`
 
         function logout() {
             window.location.replace(`./adminLogin.html`)

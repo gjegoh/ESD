@@ -133,7 +133,8 @@
         const urlParams = new URLSearchParams(queryString)
         const token = urlParams.get('token')
         // const url = "http://10.124.9.182:5003/getPendingTutors" + `?token=${token}`
-        const url = "http://10.124.141.82:5003/getPendingTutors" + `?token=${token}`
+        // const url = "http://10.124.141.82:5003/getPendingTutors" + `?token=${token}`
+        const url = "http://localhost:5003/getPendingTutors" + `?token=${token}`
 
         function logout() {
             window.location.replace(`./adminLogin.html`)
@@ -161,7 +162,9 @@
             if (confirmation) {
                 window.alert("Approving... Please wait after clicking OK!")
                 // var url = "http://10.124.9.182:5001/approveTutor"
-                var url = "http://10.124.141.82:5000/approveTutor"
+                // var url = "http://10.124.141.82:5000/approveTutor"
+                var url = "http://localhost:5000/approveTutor"
+
                 document.getElementById('loadingmsg').style.display = 'none'
                 try {
                     const response =
@@ -198,7 +201,8 @@
             if (confirmation) {
                 window.alert("Approving... Please wait after clicking OK!")
                 // var approveTutorURL = "http://10.124.9.182:5001/rejectTutor"
-                var approveTutorURL = "http://10.124.141.82:5000/rejectTutor"
+                // var approveTutorURL = "http://10.124.141.82:5000/rejectTutor"
+                var approveTutorURL = "http://localhost:5000/rejectTutor"
                 document.getElementById('loadingmsg').style.display = 'none'
                 try {
                     const response =

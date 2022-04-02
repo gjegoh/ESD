@@ -35,7 +35,8 @@
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
         // const url = "http://192.168.1.2:5004/getUnassignedClasses" + `?token=${token}`
-        const url = "http://10.124.139.76:5008/showUnassignedClasses" + `?token=${token}`
+        // const url = "http://10.124.139.76:5008/showUnassignedClasses" + `?token=${token}`
+        const url = "http://localhost:5008/showUnassignedClasses" + `?token=${token}`
 
         function logout() {
             window.location.replace(`./tutorLogin.html`)

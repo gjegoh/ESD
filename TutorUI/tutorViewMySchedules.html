@@ -36,7 +36,9 @@
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
-        const url = "http://10.124.139.76:5008/showTutorClasses" + `?token=${token}`
+        // const url = "http://10.124.139.76:5008/showTutorClasses" + `?token=${token}`
+        const url = "http://localhost:5008/showTutorClasses" + `?token=${token}`
+
         function logout() {
             window.location.replace(`./tutorLogin.html`)
         }

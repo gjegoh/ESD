@@ -117,7 +117,9 @@
         const urlParams = new URLSearchParams(queryString)
         const token = urlParams.get('token')
         // const url = "http://10.124.9.182:5003/getApprovedTutors" + `?token=${token}`
-        const url = "http://10.124.141.82:5003/getApprovedTutors" + `?token=${token}`
+        // const url = "http://10.124.141.82:5003/getApprovedTutors" + `?token=${token}`
+        const url = "http://localhost:5003/getApprovedTutors" + `?token=${token}`
+
 
         function logout() {
             window.location.replace(`./adminLogin.html`)
