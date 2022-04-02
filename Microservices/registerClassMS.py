@@ -20,13 +20,13 @@ def registerClass():
     data = request.get_json()
     token = data['token']
     payload = {'token': token}
-    url = "http://localhost:5003/validateToken"
+    url = "http://tutor:5003/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
     if (validation['status']):
         scheduleID = data['scheduleID']
         tutorID = validation['token']['tutorID']
-        url = "http://localhost:5004/updateClassTutor"
+        url = "http://classSchedule:5004/updateClassTutor"
         payload = {'scheduleID': scheduleID, "tutorID": tutorID}
         response = requests.patch(url, params=payload)
         result = response.json()
