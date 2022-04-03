@@ -18,28 +18,19 @@ CORS(app)
 def showUnassignedClasses():
     token = request.args.get('token')
     payload = {'token': token}
-    # url = "http://10.124.9.182:5003/validateToken"
     url = "http://tutor:5003/validateToken"
-
-    # url = "http://tutor:5003/validateToken?token={token}".format(token=token)
-
     response = requests.get(url, params=payload)
-    # response = requests.request('GET',url,json=None)
     validation = response.json()
     if (validation['status']):
         tutorID = validation['token']['tutorID']
         payload = {'tutorID': tutorID}
-        # url = "http://10.124.9.182:5003/getTutorInfo"
         url = "http://tutor:5003/getTutorInfo"
-
         response = requests.get(url, params=payload)
         result = response.json()
         eduLevel = result['eduLevel']
         taughtSubjects = result['taughtSubjects']
         payload = {'eduLevel': eduLevel, 'taughtSubjects': taughtSubjects}
-        # url = "http://10.124.9.182:5004/getUnassignedClasses"
         url = "http://classSchedule:5004/getUnassignedClasses"
-
         response = requests.get(url, params=payload)
         data = response.json()
         return jsonify(data)
@@ -75,7 +66,6 @@ def showAvailableClasses():
         grade = validation['token']['grade']
         studentID = validation['token']['studentID']
         payload = {'grade': grade}
-        # url = "http://10.124.9.182:5004/getClassTutors"
         url = "http://classSchedule:5004/getClassTutors"
         response = requests.get(url, params=payload)
         data = response.json()
@@ -83,7 +73,6 @@ def showAvailableClasses():
         tutorList = data['tutorList']
         scheduleList = data['scheduleList']
         payload = {'tutorList': tutorList}
-        # url = "http://10.124.9.182:5003/getTutorName"
         url = "http://tutor:5003/getTutorName"
         response = requests.get(url, params=payload)
         data = response.json()
@@ -104,6 +93,43 @@ def showAvailableClasses():
                 'studentID': studentID
             }
         )
-        
+
+@app.route('/showStudentClasses', methods=['GET'])
+def showStudentClasses():
+    token = request.args.get('token')
+    payload = {'token': token}
+    url = "http://student:5005/validateToken"
+    response = requests.get(url, params=payload)
+    validation = response.json()
+    if (validation['status']):
+        studentID = validation['token']['studentID']
+        payload = {'studentID': studentID}
+        url = "http://student:5005/getClassesBooked"
+        response = requests.get(url, params=payload)
+        data = response.json()
+        bookedSchedules = data['bookedSchedules']
+        payload = {'bookedSchedules': bookedSchedules}
+        url = "http://classSchedule:5004/getStudentSchedule"
+        response = requests.get(url, params=payload)
+        data = response.json()
+        scheduleList = data['scheduleList']
+        classDict = data['classDict']
+        tutorList = list(set([i['tutorID'] for i in scheduleList]))
+        payload = {'tutorList': tutorList}
+        url = "http://tutor:5003/getTutorName"
+        response = requests.get(url, params=payload)
+        data = response.json()
+        tutorDict = {i['tutorID']: i['firstName'] + " " + i['lastName'] for i in data}
+        newScheduleList = []
+        for schedule in scheduleList:
+            schedule['tutorName'] = tutorDict[schedule['tutorID']]
+            newScheduleList.append(schedule)
+        return jsonify(
+            {
+                "scheduleList": newScheduleList,
+                "classDict": classDict
+            }
+        )
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5008, debug=True)

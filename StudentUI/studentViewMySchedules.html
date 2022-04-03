@@ -32,8 +32,7 @@
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
-        const url = "http://localhost:5008/showAvailableClasses" + `?token=${token}`
-        let studentID = []
+        const url = "http://localhost:5008/showStudentClasses" + `?token=${token}`
 
         function logout() {
             window.location.replace(`./studentlogin.html`)
@@ -54,35 +53,9 @@
             }
         }
 
-        async function book(event) {
-            let identi = event.parentNode.parentNode.id.split("-")
-            let scheduleID = identi[0]
-            let classID = identi[1]
-            let confirmation = window.confirm(`Confirm booking?`)
-            if (confirmation) {
-                let url = "http://localhost:5006/stripePay" + `?token=${token}&classID=${classID}&scheduleID=${scheduleID}&studentID=${studentID[0]}`
-                document.getElementById('loadingmsg').style.display = 'none'
-                try {
-                    const response = await fetch(url)
-                    let data = await response.json()
-                    let stripe = Stripe(data['checkout_public_key'])
-                    const status = await stripe.redirectToCheckout({
-                                        sessionId: data['checkout_session_id']
-                                    })
-                }
-                catch (error) {
-                    showError("Payment fails. Please try in a while.")
-                }
-            }
-            else {
-
-            }
-        }
-
         function showStudentSchedule(data) {
             let scheduleList = data["scheduleList"]
             let classDict = data['classDict']
-            studentID.push(data['studentID'])
             for (let schedule of scheduleList) {
                 document.getElementById('schedules').innerHTML +=
                     `<tr id="${schedule['scheduleID']}-${schedule['classID']}">
@@ -93,7 +66,6 @@
                     <td>${schedule['day']}</td>
                     <td>${schedule['timing']}</td>
                     <td>${schedule['tutorName']}</td>
-                    <td><input type='submit' value='Book Class' onclick="book(this)"></td>
                 </tr>`
             }
             document.getElementById('loadingmsg').style.display = 'none'
@@ -148,7 +120,7 @@
                 <h6 class="current"><a href=''></a></h6>
             </div>
             <div class="col-8">
-                <h2 class="textColor">View Available Schedules</h2>
+                <h2 class="textColor">View My Schedules</h2>
                 <div id="main-container">
                     <h3 id="loadingmsg">Loading... Please wait!</h3>
                     <div id="errors"></div>
@@ -176,7 +148,7 @@
 </div>
 
     <script>
-        document.getElementById('viewPending').innerHTML += `<a href='./studentViewMySchedules.html?token=${token}'>View My Classes</a>`
+        document.getElementById('viewPending').innerHTML += `<a href='./studentViewAvailableSchedules.html?token=${token}'>View Available Classes</a>`
         document.getElementById('logout').innerHTML += `<a class="dropdown-item  text-dark" ><button type="submit" class="btn btn-light" onclick="logout()">Logout</button></a>`
     </script>
 </body>

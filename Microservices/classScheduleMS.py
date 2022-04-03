@@ -79,7 +79,7 @@ def createClassSchedule():
 @app.route('/getUnassignedClasses', methods=['GET'])
 def getUnassignedClasses():
     eduLevel = request.args.get('eduLevel')
-    taughtSubjects = tuple(request.args.get('taughtSubjects').split(','))
+    data = request.args.get('taughtSubjects').split(',')
     scheduleList = []
     classDict = {}
     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
@@ -91,14 +91,25 @@ def getUnassignedClasses():
             sql = "USE classScheduleDB"
             cursor.execute(sql)
             connection.commit()
-            sql = "SELECT classID, subject, grade FROM Class WHERE grade LIKE '{eduLevel}%' AND subject IN {taughtSubjects}".format(
+            if (len(data) > 1):
+                taughtSubjects = tuple(data)
+                sql = "SELECT classID, subject, grade FROM Class WHERE grade LIKE '{eduLevel}%' AND subject IN {taughtSubjects}".format(
+                eduLevel=eduLevel, taughtSubjects=taughtSubjects)
+            else:
+                taughtSubjects = data[0]
+                sql = "SELECT classID, subject, grade FROM Class WHERE grade LIKE '{eduLevel}%' AND subject='{taughtSubjects}'".format(
                 eduLevel=eduLevel, taughtSubjects=taughtSubjects)
             cursor.execute(sql)
             result = cursor.fetchall()
-            classIDList = tuple([i['classID'] for i in result])
             classDict = {i['classID']: [i['subject'], i['grade']]
                         for i in result}
-            sql = "SELECT * FROM classSchedule WHERE classID IN {classIDList} AND tutorID IS NULL".format(
+            if (len(result) > 1):
+                classIDList = tuple([i['classID'] for i in result])
+                sql = "SELECT * FROM classSchedule WHERE classID IN {classIDList} AND tutorID IS NULL".format(
+                classIDList=classIDList)
+            else:
+                classIDList = result[0]['classID']
+                sql = "SELECT * FROM classSchedule WHERE classID={classIDList} AND tutorID IS NULL".format(
                 classIDList=classIDList)
             cursor.execute(sql)
             scheduleList = cursor.fetchall()
@@ -210,8 +221,13 @@ def getClassTutors():
             result = cursor.fetchall()
             classDict = {i['classID']: [i['subject'], i['grade']]
                         for i in result}
-            relevantSchedules = tuple([i['classID'] for i in result if i['grade']==grade])
-            sql = "SELECT * from classSchedule WHERE classID IN {relevantSchedules} AND tutorID IS NOT NULL".format(relevantSchedules=relevantSchedules)
+            relevantSchedules = [i['classID'] for i in result if i['grade']==grade]
+            if (len(relevantSchedules) > 1):
+                relevantSchedules = tuple(relevantSchedules)
+                sql = "SELECT * from classSchedule WHERE classID IN {relevantSchedules} AND tutorID IS NOT NULL".format(relevantSchedules=relevantSchedules)
+            else:
+                relevantSchedules = relevantSchedules[0]
+                sql = "SELECT * from classSchedule WHERE classID={relevantSchedules} AND tutorID IS NOT NULL".format(relevantSchedules=relevantSchedules)
             cursor.execute(sql)
             scheduleList = cursor.fetchall()
             tutorList = list(set([i['tutorID'] for i in scheduleList]))
@@ -261,6 +277,40 @@ def enrollStudent():
                     'status': True
                 }
             )
-        
+
+@app.route('/getStudentSchedule', methods=['GET'])
+def getStudentSchedule():
+    data = request.args.getlist('bookedSchedules')
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
+    scheduleList = []
+    classDict = {}
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE classScheduleDB"
+            cursor.execute(sql)
+            connection.commit()
+            if (len(data) > 1):
+                bookedSchedules = tuple([int(i) for i in data])
+                sql = "SELECT * FROM classSchedule WHERE scheduleID IN {}".format(bookedSchedules)
+            else:
+                bookedSchedules = int(data[0])
+                sql = "SELECT * FROM classSchedule WHERE scheduleID={}".format(bookedSchedules)
+            cursor.execute(sql)
+            scheduleList = cursor.fetchall()
+            sql = "SELECT classID, subject, grade FROM Class"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            classDict = {i['classID']: [i['subject'], i['grade']]
+                        for i in result}
+            return jsonify(
+                {
+                    "scheduleList": scheduleList,
+                    "classDict": classDict
+                }
+            )
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5004, debug=True)
