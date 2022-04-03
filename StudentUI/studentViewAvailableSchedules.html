@@ -1,0 +1,182 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- using CDN -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- stylesheets -->
+    <!-- <link rel="stylesheet" href="../CSS/tutorView.css"> -->
+    <link rel="stylesheet" href="../CSS/style script.css">
+    <link rel="stylesheet" href="../CSS/lightPages.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,500,700" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Mulish' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>View Schedules</title>
+</head>
+<body>
+
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const token = urlParams.get('token')
+        const url = "http://localhost:5008/showAvailableClasses" + `?token=${token}`
+        let studentID = []
+
+        function logout() {
+            window.location.replace(`./studentlogin.html`)
+        }
+
+        function showError(message) {
+            $('#errors')
+                .append("<label>" + message + "</label>")
+        }
+
+        async function getStudentSchedule(url) {
+            try {
+                const response = await fetch(url)
+                let data = await response.json()
+                showStudentSchedule(data)
+            } catch (error) {
+                showError("There are issues with displaying pending tutors. Please try in a while.")
+            }
+        }
+
+        async function book(event) {
+            let identi = event.parentNode.parentNode.id.split("-")
+            let scheduleID = identi[0]
+            let classID = identi[1]
+            let confirmation = window.confirm(`Confirm booking?`)
+            if (confirmation) {
+                let url = "http://localhost:5006/stripePay" + `?token=${token}&classID=${classID}&scheduleID=${scheduleID}&studentID=${studentID[0]}`
+                document.getElementById('loadingmsg').style.display = 'none'
+                try {
+                    const response = await fetch(url)
+                    let data = await response.json()
+                    let stripe = Stripe(data['checkout_public_key'])
+                    const status = await stripe.redirectToCheckout({
+                                        sessionId: data['checkout_session_id']
+                                    })
+                }
+                catch (error) {
+                    showError("Payment fails. Please try in a while.")
+                }
+            }
+            else {
+
+            }
+        }
+
+        function showStudentSchedule(data) {
+            let scheduleList = data["scheduleList"]
+            let classDict = data['classDict']
+            studentID.push(data['studentID'])
+            for (let schedule of scheduleList) {
+                document.getElementById('schedules').innerHTML +=
+                    `<tr id="${schedule['scheduleID']}-${schedule['classID']}">
+                    <td>${schedule['scheduleID']}</td>
+                    <td>${classDict[schedule['classID']][0]}</td>
+                    <td>${classDict[schedule['classID']][1]}</td>
+                    <td>${schedule['year']}</td>
+                    <td>${schedule['day']}</td>
+                    <td>${schedule['timing']}</td>
+                    <td>${schedule['tutorName']}</td>
+                    <td><input type='submit' value='Book Class' onclick="book(this)"></td>
+                </tr>`
+            }
+            document.getElementById('loadingmsg').style.display = 'none'
+            document.getElementById('schedules').style.display = 'block'
+        }
+
+        getStudentSchedule(url)
+    </script>
+    <!-- standard nav bar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../home.html">Brand Name</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                aria-label="Toggle navigation">
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <!-- right navbar links -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a id="navbar" class="nav-link active" aria-current="page" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="navbar" class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+
+                <!-- left navbar links -->
+                <ul class="navbar-nav ms-auto">
+                    <div class="container">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bi bi-person"></i> Student
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <div id="logout"></div>
+                            </div>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mainBody ">
+        <div class="row">
+            <div class="col-4">
+                <h3 class="textColor">Student</h3>
+                <h6 id="pending"></h6>
+                <h6 id="viewPending"></h6>
+                <h6 class="current"><a href=''></a></h6>
+            </div>
+            <div class="col-8">
+                <h2 class="textColor">View Available Schedules</h2>
+                <div id="main-container">
+                    <h3 id="loadingmsg">Loading... Please wait!</h3>
+                    <div id="errors"></div>
+                    <div class="table-outer-div container nopadding">
+                        <div class="table-inner-div container nopadding">
+                            <table class="table" id="schedules" style="display:none">
+                                <thead>
+                                    <tr>
+                                        <th>ScheduleID</th>
+                                        <th>Subject</th>
+                                        <th>Grade</th>
+                                        <th>Year</th>
+                                        <th>Day</th>
+                                        <th>Timing</th>
+                                        <th>Tutor</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        document.getElementById('logout').innerHTML += `<a class="dropdown-item  text-dark" ><button type="submit" class="btn btn-light" onclick="logout()">Logout</button></a>`
+    </script>
+</body>
+</html>

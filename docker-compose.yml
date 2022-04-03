@@ -2,8 +2,10 @@ version: '3.8'
 
 volumes:
   rabbitmq_data:
+  stripe_cli:
 
 services:
+  
   ####################################
   # RabbitMQ: The messaging broker   
   ####################################
@@ -129,4 +131,37 @@ services:
   #   ports:
   #     - "5009:5009"
 
+   # ###################################
+  # # transaction: The transaction microservice
+  # ###################################
+  transaction:
+    image: transaction:0.21
+    build:
+      context: ./
+      dockerfile: './Docker/Dockerfile.transaction'
+    ports:
+      - "5007:5007"
 
+ # ###################################
+  # # bookClass: The bookClass microservice
+  # ###################################
+  bookClass:
+    image: bookclass:0.21
+    build:
+      context: ./
+      dockerfile: './Docker/Dockerfile.bookClass'
+    depends_on:
+      - transaction
+      - classSchedule
+      - student
+    ports:
+      - "5006:5006"
+
+  ####################################
+  # stripeCLI: The stripe CLI   
+  ####################################
+  stripe-cli:
+    image: stripe/stripe-cli
+    container_name: stripe_cli
+    command: listen --api-key sk_test_51KikEDLVS1n78x0iu8FVBGGZVjfpkOuWjHvdmT4Y4R3yNMTrYxjiflKfzPTOuurYYf2zE4JA2LCUka4WGsCxuMBA00VBGA47wB --forward-to bookClass:5006/stripeWebhook
+    

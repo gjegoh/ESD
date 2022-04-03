@@ -50,7 +50,6 @@ def showTutorClasses():
     payload = {'token': token}
     # url = "http://10.124.9.182:5003/validateToken"
     url = "http://tutor:5003/validateToken"
-
     response = requests.get(url, params=payload)
     validation = response.json()
     if (validation['status']):
@@ -70,15 +69,14 @@ def showAvailableClasses():
     payload = {'token': token}
     # url = "http://10.124.9.182:5005/validateToken"
     url = "http://student:5005/validateToken"
-
     response = requests.get(url, params=payload)
     validation = response.json()
     if (validation['status']):
         grade = validation['token']['grade']
+        studentID = validation['token']['studentID']
         payload = {'grade': grade}
         # url = "http://10.124.9.182:5004/getClassTutors"
         url = "http://classSchedule:5004/getClassTutors"
-
         response = requests.get(url, params=payload)
         data = response.json()
         classDict = data['classDict']
@@ -87,18 +85,25 @@ def showAvailableClasses():
         payload = {'tutorList': tutorList}
         # url = "http://10.124.9.182:5003/getTutorName"
         url = "http://tutor:5003/getTutorName"
-
         response = requests.get(url, params=payload)
         data = response.json()
         tutorDict = {i['tutorID']: i['firstName'] + " " + i['lastName'] for i in data}
+        payload = {'studentID': studentID}
+        url = "http://student:5005/getClassesBooked"
+        response = requests.get(url, params=payload)
+        data = response.json()
+        bookedSchedules = data['bookedSchedules']
         for schedule in scheduleList:
-            schedule['tutorName'] = tutorDict[schedule['tutorID']]
-            newScheduleList.append(schedule)
+            if (schedule['scheduleID'] not in bookedSchedules):
+                schedule['tutorName'] = tutorDict[schedule['tutorID']]
+                newScheduleList.append(schedule)
         return jsonify(
             {
                 "scheduleList": newScheduleList,
-                "classDict": classDict
+                "classDict": classDict,
+                'studentID': studentID
             }
         )
+        
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5008, debug=True)

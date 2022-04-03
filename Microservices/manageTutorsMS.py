@@ -15,7 +15,7 @@ app = Flask(__name__)
 CORS(app)
 
 # url = "http://10.124.139.76:5000/validateToken"
-url = "http://localhost:5000/validateToken"
+url = "http://admin:5000/validateToken"
 
 @app.route('/approveTutor', methods=['PATCH'])
 def approveTutor():
@@ -31,7 +31,7 @@ def approveTutor():
         payload = {'email': email, "action": "approve"}
         # url = "http://10.124.9.182:5003/manageTutor"
         # url = "http://10.124.139.76:5003/manageTutor"
-        url = "http://localhost:5003/manageTutor"
+        url = "http://tutor:5003/manageTutor"
 
         response = requests.patch(url, params=payload)
         status = response.json()
@@ -45,7 +45,6 @@ def rejectTutor():
     payload = {'token': token}
     # url = "http://10.124.9.182:5000/validateToken"
     # url = "http://10.124.141.82:5000/validateToken"
-    url = "http://localhost:5000/validateToken"
 
     response = requests.get(url, params=payload)
     validation = response.json()
@@ -54,7 +53,7 @@ def rejectTutor():
         payload = {'email': email, "action": "delete"}
         # url = "http://10.124.9.182:5003/manageTutor"
         # url = "http://10.124.139.76:5000/manageTutor"
-        url = "http://localhost:5000/manageTutor"
+        url = "http://tutor:5003/manageTutor"
 
         response = requests.delete(url, params=payload)
         status = response.json()

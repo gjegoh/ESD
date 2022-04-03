@@ -22,7 +22,7 @@ def scheduleCreation():
     payload = {'token': token}
     # url = "http://10.124.9.182:5000/validateToken"
     # url = "http://10.124.141.82:5000/validateToken"
-    url = "http://localhost:5000/validateToken"
+    url = "http://admin:5000/validateToken"
 
 
     response = requests.get(url, params=payload)
@@ -31,7 +31,7 @@ def scheduleCreation():
         payload = data
         # url = "http://10.124.9.182:5004/createClassSchedule"
         # url = "http://192.168.1.8:5004/createClassSchedule"
-        url = "http://localhost/createClassSchedule"
+        url = "http://classSchedule:5004/createClassSchedule"
 
         response = requests.post(url, data=payload)
         data = response.json()

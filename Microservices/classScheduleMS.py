@@ -223,26 +223,44 @@ def getClassTutors():
                 }
             )
 
-# @app.route('/getStudentSchedule', methods=['GET','POST'])
-# def getStudentSchedule():
-#     data = request.get_json()
-#     print("\n\n{}\n\n".format(data))
-#     classDict = data['classDict']
-#     tutorList = data['tutorList']
-#     scheduleList = data['scheduleList']
-#     # print("\n\n{}\n\n".format(classDict))
-#     # print("\n\n{}\n\n".format(tutorList))
-#     # print("\n\n{}\n\n".format(scheduleList))
-#     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-#                                 user='admin',
-#                                 password='thisismypw',
-#                                 cursorclass=pymysql.cursors.DictCursor)
-#     newScheduleList = []
-#     with connection:
-#         with connection.cursor() as cursor:
-            
-
-
-
+@app.route('/getClassPrice', methods=['GET'])
+def getClassPrice():
+    classID = request.args.get('classID')
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE classScheduleDB"
+            cursor.execute(sql)
+            connection.commit()
+            sql = "SELECT tuitionFee FROM Class WHERE classID={classID}".format(classID=classID)
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            return jsonify(result[0])
+        
+@app.route('/enrollStudent', methods=['POST'])
+def enrollStudent():
+    data = request.get_json()
+    studentID = data['studentID']
+    scheduleID = data['scheduleID']
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE classScheduleDB"
+            cursor.execute(sql)
+            connection.commit()
+            cursor.execute(f"""INSERT INTO classScheduleStudent (studentID, scheduleID) VALUES (%s, %s)""", (studentID, scheduleID))
+            connection.commit()
+            return jsonify(
+                {
+                    'status': True
+                }
+            )
+        
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5004, debug=True)

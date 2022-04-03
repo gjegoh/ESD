@@ -121,6 +121,55 @@ def studentRegister():
                 }
             )
             
+@app.route('/getClassesBooked', methods=['GET'])
+def getClassesBooked():
+    studentID = int(request.args.get('studentID'))
+    bookedSchedules = []
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                            user='admin',
+                            password='thisismypw',
+                            cursorclass=pymysql.cursors.DictCursor)
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE studentDB"
+            cursor.execute(sql)
+            connection.commit()
+            sql = """SELECT studentBookedSchedules.scheduleID
+                        FROM student
+                        JOIN studentBookedSchedules
+                        ON student.student_id = studentBookedSchedules.studentID
+                        WHERE studentBookedSchedules.studentID = {}""".format(studentID)
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            for result in results:
+                bookedSchedules.append(result['scheduleID'])
+            return jsonify(
+                {
+                    'bookedSchedules': bookedSchedules
+                }
+            )
+
+@app.route('/updateStudentBooking', methods=['POST'])
+def updateStudentBooking():
+    data = request.get_json()
+    scheduleID = data['scheduleID']
+    studentID = data['studentID']
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE studentDB"
+            cursor.execute(sql)
+            connection.commit()
+            cursor.execute(f"""INSERT INTO studentBookedSchedules (studentID, scheduleID) VALUES (%s, %s)""", (studentID, scheduleID))
+            connection.commit()
+            return jsonify(
+                {
+                    'status': True
+                }
+            )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5005, debug=True)
