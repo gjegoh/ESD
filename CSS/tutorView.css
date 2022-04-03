@@ -1,7 +1,7 @@
 /* body */
-#loadingmsg {
+/* #loadingmsg {
     color: #17457A;
-}
+} */
 
 #sidebar-schedule, #sidebar-tutor {
     margin-bottom: 50px;
@@ -30,4 +30,10 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#register{
+    background-color: #17457A;
+    color: white;
+    border-radius: 10px;
 }
