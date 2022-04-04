@@ -88,17 +88,18 @@
                     <h1 class="display-6 text-center regText">Tutor Registration</h1>
                 </div>
                 <p class="text-center regText">Already have an account? <a href="tutorLogin.html">Login</a></p>
-                <form id='registerTutor'>
+                <form id='registerTutor' class="was-validated">
                     <div class="input-group mb-3">
                         <span class="input-group-text ">Last Name</span>
-                        <input type="text" id="lastName" class="form-control" placeholder="" aria-label="lastName">
+                        <input type="text" id="lastName" class="form-control" placeholder="" aria-label="lastName" required>
                         <span class="input-group-text">First Name</span>
                         <input type="text" id="firstName" class="form-control" placeholder=""
-                            aria-label="firstName">
+                            aria-label="firstName" required>
+                        <div class="invalid-feedback">Please fill out this field.</div>
                     </div>
                     <select class="form-select mb-3" onchange="showSubjects()" id="educationLevel"
-                        label="Default select example">
-                        <option selected>Select an Education Level</option>
+                        label="Default select example" required>
+                        <option value="" id="firstOption">Select an Education Level</option>
                         <option value="Primary">Primary</option>
                         <option value="Secondary">Secondary</option>
                         <option value="Junior College">Junior College</option>
@@ -108,19 +109,23 @@
                     </div>
                     <div class="mb-3">
                         <label for="execSummary" class="form-label regText">Executive Summary</label>
-                        <textarea class="form-control" id="execSummary" rows="3"></textarea>
+                        <textarea class="form-control" id="execSummary" rows="3" required></textarea>
+                        <div class="invalid-feedback">Please let us know abit about you.</div>
                     </div>
                     <div class="mb-3 form-outline">
                         <label for="phoneNumberTb" class="form-label regText">Phone Number</label>
-                        <input type="number" id="phoneNumberTb" class="form-control" />
+                        <input type="text" id="phoneNumberTb" class="form-control" pattern="[8-9]{1}[0-9]{7}" required/>
+                        <div class="invalid-feedback">Please enter a valid Singapore phone number. (e.g. 91234567)</div>
                     </div>
                     <div class="mb-3">
                         <label for="emailTb" class="form-label regText">Email address</label>
-                        <input type="email" class="form-control" id="emailTb" aria-describedby="emailHelp">
+                        <input type="email" class="form-control" id="emailTb" aria-describedby="emailHelp" required>
+                        <div class="invalid-feedback">Please enter a valid email address.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="passwordTb" class="form-label regText">Password</label>
-                        <input type="password" class="form-control" id="passwordTb">
+                        <label for="passwordTb" class="form-label regText" required>Password</label>
+                        <input type="password" class="form-control" id="passwordTb" required>
+                        <div class="invalid-feedback">Please enter a password.</div>
                     </div>
                     <h2 id="loadingmsg" style="display:none">Loading... Please Wait!</h2>
                     <div class="d-flex justify-content-center">
@@ -203,6 +208,7 @@
             document.getElementById("subjects").innerHTML = ""
             if (educationLevel == 'Primary') {
                 for (let sub of pri) {
+                    document.getElementById("firstOption").style.display = 'none'
                     document.getElementById("subjects").innerHTML += `  <input type="checkbox" class="btn-check" id="${sub}_opt" autocomplete="off" value="${sub}">
                                                                         <label class="btn btn-outline-primary" for="${sub}_opt">${sub}</label>`
                 }
@@ -213,12 +219,12 @@
                                                                         <label class="btn btn-outline-primary" for="${sub}_opt">${sub}</label>`
                 }
             }
-            else {
+            else if (educationLevel == 'Junior College'){
                 for (let sub of jc) {
                     document.getElementById("subjects").innerHTML += `  <input type="checkbox" class="btn-check" id="${sub}_opt" autocomplete="off" value="${sub}">
                                                                         <label class="btn btn-outline-primary" for="${sub}_opt">${sub}</label>`
                 }
-            }
+            } 
         }
 
         $("#registerTutor").submit(async (event) => {
