@@ -24,21 +24,21 @@ def validateToken():
                         )
         return jsonify(
             {
-                'status': True,
+                'code': 201,
                 'token': decoded
             }
         )
     except jwt.ExpiredSignatureError:
         return jsonify(
             {
-                'status': False,
+                'code': 401,
                 'error': 'Signature expired. Please log in again.'
             }
         )
     except jwt.InvalidTokenError:
         return jsonify(
             {
-            'status': False,
+            'code': 401,
             'error': 'Invalid token. Please log in again.'
             }
         )
@@ -76,19 +76,21 @@ def adminLogin():
                     return jsonify(
                         {   
                             'token': token,
-                            'status': True
+                            'code': 200
                         }
                     )
                 else:
+                    # failed match of new_key and get_key
                     return jsonify(
                         {   
-                            'status': False
+                            'code': 401
                         }
                     )
             else:
+                # login-ed but result = 0
                 return jsonify(
                         {   
-                            'status': False
+                            'code': 401
                         }
                     )
 

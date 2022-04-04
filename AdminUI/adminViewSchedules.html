@@ -133,12 +133,28 @@
         async function getClassSchedules(url) {
             const response = await fetch(url)
             let data = await response.json()
-            showClassSchedules(data)
+
+            console.log(data)
+            
+            // invalid token
+            if (data['code'] > 300) {
+                message = data['message']
+                logout()
+                alert(message + " Please login again.")
+            }
+            // 
+            else if (data['scheduleList'].length > 0) {
+                showClassSchedules(data)
+            }
+            // when there's no approved tutors
+            else {
+                showError("There are no tutors")
+            }
         }
 
         function showClassSchedules(data) {
-            let scheduleList = data['data']['scheduleList']
-            let classDict = data['data']['classDict']
+            let scheduleList = data['scheduleList']
+            let classDict = data['classDict']
             for (let schedule of scheduleList) {
                 document.getElementById('schedule').innerHTML +=
                     `

@@ -74,6 +74,7 @@ def createClassSchedule():
                                 classID=classID, year=year, day=day, timing=timing)
                             cursor.execute(sql)
                             connection.commit()
+            data['code'] = 200
             return jsonify(data)
 
 @app.route('/getUnassignedClasses', methods=['GET'])
@@ -144,10 +145,9 @@ def getClassSchedules():
                     details['subject'], details['grade']]
             return jsonify(
                 {
-                    "data": {
-                        "scheduleList": scheduleList,
-                        "classDict": classDict
-                    }
+                    "scheduleList": scheduleList,
+                    "classDict": classDict,
+                    "code": 201
                 }
             )
 

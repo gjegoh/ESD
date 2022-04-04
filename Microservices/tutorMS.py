@@ -63,13 +63,13 @@ def getPendingTutors():
             sql = "SELECT firstName, lastName, email, phoneNumber, eduLevel, taughtSubjects, execSummary FROM tutor WHERE isApproved=0 AND isAdmin=0"
             cursor.execute(sql)
             tutorList = cursor.fetchall()
+            
             return jsonify(
                 {
-                    "data": {
-                        "tutorList": tutorList
-                    }
-                }
-            )
+                "tutorList": tutorList,
+                "code": 201
+            })
+
 
 @app.route('/getApprovedTutors', methods=['GET'])
 def getApprovedTutors():
@@ -87,9 +87,8 @@ def getApprovedTutors():
             tutorList = cursor.fetchall()
             return jsonify(
                 {
-                    "data": {
-                        "tutorList": tutorList
-                    }
+                    "tutorList": tutorList,
+                    "code": 201
                 }
             )
                 

@@ -134,14 +134,27 @@
             try {
                 const response = await fetch(url)
                 let data = await response.json()
-                showApprovedTutors(data)
+                console.log(data)
+                
+                if (data['code'] > 300) {
+                    message = data['message']
+                    logout()
+                    alert(message + " Please login again.")                   }
+                else if (data['tutorList'].length > 0) {
+                    showApprovedTutors(data)
+                }
+                // when there's no approved tutors
+                else {
+                    showError("There are no tutors")
+                }
+                
             } catch (error) {
                 showError("There are issues with the display of approved tutors. Please try in a while.")
             }
         }
 
         function showApprovedTutors(data) {
-            let tutorList = data["data"]["tutorList"]
+            let tutorList = data["tutorList"]
             for (let tutor of tutorList) {
                 document.getElementById('tutor').innerHTML +=
                     `<tbody>

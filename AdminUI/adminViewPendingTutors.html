@@ -143,13 +143,28 @@
         function showError(message) {
             $('#errors')
                 .append("<label>" + message + "</label>");
+
+            document.getElementById('loadingmsg').style.display = 'none'
         }
 
         async function getPendingTutors(url) {
             try {
                 const response = await fetch(url)
                 let data = await response.json()
-                showPendingTutors(data)
+                console.log(data)
+                
+                // token expired, relogin
+                if (data['code'] > 300) {
+                    message = data['message']
+                    logout()
+                    alert(message + " Please login again.")                }
+                else if (data['tutorList'].length > 0) {
+                    showPendingTutors(data)
+                } 
+                // no pending tutors
+                else {
+                    showError("There is no pending tutors currently.")
+                }
             } catch {
                 showError("There are issues with displaying pending tutors. Please try in a while.")
             }
@@ -231,7 +246,7 @@
         }
 
         function showPendingTutors(data) {
-            let tutorList = data["data"]["tutorList"]
+            let tutorList = data["tutorList"]
             for (let tutor of tutorList) {
                 document.getElementById('tutor').innerHTML +=
                     `<tbody>
