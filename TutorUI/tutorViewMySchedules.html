@@ -65,9 +65,11 @@
                     alert(message + " Please login again.")
                 }
                 
+                // display enrolled classes
                 else if (data['scheduleList'].length > 0) {
                     showMySchedules(data)
 
+                // there are no enrolled classes to display
                 } else {
                     showError("You did not enrol to tutor any class. Please enrol and view here later.")
                 }
