@@ -1,0 +1,17 @@
+/* feel free to add into style script.css */
+
+.card {
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px 5px rgb(35, 56, 94);
+    margin: 0 auto; /* Added */
+    float: none; /* Added */
+    margin-bottom: 25px; /* Added */
+}
+
+.cardBookClass {
+    border-radius: 20px;
+    padding: 5px 10px ;
+    background-color: #17457A;
+    color: white;
+    font-family: Montserrat;
+}

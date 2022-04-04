@@ -1,0 +1,14 @@
+h1 {
+    font-size: 450%;
+    color: #466992;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+input {
+    border-radius: 25px;
+    padding: 5px 10px;
+    box-shadow: 5px 5px 8px 5px rgb(35, 56, 94);
+    font-weight: bolder;
+    
+}

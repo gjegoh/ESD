@@ -15,6 +15,7 @@
     <!-- <link rel="stylesheet" href="../CSS/tutorView.css"> -->
     <link rel="stylesheet" href="../CSS/style script.css">
     <link rel="stylesheet" href="../CSS/lightPages.css">
+    <link rel="stylesheet" href="../CSS/card.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,500,700" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Mulish' rel='stylesheet'>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -58,15 +59,32 @@
             let classDict = data['classDict']
             for (let schedule of scheduleList) {
                 document.getElementById('schedules').innerHTML +=
-                    `<tr id="${schedule['scheduleID']}-${schedule['classID']}">
-                    <td>${schedule['scheduleID']}</td>
-                    <td>${classDict[schedule['classID']][0]}</td>
-                    <td>${classDict[schedule['classID']][1]}</td>
-                    <td>${schedule['year']}</td>
-                    <td>${schedule['day']}</td>
-                    <td>${schedule['timing']}</td>
-                    <td>${schedule['tutorName']}</td>
-                </tr>`
+                //     `<tr id="${schedule['scheduleID']}-${schedule['classID']}">
+                //     <td>${schedule['scheduleID']}</td>
+                //     <td>${classDict[schedule['classID']][0]}</td>
+                //     <td>${classDict[schedule['classID']][1]}</td>
+                //     <td>${schedule['year']}</td>
+                //     <td>${schedule['day']}</td>
+                //     <td>${schedule['timing']}</td>
+                //     <td>${schedule['tutorName']}</td>
+                // </tr>`
+
+                `<div class="col-lg-4 col-md-6 col-12 card-div">
+                    <div class="card" style="width: 14rem;" id="${schedule['scheduleID']}-${schedule['classID']}">
+                        <div class="card-body">
+                            <h5 class="card-title">${classDict[schedule['classID']][1]}</h5>
+                            <h5 class="card-title">${classDict[schedule['classID']][0]}</h5>
+                            <p class="card-text">
+                                <ul class="list-unstyled">
+                                    <li>${schedule['year']}</li>
+                                    <li>${schedule['day']}</li>
+                                    <li>${schedule['timing']}</li>
+                                    <li>${schedule['tutorName']}</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>`
             }
             document.getElementById('loadingmsg').style.display = 'none'
             document.getElementById('schedules').style.display = 'block'
@@ -115,7 +133,7 @@
         <div class="row">
             <div class="col-4">
                 <h3 class="textColor">Student</h3>
-                <h6 id="pending"></h6>
+                <h6 class="current" id="pending"></h6>
                 <h6 id="viewPending"></h6>
                 <h6 class="current"><a href=''></a></h6>
             </div>
@@ -124,7 +142,9 @@
                 <div id="main-container">
                     <h3 id="loadingmsg">Loading... Please wait!</h3>
                     <div id="errors"></div>
-                    <div class="table-outer-div container nopadding">
+
+                    <!-- previous table -->
+                    <!-- <div class="table-outer-div container nopadding">
                         <div class="table-inner-div container nopadding">
                             <table class="table" id="schedules" style="display:none">
                                 <thead>
@@ -140,7 +160,10 @@
                                 </thead>
                             </table>
                         </div>
-                    </div>
+                    </div> -->
+                
+                    
+                    <div class="row" id="schedules" style="display:none"></div>
                 </div>
             </div>
         </div>
@@ -148,6 +171,7 @@
 </div>
 
     <script>
+        document.getElementById('pending').innerHTML += `<a href='./studentViewMySchedules.html?token=${token}'>View My Schedules</a>`
         document.getElementById('viewPending').innerHTML += `<a href='./studentViewAvailableSchedules.html?token=${token}'>View Available Classes</a>`
         document.getElementById('logout').innerHTML += `<a class="dropdown-item  text-dark" ><button type="submit" class="btn btn-light" onclick="logout()">Logout</button></a>`
     </script>
