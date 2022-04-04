@@ -91,6 +91,7 @@
                         <input type="password" class="form-control" id="password">
                     </div>
                     <div class="d-flex justify-content-center">
+                        <span id="loginfail" style="display:none; color: red">Login Failed!</span>
                         <button type="submit" class="btn btn-primary buttonsubmit mb-3" id="submit">Login</button>
                     </div>
                     <h2 id="submitmsg" style="display:none; color: white">Logging In... Please wait!</h2>
@@ -156,20 +157,28 @@
                 const response = await fetch(url)
                 const data = await response.json()
                 if (response.ok) {
-                    var authenticated = data['status']
-                    if (authenticated) {
+                    var code = data['code']
+
+                    // successful login
+                    if (code < 300) {
                         var token = data['token']
                         window.location.replace(`./adminViewPendingTutors.html?token=${token}`)
                     }
                     else {
-                        alert("Login Failed! Please re-login...")
+                        // Invalid credentials
+                        document.getElementById('loginfail').innerText += " Please login with the right credentials."
+                        document.getElementById('loginfail').style.display = 'block'
                         document.getElementById('submit').style.display = 'block'
                         document.getElementById('submitmsg').style.display = 'none'
                     }
                 }
             }
+            // Microservices probably not running, hence feth not working
             catch (error) {
-
+                document.getElementById('loginfail').innerText += " Please ensure microservices are up running."
+                document.getElementById('loginfail').style.display = 'block'
+                document.getElementById('submit').style.display = 'block'
+                document.getElementById('submitmsg').style.display = 'none'
             }
         })
     </script>
