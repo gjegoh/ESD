@@ -27,7 +27,7 @@ def scheduleCreation():
 
     response = requests.get(url, params=payload)
     validation = response.json()
-    if (validation['status'] and validation['token']['isAdmin']): 
+    if (validation['code'] < 300 and validation['token']['isAdmin']): 
         payload = data
         # url = "http://10.124.9.182:5004/createClassSchedule"
         # url = "http://192.168.1.8:5004/createClassSchedule"
@@ -36,7 +36,15 @@ def scheduleCreation():
         response = requests.post(url, data=payload)
         data = response.json()
         # include notiMS
+        # data['code'] = 200
         return jsonify(data)
+    else:
+        return jsonify(
+            {
+            'code': validation['code'],
+            'error': 'Invalid authorisation. Please re-login.'
+            }
+        )
     
 # add delete class schedules
 

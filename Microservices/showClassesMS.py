@@ -21,7 +21,8 @@ def showUnassignedClasses():
     url = "http://tutor:5003/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
-    if (validation['status']):
+    # code < 300 = success validation
+    if (validation['code'] < 300):
         tutorID = validation['token']['tutorID']
         payload = {'tutorID': tutorID}
         url = "http://tutor:5003/getTutorInfo"
@@ -33,7 +34,14 @@ def showUnassignedClasses():
         url = "http://classSchedule:5004/getUnassignedClasses"
         response = requests.get(url, params=payload)
         data = response.json()
+        data['code'] = 201
         return jsonify(data)
+    else:
+        # validation fails, possible expiring of token
+        return jsonify({
+        "code": 401,
+        "message": "Token expired."
+    }), 401
 
 @app.route('/showTutorClasses', methods=['GET'])
 def showTutorClasses():
@@ -43,7 +51,9 @@ def showTutorClasses():
     url = "http://tutor:5003/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
-    if (validation['status']):
+    
+    # code < 300 = success validation
+    if (validation['code'] < 300):
         tutorID = validation['token']['tutorID']
         payload = {'tutorID': tutorID}
         # url = "http://10.124.9.182:5004/getTutorSchedule"
@@ -51,7 +61,16 @@ def showTutorClasses():
 
         response = requests.get(url, params=payload)
         data = response.json()
+        data['code'] = 201
         return jsonify(data)
+    else:
+        # code > 400 = error
+        # validation fails, possibly the expiring of credential token
+        return jsonify({
+        "code": 401,
+        "message": "Token expired."
+    }), 401
+        
     
 @app.route('/showAvailableClasses', methods=['GET'])
 def showAvailableClasses():
@@ -62,7 +81,7 @@ def showAvailableClasses():
     url = "http://student:5005/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
-    if (validation['status']):
+    if (validation['code']<300):
         grade = validation['token']['grade']
         studentID = validation['token']['studentID']
         payload = {'grade': grade}
@@ -101,7 +120,7 @@ def showStudentClasses():
     url = "http://student:5005/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
-    if (validation['status']):
+    if (validation['code']<300):
         studentID = validation['token']['studentID']
         payload = {'studentID': studentID}
         url = "http://student:5005/getClassesBooked"
