@@ -91,7 +91,7 @@
                                                     <th>Day</th>
                                                     <th>Timing</th>
                                                     <th>TutorID</th>
-                                                    <th>studentID</th>
+                                                    <th>Students</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -129,12 +129,44 @@
             window.location.replace(`./adminLogin.html`)
         }
 
+        async function getStudents(event) {
+            let scheduleID = Number(event.parentNode.parentNode.id)
+            if (document.getElementById(`${scheduleID}button`).value == 'Show Students') {
+                window.alert("Getting students... Please wait after clicking OK!")
+                document.getElementById(`${scheduleID}button`).value = 'Hide Students'
+                var url = "http://localhost:5002/getStudents" + `?scheduleID=${scheduleID}`
+                const response = await fetch(url)
+                let data = await response.json()
+                studentList = data['students']
+                if (studentList.length == 0) {
+                    window.alert("No students are currently registered!")
+                    document.getElementById(`${scheduleID}button`).value = 'Show Students'
+                }
+                else {
+                    let table = document.getElementById(`${scheduleID}students`)
+                    for (let student of studentList) {
+                        table.innerHTML += `<tr>
+                                                <td>${student['student_id']}</td>
+                                                <td>${student['firstName']} ${student['lastName']}</td>
+                                            </tr>`
+                    document.getElementById(`${scheduleID}row`).style.display = 'block'
+                    }
+                }
+            }
+            else {
+                document.getElementById(`${scheduleID}students`).innerHTML = `<tr>
+                                                                                    <th>Student ID</th>
+                                                                                    <th>Full Name</th>
+                                                                                </tr>`
+                document.getElementById(`${scheduleID}row`).style.display = 'none'
+                document.getElementById(`${scheduleID}button`).value = 'Show Students'
+            }
+        }
 
         async function getClassSchedules(url) {
             const response = await fetch(url)
             let data = await response.json()
 
-            console.log(data)
             
             // invalid token
             if (data['code'] > 300) {
@@ -158,7 +190,7 @@
             for (let schedule of scheduleList) {
                 document.getElementById('schedule').innerHTML +=
                     `
-                        <tr>
+                        <tr id='${schedule['scheduleID']}'>
                             <td>${schedule['scheduleID']}</td>
                             <td>${classDict[schedule['classID']][0]}</td>
                             <td>${classDict[schedule['classID']][1]}</td>
@@ -166,7 +198,17 @@
                             <td>${schedule['day']}</td>
                             <td>${schedule['timing']}</td>
                             <td>${schedule['tutorID']}</td>
-                            
+                            <td><input type='submit' value='Show Students' onclick="getStudents(this)" id='${schedule['scheduleID']}button'></td>
+                        </tr>
+                        <tr>
+                            <td colspan='8' id='${schedule['scheduleID']}row' style='display:none'>
+                                <table id='${schedule['scheduleID']}students' border='1' width='100%'>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Full Name</th>
+                                    </tr>
+                                </table>
+                            </td>
                         </tr>
                     `
             }

@@ -170,6 +170,32 @@ def updateStudentBooking():
                     'status': True
                 }
             )
+            
+@app.route('/getStudentNames', methods=['GET'])
+def getStudentNames():
+    data = request.args.getlist('studentList')
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                            user='admin',
+                            password='thisismypw',
+                            cursorclass=pymysql.cursors.DictCursor)
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE studentDB"
+            cursor.execute(sql)
+            connection.commit()
+            if (len(data) == 0):
+                return jsonify([{}])
+            else:
+                if (len(data) > 1):
+                    studentList = tuple([int(i) for i in data])
+                    sql = "SELECT student_id, firstName, lastName FROM student WHERE student_id IN {studentList}".format(studentList=studentList)
+                elif (len(data) == 1):
+                    studentList = int(data[0])
+                    sql = "SELECT student_id, firstName, lastName FROM student WHERE student_id={studentList}".format(studentList=studentList)
+                cursor.execute(sql)
+                result = cursor.fetchall()
+            return jsonify(result)
+            
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5005, debug=True)

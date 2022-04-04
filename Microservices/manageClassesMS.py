@@ -48,5 +48,31 @@ def scheduleCreation():
     
 # add delete class schedules
 
+@app.route('/getStudents', methods=['GET'])
+def getStudents():
+    scheduleID = request.args.get('scheduleID')
+    url = "http://classSchedule:5004/getStudentList"
+    payload = {'scheduleID': scheduleID}
+    response = requests.get(url, params=payload)
+    result = response.json()
+    studentList = result['studentList']
+    if (len(studentList) >= 1):
+        url = "http://student:5005/getStudentNames"
+        payload = {'studentList': studentList}
+        response = requests.get(url, params=payload)
+        result = response.json()
+        return jsonify(
+            {
+                'students': result
+            }
+        )
+    else:
+        return jsonify(
+            {
+                'students': [] 
+            }
+        )
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002, debug=True)

@@ -35,7 +35,6 @@
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const token = urlParams.get('token')
-        // const url = "http://192.168.1.2:5004/getUnassignedClasses" + `?token=${token}`
         const url = "http://localhost:5008/showUnassignedClasses" + `?token=${token}`
 
         function logout() {
@@ -199,7 +198,7 @@
                 <div class="col-4">
                     <h3 class="textColor">Tutor</h3>
                     <h6 id="pending"></h6>
-                    <h6 class="current"><a href='tutorViewUnassignedClasses.html'></a>View Unassigned Classes</h6>
+                    <h6 class="current"></h6>
                     <h6 id="viewSchedule"></h6>
                 </div>
                 <div class="col-8">

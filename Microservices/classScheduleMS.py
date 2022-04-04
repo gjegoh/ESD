@@ -141,8 +141,7 @@ def getClassSchedules():
             cursor.execute(sql)
             result = cursor.fetchall()
             for details in result:
-                classDict[details['classID']] = [
-                    details['subject'], details['grade']]
+                classDict[details['classID']] = [details['subject'], details['grade']]
             return jsonify(
                 {
                     "scheduleList": scheduleList,
@@ -309,6 +308,32 @@ def getStudentSchedule():
                 {
                     "scheduleList": scheduleList,
                     "classDict": classDict
+                }
+            )
+
+@app.route('/getStudentList', methods=['GET'])
+def getStudentList():
+    scheduleID = int(request.args.get('scheduleID'))
+    connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "USE classScheduleDB"
+            cursor.execute(sql)
+            connection.commit()
+            sql = """SELECT classScheduleStudent.studentID
+                    FROM classSchedule
+                    JOIN classScheduleStudent
+                    ON classSchedule.scheduleID = classScheduleStudent.scheduleID
+                    WHERE classScheduleStudent.scheduleID={}""".format(scheduleID)
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            studentList = [i['studentID'] for i in result]
+            return jsonify(
+                {
+                    "studentList": studentList
                 }
             )
 

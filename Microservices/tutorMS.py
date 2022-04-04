@@ -220,7 +220,6 @@ def getTutorInfo():
 @app.route("/getTutorName", methods=['GET'])
 def getTutorName():
     data = request.args.getlist('tutorList')
-    
     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
                                 user='admin',
                                 password='thisismypw',
