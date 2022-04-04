@@ -141,7 +141,7 @@ def tutorLogin():
                 if (new_key == get_key): 
                     payload =   {
                         "tutorID": tutorID,
-                        "exp": datetime.utcnow() + timedelta(minutes = 1)
+                        "exp": datetime.utcnow() + timedelta(minutes = 3)
                     }
                     token = jwt.encode(
                         payload,
