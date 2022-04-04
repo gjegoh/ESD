@@ -79,3 +79,5 @@ Scaling is made easy with `docker-compose.yml` file.
 | manageClassesMS | 5007 |
 
 
+# Error Codes
+401 = Unauthorised token/credentials

@@ -97,7 +97,8 @@
                         <input type="password" class="form-control" id="password">
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary buttonsubmit mb-3" id="submit">login</button>
+                        <span id="loginfail" style="display:none; color: red">Login Failed! Please re-login...</span>
+                        <button type="submit" class="btn btn-primary buttonsubmit mb-3" id="submit">Login</button>
                     </div>
                     <h2 id="submitmsg" style="display:none; color: white">Logging In... Please wait!</h2>
                 </form>
@@ -157,21 +158,21 @@
             document.getElementById('submitmsg').style.display = 'block'
             var email = $("#email").val()
             var password = $("#password").val()
-            // var url = "http://192.168.86.129:5003/tutorLogin" + `?email=${email}&password=${password}`
             // var url = "http://10.124.139.76:5003/tutorLogin" + `?email=${email}&password=${password}`
             var url = "http://localhost:5003/tutorLogin" + `?email=${email}&password=${password}`
             try {
                 const response = await fetch(url)
                 const data = await response.json()
                 if (response.ok) {
-                    var authenticated = data['status']
-                    if (authenticated) {
+                    var code = data['code']
+                    if (code<300) {
                         var token = data['token']
                         window.location.replace(`./tutorViewUnassignedClasses.html?token=${token}`)
                     }
                     else {
-                        alert("Login Failed! Please re-login...")
+                        // alert("Login Failed! Please re-login...")
                         document.getElementById('submit').style.display = 'block'
+                        document.getElementById('loginfail').style.display = 'block'
                         document.getElementById('submitmsg').style.display = 'none'
                     }
                 }

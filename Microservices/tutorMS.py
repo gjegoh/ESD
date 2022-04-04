@@ -103,17 +103,17 @@ def validateToken():
                             algorithms = ["HS256"]
                         )
         return {
-            'status': True,
+            'code': 201,
             'token': decoded
         }
     except jwt.ExpiredSignatureError:
         return {
-            'status': False,
+            'code': 401,
             'error': 'Signature expired. Please log in again.'
         }
     except jwt.InvalidTokenError:
         return {
-            'status': False,
+            'code': 401,
             'error': 'Invalid token. Please log in again.'
         }
 
@@ -141,7 +141,7 @@ def tutorLogin():
                 if (new_key == get_key): 
                     payload =   {
                         "tutorID": tutorID,
-                        "exp": datetime.utcnow() + timedelta(minutes = 5)
+                        "exp": datetime.utcnow() + timedelta(minutes = 1)
                     }
                     token = jwt.encode(
                         payload,
@@ -151,19 +151,22 @@ def tutorLogin():
                     return jsonify(
                         {   
                             'token': token,
-                            'status': True
+                            'code': 201
                         }
                     )
                 else:
+                    # new_key != get_key
+                    # This error is unlikely to happen
                     return jsonify(
                         {   
-                            'status': False
+                            'code': 401
                         }
                     )
             else:
+                # invalid login
                 return jsonify(
                         {   
-                            'status': False
+                            'code': 403
                         }
                     )
 

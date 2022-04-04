@@ -45,15 +45,34 @@
         function showError(message) {
             $('#errors')
                 .append("<label>" + message + "</label>");
+
+            document.getElementById('loadingmsg').style.display = 'none'
         }
 
         async function getUClasses(url) {
             try {
                 const response = await fetch(url)
                 let data = await response.json()
-                showUClasses(data)
+
+                console.log(data)
+                if (data['code'] > 300) {
+                    message = data['message']
+                    logout()
+                    alert(message + " Please login again.")
+                }
+                
+                else if (data['scheduleList'].length > 0) {
+                    // when there is unassigned classes available for grabs
+                    showUClasses(data)
+                }
+                else {
+                    // when there is empty unassigned classes
+                    showError("There are no unassigned classes currently. Please come back when there are unassigned classes.")
+                }
             } catch (error) {
-                showError("There are issues with displaying unassigned classes. Please try again in a while.")
+                     
+                showError("There are issues with retrieving unassigned classes. Please check that <b>microservices</b> are up and running, else please contact administrator.")
+                
             }
 
         }

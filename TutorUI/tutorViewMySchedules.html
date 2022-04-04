@@ -46,15 +46,35 @@
         function showError(message) {
             $('#errors')
                 .append("<label>" + message + "</label>")
+            
+            document.getElementById('loadingmsg').style.display = 'none'
+
         }
 
         async function getMySchedule(url) {
             try {
                 const response = await fetch(url)
                 let data = await response.json()
-                showMySchedules(data)
-            } catch (error) {
-                showError("There are issues with displaying my classes. Please try in a while.")
+                // console.log( data['scheduleList'].length > 0)
+                // console.log(data)
+
+                // Token expired, unauthorised credentials, code 401
+                if (data['code'] > 300) {
+                    message = data['message']
+                    logout()
+                    alert(message + " Please login again.")
+                }
+                
+                else if (data['scheduleList'].length > 0) {
+                    showMySchedules(data)
+
+                } else {
+                    showError("You did not enrol to tutor any class. Please enrol and view here later.")
+                }
+            } 
+            
+            catch (error) {
+                showError("There are issues with displaying your classes. Please contact administrator.")
             }
 
         }
