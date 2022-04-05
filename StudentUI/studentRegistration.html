@@ -238,15 +238,21 @@
                     });
                 const data = await response.json();
 
-                if (response.ok) {
+                if (data['code'] == 500){
+                    alert('This email address is being used. Please enter a different email address.')
+                    document.getElementById('submit').style.display = 'block'
+                    document.getElementById('loadingmsg').style.display = 'none'
+                }
+
+                else if (data['code'] <300){
                     alert("Successfully Registered!")
                     document.getElementById('submit').style.display = 'block'
                     document.getElementById('loadingmsg').style.display = 'none'
                     return false;
                 }
                 else {
-                    console.log(data);
-                    showError(data.message);
+                    // console.log(data);
+                    alert(data['message'])
                 }
             }
             catch (error) {

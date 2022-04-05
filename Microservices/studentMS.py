@@ -99,27 +99,36 @@ def studentRegister():
                             user='admin',
                             password='thisismypw',
                             cursorclass=pymysql.cursors.DictCursor)
-    with connection:
-        with connection.cursor() as cursor:
-            firstName = data['firstName']
-            lastName = data['lastName']
-            email = data['email']
-            grade = data['grade']
-            phoneNumber = data['phoneNumber']
-            password = data['password']
-            salt = os.urandom(32)
-            key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
-            hashedpass = salt + key
-            sql = "USE studentDB"
-            cursor.execute(sql)
-            connection.commit()
-            cursor.execute(f"""INSERT INTO student (firstName, lastName, email, grade, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s)""", (firstName, lastName, email, grade, phoneNumber, hashedpass))
-            connection.commit()
-            return jsonify(
-                {
-                    'code': 201,
-                }
-            )
+    try:
+        with connection:
+            with connection.cursor() as cursor:
+                firstName = data['firstName']
+                lastName = data['lastName']
+                email = data['email']
+                grade = data['grade']
+                phoneNumber = data['phoneNumber']
+                password = data['password']
+                salt = os.urandom(32)
+                key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+                hashedpass = salt + key
+                sql = "USE studentDB"
+                cursor.execute(sql)
+                connection.commit()
+                cursor.execute(f"""INSERT INTO student (firstName, lastName, email, grade, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s)""", (firstName, lastName, email, grade, phoneNumber, hashedpass))
+                connection.commit()
+                return jsonify(
+                    {
+                        'code': 201,
+                    }
+                )
+    except:
+        return jsonify(
+                    {
+                        'code': 500,
+                        'message': 'This email address is used. Please try another email address.'
+                    }
+                )
+        
             
 @app.route('/getClassesBooked', methods=['GET'])
 def getClassesBooked():
