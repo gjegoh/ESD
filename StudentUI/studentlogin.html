@@ -85,6 +85,7 @@
                         <input type="password" class="form-control" id="password">
                     </div>
                     <div class="d-flex justify-content-center">
+                        <span id="loginfail" style="display:none; color: red">Login Failed!</span>
                         <button type="submit" class="btn btn-primary buttonsubmit mb-3" id="submit">Login</button>
                     </div>
                     <h2 id="submitmsg" style="display:none; color: white">Logging In... Please wait!</h2>
@@ -158,14 +159,19 @@
                     }
                     // invalid credentials
                     else {
-                        alert("Login Failed! Please re-login...")
+                        document.getElementById('loginfail').innerText += " Please login with the right credentials."
+                        document.getElementById('loginfail').style.display = 'block'
                         document.getElementById('submit').style.display = 'block'
                         document.getElementById('submitmsg').style.display = 'none'
                     }
                 }
             }
+            // microservices not up
             catch (error) {
-
+                document.getElementById('loginfail').innerText += " Please ensure microservices are up running."
+                document.getElementById('loginfail').style.display = 'block'
+                document.getElementById('submit').style.display = 'block'
+                document.getElementById('submitmsg').style.display = 'none'
             }
         })
     </script>
