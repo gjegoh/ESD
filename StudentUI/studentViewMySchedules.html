@@ -65,7 +65,7 @@
                     showError("You did not enrol into any classes.")
                 }
             } catch (error) {
-                showError("There are issues with displaying pending tutors. Please try in a while.")
+                showError("There are issues with displaying classes. Please try in a while.")
             }
         }
 
@@ -84,7 +84,7 @@
                 //     <td>${schedule['tutorName']}</td>
                 // </tr>`
 
-                `<div class="col-lg-4 col-md-6 col-12 card-div">
+                `<div class="col">
                     <div class="card" style="width: 14rem;" id="${schedule['scheduleID']}-${schedule['classID']}">
                         <div class="card-body">
                             <h5 class="card-title">${classDict[schedule['classID']][1]}</h5>
@@ -102,7 +102,7 @@
                 </div>`
             }
             document.getElementById('loadingmsg').style.display = 'none'
-            document.getElementById('schedules').style.display = 'block'
+            document.getElementById('schedules').style.display = 'inline-flex'
         }
 
         getStudentSchedule(url)
@@ -178,7 +178,7 @@
                     </div> -->
                 
                     
-                    <div class="row" id="schedules" style="display:none"></div>
+                    <div class="row row-cols-2 row-cols-md-3 g-4 mt-3" id="schedules" style="display:none"></div>
                 </div>
             </div>
         </div>
