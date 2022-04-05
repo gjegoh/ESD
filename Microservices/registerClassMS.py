@@ -23,7 +23,7 @@ def registerClass():
     url = "http://tutor:5003/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
-    if (validation['status']):
+    if (validation['code']<300):
         scheduleID = data['scheduleID']
         tutorID = validation['token']['tutorID']
         url = "http://classSchedule:5004/updateClassTutor"
@@ -31,6 +31,10 @@ def registerClass():
         response = requests.patch(url, params=payload)
         result = response.json()
         return jsonify(result)
+    else: 
+        return jsonify ({
+            'code':401
+        })
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5009, debug=True)

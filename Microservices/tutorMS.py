@@ -40,13 +40,13 @@ def manageTutor():
                 connection.commit()
                 return jsonify(
                     {
-                        'status': True
+                        'code': 201
                     }
                 )
     except pymysql.Error:
         return jsonify(
             {
-                'status': False
+                'code': 500
             }
         )
 

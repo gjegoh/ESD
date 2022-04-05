@@ -273,7 +273,7 @@ def enrollStudent():
             connection.commit()
             return jsonify(
                 {
-                    'status': True
+                    'code': 201
                 }
             )
 
