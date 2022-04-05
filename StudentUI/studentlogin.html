@@ -76,19 +76,19 @@
             <div id="main-container" class="container childContainer pt-3 ">
                 <form method="POST" id="studentLogin">
                     <h1 class="display-6 text-center regText">Student Login</h1>
-                    <div class="mb-3">
+                    <div class="mb-3" id="emailbody">
                         <label for="email" class="form-label regText">Email address</label>
                         <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3" id="passbody">
                         <label for="password" class="form-label regText">Password</label>
                         <input type="password" class="form-control" id="password">
                     </div>
                     <div class="d-flex justify-content-center">
-                        <span id="loginfail" style="display:none; color: red">Login Failed!</span>
                         <button type="submit" class="btn btn-primary buttonsubmit mb-3" id="submit">Login</button>
+                        <h2 id="submitmsg" style="display:none; color: white">Logging In... Please wait!</h2>
                     </div>
-                    <h2 id="submitmsg" style="display:none; color: white">Logging In... Please wait!</h2>
+                    
                 </form>
             </div>
         </div>
@@ -117,7 +117,7 @@
                             <!-- <p class="text-body"><i class="bi bi-geo-alt-fill"></i> Location</p> -->
                             <p class="text-body">
                                 <i class="bi bi-envelope-fill"></i>
-                                tuitioncentre@gmail.com
+                                esdtuitioncentre@gmail.com
                             </p>
                         </div>
                         <!-- Grid column -->
@@ -146,33 +146,60 @@
             document.getElementById('submit').style.display = 'none'
             document.getElementById('submitmsg').style.display = 'block'
             var email = $("#email").val()
+            const validateEmail = (email) => {
+                return email.match(
+                    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+            }
+            validEmail = validateEmail(email)
+            if (validEmail == null) {
+                document.getElementById('emailbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                            Email is invalid
+                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>`
+            }
             var password = $("#password").val()
-            var url = "http://localhost:5005/studentLogin" + `?email=${email}&password=${password}`
-            try {
-                const response = await fetch(url)
-                const data = await response.json()
-                if (response.ok) {
-                    var code = data['code']
-                    if (code < 300) {
-                        var token = data['token']
-                        window.location.replace(`./studentViewAvailableSchedules.html?token=${token}`)
-                    }
-                    // invalid credentials
-                    else {
-                        document.getElementById('loginfail').innerText += " Please login with the right credentials."
-                        document.getElementById('loginfail').style.display = 'block'
-                        document.getElementById('submit').style.display = 'block'
-                        document.getElementById('submitmsg').style.display = 'none'
+            if (password == '') {
+                    document.getElementById('passbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                                Password is invalid
+                                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>`
+                }
+            if (validEmail && password != '') {
+                try {
+                    var url = "http://localhost:5005/studentLogin" + `?email=${email}&password=${password}`
+                    const response = await fetch(url)
+                    const data = await response.json()
+                    if (response.ok) {
+                        var code = data['code']
+                        if (code < 300) {
+                            var token = data['token']
+                            window.location.replace(`./studentViewAvailableSchedules.html?token=${token}`)
+                        }
+                        // invalid credentials
+                        else {
+                            alert("Login credentials are invalid, please try again")
+                            document.getElementById('submit').style.display = 'block'
+                            document.getElementById('submitmsg').style.display = 'none'
+                        }
                     }
                 }
+                // microservices not up
+                catch (error) {
+                    alert("Services are currently unavailable, please try again in a moment")
+                    document.getElementById('submit').style.display = 'block'
+                    document.getElementById('submitmsg').style.display = 'none'
+                }
             }
-            // microservices not up
-            catch (error) {
-                document.getElementById('loginfail').innerText += " Please ensure microservices are up running."
-                document.getElementById('loginfail').style.display = 'block'
+            else {
                 document.getElementById('submit').style.display = 'block'
                 document.getElementById('submitmsg').style.display = 'none'
             }
+            
         })
     </script>
 </body>
