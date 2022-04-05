@@ -131,11 +131,21 @@ def showStudentClasses():
         url = "http://student:5005/getClassesBooked"
         response = requests.get(url, params=payload)
         data = response.json()
+        # no schedule for 
         if (len(data['bookedSchedules']) == 0):
-            return data
+            return jsonify(
+                {
+                    "code": 404,
+                    "message": "There are no schedule for viewing. Please enrol into new class."
+                })
         # Produces http 500, database error, return as it is
-        if (data['code']>300):
-            return data
+        elif (data['code']>300):
+            return jsonify(
+                {
+                    "code": 500,
+                    "message": "Database erorr, please contact administrator"
+                })
+        
         bookedSchedules = data['bookedSchedules']
         payload = {'bookedSchedules': bookedSchedules}
         url = "http://classSchedule:5004/getStudentSchedule"
