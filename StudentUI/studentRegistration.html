@@ -294,21 +294,23 @@
                         });
                     const data = await response.json();
 
-                if (data['code'] == 500){
-                    alert('This email address is being used. Please enter a different email address.')
-                    document.getElementById('submit').style.display = 'block'
-                    document.getElementById('loadingmsg').style.display = 'none'
-                }
+                    if (data['code'] == 500){
+                        alert('This email address is being used. Please enter a different email address.')
+                        document.getElementById('submit').style.display = 'block'
+                        document.getElementById('loadingmsg').style.display = 'none'
+                    }
 
-                else if (data['code'] <300){
-                    alert("Successfully Registered!")
+                    else if (data['code'] <300){
+                        alert("Successfully Registered!")
+                        document.getElementById('submit').style.display = 'block'
+                        document.getElementById('loadingmsg').style.display = 'none'
+                        return false;
+                    }
+                }
+                catch (error) {
+                    alert("Services are currently unavailable, please try again in a moment")
                     document.getElementById('submit').style.display = 'block'
                     document.getElementById('loadingmsg').style.display = 'none'
-                    return false;
-                }
-                else {
-                    // console.log(data);
-                    alert(data['message'])
                 }
             }
             else {
