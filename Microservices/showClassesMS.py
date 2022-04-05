@@ -38,7 +38,12 @@ def showUnassignedClasses():
         return jsonify(data)
     else:
         # validation fails, possible expiring of token
-        return jsonify(data)
+        return jsonify(
+            {
+                "code": 403,
+                "message": "Token expired."
+            }
+        )
 
 @app.route('/showTutorClasses', methods=['GET'])
 def showTutorClasses():
@@ -64,9 +69,9 @@ def showTutorClasses():
         # code > 400 = error
         # validation fails, possibly the expiring of credential token
         return jsonify({
-        "code": 401,
+        "code": 403,
         "message": "Token expired."
-    }), 401
+    })
         
     
 @app.route('/showAvailableClasses', methods=['GET'])
@@ -115,6 +120,7 @@ def showAvailableClasses():
         return jsonify(
             {
                 "code": 403,
+                "message": "Token expired."
             }
         )
 
@@ -135,7 +141,7 @@ def showStudentClasses():
         if (len(data['bookedSchedules']) == 0):
             return jsonify(
                 {
-                    "code": 404,
+                    "code": 305,
                     "message": "There are no schedule for viewing. Please enrol into new class."
                 })
         # Produces http 500, database error, return as it is
@@ -178,12 +184,13 @@ def showStudentClasses():
             }
         )
     # invalid token
-    
+    # inside should be code:403 and error message
     return jsonify(
-        {
-            "code": 403,
-        }
-    )
+            {
+                "code": 403,
+                "message": "Token expired."
+            }
+        )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5008, debug=True)

@@ -286,31 +286,39 @@ def getStudentSchedule():
                                 cursorclass=pymysql.cursors.DictCursor)
     scheduleList = []
     classDict = {}
-    with connection:
-        with connection.cursor() as cursor:
-            sql = "USE classScheduleDB"
-            cursor.execute(sql)
-            connection.commit()
-            if (len(data) > 1):
-                bookedSchedules = tuple([int(i) for i in data])
-                sql = "SELECT * FROM classSchedule WHERE scheduleID IN {}".format(bookedSchedules)
-            else:
-                bookedSchedules = int(data[0])
-                sql = "SELECT * FROM classSchedule WHERE scheduleID={}".format(bookedSchedules)
-            cursor.execute(sql)
-            scheduleList = cursor.fetchall()
-            sql = "SELECT classID, subject, grade FROM Class"
-            cursor.execute(sql)
-            result = cursor.fetchall()
-            classDict = {i['classID']: [i['subject'], i['grade']]
-                        for i in result}
-            return jsonify(
-                {
-                    "code": 201,
-                    "scheduleList": scheduleList,
-                    "classDict": classDict
-                }
-            )
+    try:
+        with connection:
+            with connection.cursor() as cursor:
+                sql = "USE classScheduleDB"
+                cursor.execute(sql)
+                connection.commit()
+                if (len(data) > 1):
+                    bookedSchedules = tuple([int(i) for i in data])
+                    sql = "SELECT * FROM classSchedule WHERE scheduleID IN {}".format(bookedSchedules)
+                else:
+                    bookedSchedules = int(data[0])
+                    sql = "SELECT * FROM classSchedule WHERE scheduleID={}".format(bookedSchedules)
+                cursor.execute(sql)
+                scheduleList = cursor.fetchall()
+                sql = "SELECT classID, subject, grade FROM Class"
+                cursor.execute(sql)
+                result = cursor.fetchall()
+                classDict = {i['classID']: [i['subject'], i['grade']]
+                            for i in result}
+                return jsonify(
+                    {
+                        "code": 201,
+                        "scheduleList": scheduleList,
+                        "classDict": classDict
+                    }
+                )
+    except:
+        return jsonify(
+                    {
+                        "code": 404,
+                        "message": "Error, please contact administrator"
+                    }
+                )
 
 @app.route('/getStudentList', methods=['GET'])
 def getStudentList():

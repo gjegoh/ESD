@@ -42,7 +42,7 @@ def scheduleCreation():
         return jsonify(
             {
             'code': validation['code'],
-            'error': 'Invalid authorisation. Please re-login.'
+            'message': 'Invalid authorisation. Please re-login.'
             }
         )
     

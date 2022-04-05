@@ -50,10 +50,10 @@
             try {
                 const response = await fetch(url)
                 let data = await response.json()
-                // console.log(data)
+                console.log(data)
                 // 404 = no classes 
-                if (data['code'] == 404) {
-                    showError("You did not enrol into any classes.")
+                if (data['code'] == 305) {
+                    showError(data['message'])
                 } 
                 // validation key expire
                 else if (data['code'] >300){
