@@ -38,10 +38,7 @@ def showUnassignedClasses():
         return jsonify(data)
     else:
         # validation fails, possible expiring of token
-        return jsonify({
-        "code": 401,
-        "message": "Token expired."
-    }), 401
+        return jsonify(data)
 
 @app.route('/showTutorClasses', methods=['GET'])
 def showTutorClasses():
@@ -107,9 +104,17 @@ def showAvailableClasses():
                 newScheduleList.append(schedule)
         return jsonify(
             {
+                "code": 201,
                 "scheduleList": newScheduleList,
                 "classDict": classDict,
                 'studentID': studentID
+            }
+        )
+    # invalid token
+    else:
+        return jsonify(
+            {
+                "code": 403,
             }
         )
 
@@ -126,11 +131,19 @@ def showStudentClasses():
         url = "http://student:5005/getClassesBooked"
         response = requests.get(url, params=payload)
         data = response.json()
+        # Produces http 500, database error, return as it is
+        if (data['code']>300):
+            return data
+        
         bookedSchedules = data['bookedSchedules']
         payload = {'bookedSchedules': bookedSchedules}
         url = "http://classSchedule:5004/getStudentSchedule"
         response = requests.get(url, params=payload)
         data = response.json()
+        # 
+        if (data['code']>300):
+            return data
+        
         scheduleList = data['scheduleList']
         classDict = data['classDict']
         tutorList = list(set([i['tutorID'] for i in scheduleList]))
@@ -145,10 +158,18 @@ def showStudentClasses():
             newScheduleList.append(schedule)
         return jsonify(
             {
+                "code": 201,
                 "scheduleList": newScheduleList,
                 "classDict": classDict
             }
         )
+    # invalid token
+    
+    return jsonify(
+        {
+            "code": 403,
+        }
+    )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5008, debug=True)

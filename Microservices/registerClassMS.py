@@ -31,6 +31,10 @@ def registerClass():
         response = requests.patch(url, params=payload)
         result = response.json()
         return jsonify(result)
+    else: 
+        return jsonify ({
+            'code':401
+        })
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5009, debug=True)

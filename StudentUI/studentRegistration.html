@@ -33,41 +33,33 @@
 <body>
     <div class="bodyContent">
         <!-- standard nav bar -->
-        <nav class="navbar navbar-expand-lg navbar-light">
+        <nav class="navbar navbar-expand-lg navbar-light ">
             <div class="container-fluid">
-                <a class="navbar-brand" href="../home.html">Brand Name</a>
+                <a class="navbar-brand" href="../index.html">Tuition Centre</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                     aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <!-- right navbar links -->
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a id="navbar" class="nav-link active" aria-current="page" href="#">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="navbar" class="nav-link" href="#">About</a>
-                        </li>
-                    </ul>
+                    <!-- <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a id="navbar" class="nav-link active" aria-current="page" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a id="navbar" class="nav-link" href="#">About</a>
+                </li>
+            </ul> -->
 
                     <!-- left navbar links -->
                     <ul class="navbar-nav ms-auto">
-                        <!-- <li class="nav-item">
-                        <a id="navbar" class="nav-link" href="#">Register</a>
-                    </li> -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Register
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="nav-dropdown">
-                                <a class="dropdown-item  text-dark" href="studentRegistration.html">Register
-                                    as
-                                    Student</a>
-                                <a class="dropdown-item  text-dark" href="../TutorUI/tutorRegistration.html">Register as
+                                <a class="dropdown-item text-dark" href="../TutorUI/tutorRegistration.html">Register as
                                     Tutor</a>
                             </div>
                         </li>
@@ -78,9 +70,10 @@
                                 Login
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="nav-dropdown">
-                                <a class="dropdown-item text-dark" href="studentlogin.html">Login as Student</a>
-                                <a class="dropdown-item text-dark" href="../TutorUI/tutorLogin.html">Login as Tutor</a>
-                                <a class="dropdown-item text-dark" href="../AdminUI/adminLogin.html">Login as Admin</a>
+                                <a class="dropdown-item" href="studentlogin.html">Login as
+                                    Student</a>
+                                <a class="dropdown-item" href="../TutorUI/tutorLogin.html">Login as Tutor</a>
+                                <a class="dropdown-item" href="../AdminUI/adminLogin.html">Login as Admin</a>
                             </div>
                         </li>
                     </ul>
@@ -132,7 +125,6 @@
                 <label id="error" class="text-danger"></label>
             </div>
         </div>
-        <!-- Footer -->
         <footer class="pt-1 text-center text-lg-start bg-light text-muted mt-4">
             <!-- Section: Links  -->
             <section class="mt-3">
@@ -143,23 +135,22 @@
                         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                             <!-- Content -->
                             <h6 class="text-uppercase fw-bold mb-4">
-                                Brand Name
+                                Tuition Centre
                             </h6>
                             <p class="text-dark">
-                                Here you can use rows and columns to organize your footer content. Lorem ipsum
-                                dolor sit amet, consectetur adipisicing elit.
+                                We teach you good, choose us, you become smart!
                             </p>
                         </div>
                         <!-- Grid column -->
                         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                             <!-- Links -->
                             <h6 class="text-uppercase fw-bold mb-4">
-                                <i class="bi bi-telephone-fill"></i> Contact
+                                <i class="bi bi-telephone-fill"></i> +65 1234 5678
                             </h6>
-                            <p class="text-body"><i class="bi bi-geo-alt-fill"></i> Location</p>
+                            <!-- <p class="text-body"><i class="bi bi-geo-alt-fill"></i> Location</p> -->
                             <p class="text-body">
                                 <i class="bi bi-envelope-fill"></i>
-                                email@example.com
+                                tuitioncentre@gmail.com
                             </p>
                         </div>
                         <!-- Grid column -->
@@ -170,10 +161,10 @@
             <!-- Section: Links  -->
 
             <!-- Copyright -->
-            <div class="text-center p-4" style="background-color: #F8F9FA;">
+            <!-- <div class="text-center p-4" style="background-color: #F8F9FA;">
                 © 2022 Copyright:
                 <a class="text-reset fw-bold" href="../home.html">tutor.com</a>
-            </div>
+            </div> -->
             <!-- Copyright -->
         </footer>
     </div>
@@ -214,7 +205,7 @@
             event.preventDefault()
             document.getElementById('submit').style.display = 'none'
             document.getElementById('loadingmsg').style.display = 'block'
-            var url = "http://192.168.86.129:5005/studentRegister"
+            var url = "http://localhost:5005/studentRegister"
             try {
                 var firstName = document.getElementById("firstName").value
                 var lastName = document.getElementById("lastName").value
@@ -224,7 +215,7 @@
                 var email = document.getElementById("emailTb").value
                 var phoneNumber = document.getElementById("phoneNumberTb").value
                 var password = document.getElementById("passwordTb").value
-            } 
+            }
             catch {
                 showError("There are issues with registering the student. Please try in a while.")
             }
@@ -252,12 +243,12 @@
                     document.getElementById('submit').style.display = 'block'
                     document.getElementById('loadingmsg').style.display = 'none'
                     return false;
-                } 
+                }
                 else {
                     console.log(data);
                     showError(data.message);
                 }
-            } 
+            }
             catch (error) {
                 showError
                     ("There is a problem registering the students, please try again later." + error);

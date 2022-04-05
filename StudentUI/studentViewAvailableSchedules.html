@@ -43,13 +43,29 @@
         function showError(message) {
             $('#errors')
                 .append("<label>" + message + "</label>")
+
+            document.getElementById('loadingmsg').style.display = 'none'
+
         }
 
         async function getStudentSchedule(url) {
             try {
                 const response = await fetch(url)
                 let data = await response.json()
-                showStudentSchedule(data)
+                console.log(data)
+
+                if (data['code'] > 300) {
+                    message = data['message']
+                    logout()
+                    alert(message + " Please login again.")
+                } 
+                else if (data['scheduleList'].length > 0) {
+                    // display class that is available to enrolment 
+                    showStudentSchedule(data)
+                } else {
+                    // no classes to display
+                    showError("There are no classes for enrollment at the moment, please try again later.")
+                }
             } catch (error) {
                 showError("There are issues with displaying pending tutors. Please try in a while.")
             }
@@ -97,17 +113,17 @@
                 //     <td><input type='submit' value='Book Class' onclick="book(this)"></td>
                 // </tr>`
 
-                `<div class="col-lg-4 col-md-6 col-12 card-div">
-                    <div class="card" style="width: 14rem;" id="${schedule['scheduleID']}-${schedule['classID']}">
+                `<div class="col">
+                    <div class="card" style="width: 15rem;" id="${schedule['scheduleID']}-${schedule['classID']}">
                         <div class="card-body">
                             <h5 class="card-title">${classDict[schedule['classID']][1]}</h5>
                             <h5 class="card-title">${classDict[schedule['classID']][0]}</h5>
                             <p class="card-text">
                                 <ul class="list-unstyled">
-                                    <li>${schedule['year']}</li>
-                                    <li>${schedule['day']}</li>
-                                    <li>${schedule['timing']}</li>
-                                    <li>${schedule['tutorName']}</li>
+                                    <li>Year: ${schedule['year']}</li>
+                                    <li>Day: ${schedule['day']}</li>
+                                    <li>Timing: ${schedule['timing']}</li>
+                                    <li>Tutor Name: ${schedule['tutorName']}</li>
                                 </ul>
                             </p>
                             <div class="text-center">
@@ -118,7 +134,7 @@
                 </div>`
             }
             document.getElementById('loadingmsg').style.display = 'none'
-            document.getElementById('schedules').style.display = 'block'
+            document.getElementById('schedules').style.display = 'inline-flex'
         }
 
         getStudentSchedule(url)
@@ -194,7 +210,7 @@
                     </div> -->
                 
                 
-                    <div class="row" id="schedules"></div>
+                    <div class="row row-cols-2 row-cols-md-3 g-4 mt-3" id="schedules"></div>
                     
                 </div>
             </div>

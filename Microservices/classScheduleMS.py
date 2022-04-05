@@ -273,7 +273,7 @@ def enrollStudent():
             connection.commit()
             return jsonify(
                 {
-                    'status': True
+                    'code': 201
                 }
             )
 
@@ -306,6 +306,7 @@ def getStudentSchedule():
                         for i in result}
             return jsonify(
                 {
+                    "code": 201,
                     "scheduleList": scheduleList,
                     "classDict": classDict
                 }

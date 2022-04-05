@@ -31,14 +31,14 @@ def validateToken():
     except jwt.ExpiredSignatureError:
         return jsonify(
             {
-                'code': 401,
+                'code': 403,
                 'error': 'Signature expired. Please log in again.'
             }
         )
     except jwt.InvalidTokenError:
         return jsonify(
             {
-            'code': 401,
+            'code': 403,
             'error': 'Invalid token. Please log in again.'
             }
         )
@@ -49,50 +49,58 @@ def adminLogin():
                             user='admin',
                             password='thisismypw',
                             cursorclass=pymysql.cursors.DictCursor)
-    with connection:
-        with connection.cursor() as cursor:
-            email = request.args.get('email')
-            password = request.args.get('password')
-            sql = "USE tutorDB"
-            cursor.execute(sql)
-            connection.commit()
-            sql = "SELECT password FROM tutor WHERE email='{email}' AND isAdmin=1".format(email=email)
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            if (len(results) > 0):
-                get_salt = results[0]['password'][:32]
-                get_key = results[0]['password'][32:]
-                new_key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), get_salt, 100000)
-                if (new_key == get_key): 
-                    payload =   {
-                        "exp": datetime.utcnow() + timedelta(minutes = 5),
-                        "isAdmin": True
-                    }
-                    token = jwt.encode(
-                        payload,
-                        app.config.get('SECRET_KEY'),
-                        algorithm = "HS256"
-                    )
-                    return jsonify(
-                        {   
-                            'token': token,
-                            'code': 200
+    try: 
+        with connection:
+            with connection.cursor() as cursor:
+                email = request.args.get('email')
+                password = request.args.get('password')
+                sql = "USE tutorDB"
+                cursor.execute(sql)
+                connection.commit()
+                sql = "SELECT password FROM tutor WHERE email='{email}' AND isAdmin=1".format(email=email)
+                cursor.execute(sql)
+                results = cursor.fetchall()
+                if (len(results) > 0):
+                    get_salt = results[0]['password'][:32]
+                    get_key = results[0]['password'][32:]
+                    new_key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), get_salt, 100000)
+                    if (new_key == get_key): 
+                        payload =   {
+                            "exp": datetime.utcnow() + timedelta(minutes = 5),
+                            "isAdmin": True
                         }
-                    )
+                        token = jwt.encode(
+                            payload,
+                            app.config.get('SECRET_KEY'),
+                            algorithm = "HS256"
+                        )
+                        return jsonify(
+                            {   
+                                'token': token,
+                                'code': 200
+                            }
+                        )
+                    else:
+                        # failed match of new_key and get_key
+                        return jsonify(
+                            {   
+                                'code': 403
+                            }
+                        )
                 else:
-                    # failed match of new_key and get_key
+                    # login-ed but result = 0
                     return jsonify(
-                        {   
-                            'code': 401
-                        }
-                    )
-            else:
-                # login-ed but result = 0
-                return jsonify(
-                        {   
-                            'code': 401
-                        }
-                    )
+                            {   
+                                'code': 401
+                            }
+                        )
+    except:
+        return jsonify(
+                {   
+                    'code': 500,
+                    'message':"Database error, please contact administrator."
+                }
+            )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
