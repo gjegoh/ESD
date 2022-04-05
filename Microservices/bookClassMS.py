@@ -103,6 +103,9 @@ def stripeWebHook():
         url = "http://student:5005/updateStudentBooking"
         response = requests.post(url, json=payload)
         data = response.json()
+        #call notiMS using paymentEmail, amount, datatime, paymentid, status
+        paymentSuccessfulURL = "notification:5009/paymentSuccessfulNotification"
+        response = requests.post(paymentSuccessfulURL, json=payload)
     return {}
 
 if __name__ == '__main__':

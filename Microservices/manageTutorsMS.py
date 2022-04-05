@@ -29,6 +29,9 @@ def approveTutor():
         url = "http://tutor:5003/manageTutor"
         response = requests.patch(url, params=payload)
         status = response.json()
+        #call notiMS and send tutor email
+        approveTutorURL = "notification:5009/approveTutorNotification"
+        response = requests.post(approveTutorURL, json=payload)
         if (status['status']):
             return jsonify(data)
 
@@ -46,8 +49,12 @@ def rejectTutor():
         url = "http://tutor:5003/manageTutor"
         response = requests.delete(url, params=payload)
         status = response.json()
+        #call notiMS and send tutor email
+        rejectTutorURL = "notification:5009/rejectTutorNotification"
+        response = requests.post(rejectTutorURL, json=payload)
         if (status['status']):
             return jsonify(data)
+            
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
