@@ -103,6 +103,7 @@ services:
     depends_on:
       - admin
       - tutor
+      - notification
     ports:
       - "5001:5001"
 
@@ -123,15 +124,43 @@ services:
   # ###################################
   # # Notification: The Notification microservice
   # ###################################
-  # notification:
-  #   image: notification:0.21
-  #   build:
-  #     context: .
-  #     dockerfile: './Docker/Dockerfile.notification'
-  #   ports:
-  #     - "5009:5009"
+  notification:
+    image: notification:0.21
+    build:
+      context: .
+      dockerfile: './Docker/Dockerfile.notification'
+    depends_on:
+      - approveTutor
+      - rejectTutor
+      - paymentSuccess
+    ports:
+      - "5009:5009"
 
-   # ###################################
+  # ###################################
+  # # approveTutor: The approveTutor queue receiver microservice
+  # ###################################
+  approvetutor:
+    image: approvetutor:0.21
+    build:
+      context: .
+      dockerfile: './Docker/Dockerfile.approveTutor'
+  # ###################################
+  # # rejectTutor: The rejectTutor queue receiver microservice
+  # ###################################
+  rejecttutor: 
+    image: rejecttutor:0.21
+    build:
+      context: .
+      dockerfile: './Docker/Dockerfile.rejectTutor'
+  # ###################################
+  # # paymentSuccess: The paymentSuccess queue receiver microservice
+  # ###################################
+  paymentsuccess:
+    image: paymentsuccess:0.21
+    build:
+      context: .
+      dockerfile: './Docker/Dockerfile.paymentSuccess'
+  # ###################################
   # # transaction: The transaction microservice
   # ###################################
   transaction:
@@ -154,6 +183,7 @@ services:
       - transaction
       - classSchedule
       - student
+      - notification
     ports:
       - "5006:5006"
 
