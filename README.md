@@ -20,12 +20,6 @@ This will be done via a UX-first approach, through the use of our web applicatio
 - Hostname = admin 
 - Password = thisismypw
 
-# Mailchimp (use postman to send requests):
-1. select authorization
-2. enter username and password
-  - Username: jenniferwxe
-  - Password: 149218c56ba8c2f24e05f157add74e6b-us14
-
 # Stateless Architecture (Token-Based Authentication)
 Token-based authentication is stateless. The server does not keep a record of which users are logged in or which JWTs have been issued. Instead, every request to the server is accompanied by a token which the server uses to verify the authenticity of the request. The token is generally sent as an addition Authorization header in form of Bearer {JWT}, but can additionally be sent in the body of a POST request or even as a query parameter. Let's see how this flow works:
 
