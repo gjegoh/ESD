@@ -23,7 +23,7 @@ def registerClass():
     url = "http://tutor:5003/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
-    if (validation['status']):
+    if (validation['code'] < 300):
         scheduleID = data['scheduleID']
         tutorID = validation['token']['tutorID']
         url = "http://classSchedule:5004/updateClassTutor"

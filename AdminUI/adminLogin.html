@@ -124,7 +124,7 @@
                             <!-- <p class="text-body"><i class="bi bi-geo-alt-fill"></i> Location</p> -->
                             <p class="text-body">
                                 <i class="bi bi-envelope-fill"></i>
-                                tuitioncentre@gmail.com
+                                esdtuitioncentre@gmail.com
                             </p>
                         </div>
                         <!-- Grid column -->
@@ -169,27 +169,17 @@
                         }
                         else {
                             // Invalid credentials
+                            alert("Login credentials are invalid, please try again")
                             document.getElementById('submit').style.display = 'block'
                             document.getElementById('submitmsg').style.display = 'none'
-                            document.getElementById('submitbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                                                                    Login credentials are invalid
-                                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                                                        <span aria-hidden="true">&times;</span>
-                                                                                    </button>
-                                                                                </div>`
                         }
                     }
                 }
                 // Microservices probably not running, hence not working
                 catch (error) {
+                    alert("Services are currently unavailable, please try again in a moment")
                     document.getElementById('submit').style.display = 'block'
                     document.getElementById('submitmsg').style.display = 'none'
-                    document.getElementById('submitbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                                                            Services are currently unavailable, please try again in a moment  
-                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>`
                 }
             }
             else {
