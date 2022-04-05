@@ -131,10 +131,11 @@ def showStudentClasses():
         url = "http://student:5005/getClassesBooked"
         response = requests.get(url, params=payload)
         data = response.json()
+        if (len(data['bookedSchedules']) == 0):
+            return data
         # Produces http 500, database error, return as it is
         if (data['code']>300):
             return data
-        
         bookedSchedules = data['bookedSchedules']
         payload = {'bookedSchedules': bookedSchedules}
         url = "http://classSchedule:5004/getStudentSchedule"
@@ -153,9 +154,12 @@ def showStudentClasses():
         data = response.json()
         tutorDict = {i['tutorID']: i['firstName'] + " " + i['lastName'] for i in data}
         newScheduleList = []
-        for schedule in scheduleList:
-            schedule['tutorName'] = tutorDict[schedule['tutorID']]
-            newScheduleList.append(schedule)
+        try:
+            for schedule in scheduleList:
+                schedule['tutorName'] = tutorDict[schedule['tutorID']]
+                newScheduleList.append(schedule)
+        except KeyError:
+            pass
         return jsonify(
             {
                 "code": 201,

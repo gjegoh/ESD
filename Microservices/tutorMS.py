@@ -232,6 +232,8 @@ def getTutorName():
             sql = "USE tutorDB"
             cursor.execute(sql)
             connection.commit()
+            if (len(data) == 0):
+                return jsonify([])
             if (len(data) > 1):
                 tutorList = tuple([int(i) for i in data])
                 sql = "SELECT tutorID, firstName, lastName FROM tutor WHERE tutorID IN {tutorList}".format(tutorList=tutorList)
