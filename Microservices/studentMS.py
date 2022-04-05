@@ -15,7 +15,7 @@ CORS(app)
 
 key = os.urandom(12)
 app.config['SECRET_KEY'] = key
-                
+  
 @app.route('/validateToken', methods=['GET'])
 def validateToken():
     token = request.args.get('token')
@@ -26,17 +26,17 @@ def validateToken():
                             algorithms = ["HS256"]
                         )
         return {
-            'status': True,
+            'code': 201,
             'token': decoded
         }
     except jwt.ExpiredSignatureError:
         return {
-            'status': False,
+            'code': 403,
             'error': 'Signature expired. Please log in again.'
         }
     except jwt.InvalidTokenError:
         return {
-            'status': False,
+            'code': 403,
             'error': 'Invalid token. Please log in again.'
         }
 
@@ -76,19 +76,19 @@ def studentLogin():
                     return jsonify(
                         {   
                             'token': token,
-                            'status': True
+                            'code': 201,
                         }
                     )
                 else:
                     return jsonify(
                         {   
-                            'status': False
+                            'code': 401,
                         }
                     )
             else:
                 return jsonify(
                         {   
-                            'status': False
+                            'code': 403,
                         }
                     )
 
@@ -117,7 +117,7 @@ def studentRegister():
             connection.commit()
             return jsonify(
                 {
-                    'status': True
+                    'code': 201,
                 }
             )
             
@@ -129,23 +129,33 @@ def getClassesBooked():
                             user='admin',
                             password='thisismypw',
                             cursorclass=pymysql.cursors.DictCursor)
-    with connection:
-        with connection.cursor() as cursor:
-            sql = "USE studentDB"
-            cursor.execute(sql)
-            connection.commit()
-            sql = """SELECT studentBookedSchedules.scheduleID
-                        FROM student
-                        JOIN studentBookedSchedules
-                        ON student.student_id = studentBookedSchedules.studentID
-                        WHERE studentBookedSchedules.studentID = {}""".format(studentID)
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            for result in results:
-                bookedSchedules.append(result['scheduleID'])
-            return jsonify(
-                {
-                    'bookedSchedules': bookedSchedules
+    
+    try:
+        with connection:
+            with connection.cursor() as cursor:
+                sql = "USE studentDB"
+                cursor.execute(sql)
+                connection.commit()
+                sql = """SELECT studentBookedSchedules.scheduleID
+                            FROM student
+                            JOIN studentBookedSchedules
+                            ON student.student_id = studentBookedSchedules.studentID
+                            WHERE studentBookedSchedules.studentID = {}""".format(studentID)
+                cursor.execute(sql)
+                results = cursor.fetchall()
+                for result in results:
+                    bookedSchedules.append(result['scheduleID'])
+                return jsonify(
+                    {   
+                        'code':201,
+                        'bookedSchedules': bookedSchedules
+                    }
+                )
+    except:
+        return jsonify(
+                {   
+                    'code':500,
+                    'message':"Database error, please contact administrator."
                 }
             )
 
@@ -155,9 +165,9 @@ def updateStudentBooking():
     scheduleID = data['scheduleID']
     studentID = data['studentID']
     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                                user='admin',
-                                password='thisismypw',
-                                cursorclass=pymysql.cursors.DictCursor)
+                            user='admin',
+                            password='thisismypw',
+                            cursorclass=pymysql.cursors.DictCursor)
     with connection:
         with connection.cursor() as cursor:
             sql = "USE studentDB"
@@ -167,7 +177,7 @@ def updateStudentBooking():
             connection.commit()
             return jsonify(
                 {
-                    'status': True
+                    'code': 201,
                 }
             )
             
@@ -184,7 +194,8 @@ def getStudentNames():
             cursor.execute(sql)
             connection.commit()
             if (len(data) == 0):
-                return jsonify([{}])
+                # if there is no data
+                return jsonify([])
             else:
                 if (len(data) > 1):
                     studentList = tuple([int(i) for i in data])
@@ -194,6 +205,7 @@ def getStudentNames():
                     sql = "SELECT student_id, firstName, lastName FROM student WHERE student_id={studentList}".format(studentList=studentList)
                 cursor.execute(sql)
                 result = cursor.fetchall()
+                result['code'] = 201
             return jsonify(result)
             
 

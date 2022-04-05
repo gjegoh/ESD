@@ -21,9 +21,10 @@ def manageTutor():
     try:
         data = request.args
         connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                                    user='admin',
-                                    password='thisismypw',
-                                    cursorclass=pymysql.cursors.DictCursor)
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
+        
         with connection:
             with connection.cursor() as cursor:
                 email = data['email']
@@ -52,9 +53,10 @@ def manageTutor():
 @app.route('/getPendingTutors', methods=['GET'])
 def getPendingTutors():
     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                            user='admin',
-                            password='thisismypw',
-                            cursorclass=pymysql.cursors.DictCursor)
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
+    
     with connection:
         with connection.cursor() as cursor:
             sql = "USE tutorDB"
@@ -74,9 +76,9 @@ def getPendingTutors():
 @app.route('/getApprovedTutors', methods=['GET'])
 def getApprovedTutors():
     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                            user='admin',
-                            password='thisismypw',
-                            cursorclass=pymysql.cursors.DictCursor)
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
     with connection:
         with connection.cursor() as cursor:
             sql = "USE tutorDB"
@@ -107,21 +109,22 @@ def validateToken():
         }
     except jwt.ExpiredSignatureError:
         return {
-            'code': 401,
+            'code': 403,
             'error': 'Signature expired. Please log in again.'
         }
     except jwt.InvalidTokenError:
         return {
-            'code': 401,
+            'code': 403,
             'error': 'Invalid token. Please log in again.'
         }
 
 @app.route('/tutorLogin', methods=['GET'])
 def tutorLogin():
     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                            user='admin',
-                            password='thisismypw',
-                            cursorclass=pymysql.cursors.DictCursor)
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
+    
     with connection:
         with connection.cursor() as cursor:
             email = request.args.get('email')
@@ -158,14 +161,14 @@ def tutorLogin():
                     # This error is unlikely to happen
                     return jsonify(
                         {   
-                            'code': 401
+                            'code': 403
                         }
                     )
             else:
                 # invalid login
                 return jsonify(
                         {   
-                            'code': 403
+                            'code': 401,
                         }
                     )
 
@@ -173,9 +176,9 @@ def tutorLogin():
 def tutorRegister():
     data = request.get_json()
     connection = pymysql.connect(host='studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com',
-                            user='admin',
-                            password='thisismypw',
-                            cursorclass=pymysql.cursors.DictCursor)
+                                user='admin',
+                                password='thisismypw',
+                                cursorclass=pymysql.cursors.DictCursor)
     with connection:
         with connection.cursor() as cursor:
             firstName = data['firstName']
@@ -196,7 +199,7 @@ def tutorRegister():
             connection.commit()
             return jsonify(
                 {
-                    'status': True
+                    'code': 201
                 }
             )
             

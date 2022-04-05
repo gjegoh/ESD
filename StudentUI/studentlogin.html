@@ -154,16 +154,17 @@
             document.getElementById('submitmsg').style.display = 'block'
             var email = $("#email").val()
             var password = $("#password").val()
-            var url = "http://192.168.86.129:5005/studentLogin" + `?email=${email}&password=${password}`
+            var url = "http://localhost:5005/studentLogin" + `?email=${email}&password=${password}`
             try {
                 const response = await fetch(url)
                 const data = await response.json()
                 if (response.ok) {
-                    var authenticated = data['status']
-                    if (authenticated) {
+                    var code = data['code']
+                    if (code < 300) {
                         var token = data['token']
                         window.location.replace(`./studentViewAvailableSchedules.html?token=${token}`)
-                    }
+                    } 
+                    // invalid credentials
                     else {
                         alert("Login Failed! Please re-login...")
                         document.getElementById('submit').style.display = 'block'

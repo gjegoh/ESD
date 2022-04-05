@@ -74,4 +74,6 @@ Scaling is made easy with `docker-compose.yml` file.
 
 
 # Error Codes
-401 = Unauthorised token/credentials
+401 = Unauthorised credentials [haven't login]
+403 = Invalid token [expired]
+500 = database error

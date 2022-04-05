@@ -43,13 +43,29 @@
         function showError(message) {
             $('#errors')
                 .append("<label>" + message + "</label>")
+
+            document.getElementById('loadingmsg').style.display = 'none'
+
         }
 
         async function getStudentSchedule(url) {
             try {
                 const response = await fetch(url)
                 let data = await response.json()
-                showStudentSchedule(data)
+                console.log(data)
+
+                if (data['code'] > 300) {
+                    message = data['message']
+                    logout()
+                    alert(message + " Please login again.")
+                } 
+                else if (data['scheduleList'].length > 0) {
+                    // display class that is available to enrolment 
+                    showStudentSchedule(data)
+                } else {
+                    // no classes to display
+                    showError("There are no classes for enrollment at the moment, please try again later.")
+                }
             } catch (error) {
                 showError("There are issues with displaying pending tutors. Please try in a while.")
             }

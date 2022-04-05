@@ -306,6 +306,7 @@ def getStudentSchedule():
                         for i in result}
             return jsonify(
                 {
+                    "code": 201,
                     "scheduleList": scheduleList,
                     "classDict": classDict
                 }
