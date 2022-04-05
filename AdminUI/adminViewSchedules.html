@@ -198,7 +198,7 @@
                             <td>${schedule['day']}</td>
                             <td>${schedule['timing']}</td>
                             <td>${schedule['tutorID']}</td>
-                            <td><input type='submit' value='Show Students' onclick="getStudents(this)" id='${schedule['scheduleID']}button'></td>
+                            <td><button type="submit" id='${schedule['scheduleID']}button' onclick="getStudents(this)" class="btn designBtn">Show Students</button></td>
                         </tr>
                         <tr>
                             <td colspan='8' id='${schedule['scheduleID']}row' style='display:none'>
