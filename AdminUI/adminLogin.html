@@ -24,7 +24,7 @@
     <div class="bodyContent">
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="../home.html">Brand Name</a>
+                <a class="navbar-brand" href="../index.html">Tuition Centre</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -33,14 +33,14 @@
 
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <!-- right navbar links -->
-                    <ul class="navbar-nav">
+                    <!-- <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a id="navbar" class="nav-link active" aria-current="page" href="#">Contact</a>
+                            <a id="navbar" class="nav-link active" aria-current="page" href="#">Contact Us</a>
                         </li>
                         <li class="nav-item">
-                            <a id="navbar" class="nav-link" href="#">About</a>
+                            <a id="navbar" class="nav-link" href="#">About Us</a>
                         </li>
-                    </ul>
+                    </ul> -->
 
                     <!-- left navbar links -->
                     <ul class="navbar-nav ms-auto">
@@ -71,7 +71,6 @@
                                 <a class="dropdown-item text-dark" href="../StudentUI/studentlogin.html">Login as
                                     Student</a>
                                 <a class="dropdown-item text-dark" href="../TutorUI/tutorLogin.html">Login as Tutor</a>
-                                <a class="dropdown-item text-dark" href="adminLogin.html">Login as Admin</a>
                             </div>
                         </li>
                     </ul>
@@ -82,19 +81,20 @@
             <div id="main-container" class="container childContainer pt-3 ">
                 <form method="POST" id="adminLogin">
                     <h1 class="display-6 text-center regText">Admin Login</h1>
-                    <div class="mb-3">
+                    <div class="mb-3" id="emailbody">
                         <label for="email" class="form-label regText">Email address</label>
                         <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3" id="passwordbody">
                         <label for="password" class="form-label regText">Password</label>
                         <input type="password" class="form-control" id="password">
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <span id="loginfail" style="display:none; color: red">Login Failed!</span>
+                    <div class="d-flex justify-content-center" id="submitbody">
                         <button type="submit" class="btn btn-primary buttonsubmit mb-3" id="submit">Login</button>
+                        <h2 id="submitmsg" style="display:none; color: white">Logging In... Please wait!</h2>
+                        <br>
                     </div>
-                    <h2 id="submitmsg" style="display:none; color: white">Logging In... Please wait!</h2>
+                    
                 </form>
             </div>
         </div>
@@ -109,23 +109,22 @@
                         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                             <!-- Content -->
                             <h6 class="text-uppercase fw-bold mb-4">
-                                Brand Name
+                                Tuition Centre
                             </h6>
                             <p class="text-dark">
-                                Here you can use rows and columns to organize your footer content. Lorem ipsum
-                                dolor sit amet, consectetur adipisicing elit.
+                                We teach you good, choose us, you become smart!
                             </p>
                         </div>
                         <!-- Grid column -->
                         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                             <!-- Links -->
                             <h6 class="text-uppercase fw-bold mb-4">
-                                <i class="bi bi-telephone-fill"></i> Contact
+                                <i class="bi bi-telephone-fill"></i> +65 1234 5678
                             </h6>
-                            <p class="text-body"><i class="bi bi-geo-alt-fill"></i> Location</p>
+                            <!-- <p class="text-body"><i class="bi bi-geo-alt-fill"></i> Location</p> -->
                             <p class="text-body">
                                 <i class="bi bi-envelope-fill"></i>
-                                email@example.com
+                                tuitioncentre@gmail.com
                             </p>
                         </div>
                         <!-- Grid column -->
@@ -136,10 +135,10 @@
             <!-- Section: Links  -->
 
             <!-- Copyright -->
-            <div class="text-center p-4" style="background-color: #F8F9FA;">
+            <!-- <div class="text-center p-4" style="background-color: #F8F9FA;">
                 © 2022 Copyright:
                 <a class="text-reset fw-bold" href="../home.html">tutor.com</a>
-            </div>
+            </div> -->
             <!-- Copyright -->
         </footer>
     </div>
@@ -150,36 +149,70 @@
             document.getElementById('submitmsg').style.display = 'block'
             var email = $("#email").val()
             var password = $("#password").val()
-            // var url = "http://10.124.9.182:5000/adminLogin" + `?email=${email}&password=${password}`
-            // var url = "http://10.124.141.82:5000/adminLogin" + `?email=${email}&password=${password}`
-            var url = "http://localhost:5000/adminLogin" + `?email=${email}&password=${password}`
-            try {
-                const response = await fetch(url)
-                const data = await response.json()
-                if (response.ok) {
-                    var code = data['code']
-
-                    // successful login
-                    if (code < 300) {
-                        var token = data['token']
-                        window.location.replace(`./adminViewPendingTutors.html?token=${token}`)
-                    }
-                    else {
-                        // Invalid credentials
-                        document.getElementById('loginfail').innerText += " Please login with the right credentials."
-                        document.getElementById('loginfail').style.display = 'block'
-                        document.getElementById('submit').style.display = 'block'
-                        document.getElementById('submitmsg').style.display = 'none'
+            const validateEmail = (email) => {
+                return email.match(
+                    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+            }
+            validEmail = validateEmail(email)
+            if (validEmail && password != '') {
+                var url = "http://localhost:5000/adminLogin" + `?email=${email}&password=${password}`
+                try {
+                    const response = await fetch(url)
+                    const data = await response.json()
+                    if (response.ok) {
+                        var code = data['code']
+                        // successful login
+                        if (code < 300) {
+                            var token = data['token']
+                            window.location.replace(`./adminViewPendingTutors.html?token=${token}`)
+                        }
+                        else {
+                            // Invalid credentials
+                            document.getElementById('submit').style.display = 'block'
+                            document.getElementById('submitmsg').style.display = 'none'
+                            document.getElementById('submitbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                                    Login credentials are invalid
+                                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>`
+                        }
                     }
                 }
+                // Microservices probably not running, hence not working
+                catch (error) {
+                    document.getElementById('submit').style.display = 'block'
+                    document.getElementById('submitmsg').style.display = 'none'
+                    document.getElementById('submitbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                            Services are currently unavailable, please try again in a moment  
+                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>`
+                }
             }
-            // Microservices probably not running, hence feth not working
-            catch (error) {
-                document.getElementById('loginfail').innerText += " Please ensure microservices are up running."
-                document.getElementById('loginfail').style.display = 'block'
+            else {
                 document.getElementById('submit').style.display = 'block'
                 document.getElementById('submitmsg').style.display = 'none'
+                if (password == '') {
+                    document.getElementById('passwordbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                                Password is invalid
+                                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>`
+                }
+                if (validEmail == null) {
+                    document.getElementById('emailbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                            Email is invalid
+                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>`
+                }
             }
+            
         })
     </script>
 

@@ -14,25 +14,19 @@ app = Flask(__name__)
 # enables cross-origin resource sharing for fetch apis
 CORS(app)
 
-# url = "http://10.124.139.76:5000/validateToken"
-url = "http://admin:5000/validateToken"
 
 @app.route('/approveTutor', methods=['PATCH'])
 def approveTutor():
     data = request.get_json()
     token = data['token']
     payload = {'token': token}
-    # url = "http://10.124.9.182:5000/validateToken"
-    # url = "http://10.124.141.82:5000/validateToken"
+    url = "http://admin:5000/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
-    if (validation['status'] and validation['token']['isAdmin']):
+    if (validation['code'] < 300 and validation['token']['isAdmin']):
         email = data['email']
         payload = {'email': email, "action": "approve"}
-        # url = "http://10.124.9.182:5003/manageTutor"
-        # url = "http://10.124.139.76:5003/manageTutor"
         url = "http://tutor:5003/manageTutor"
-
         response = requests.patch(url, params=payload)
         status = response.json()
         if (status['status']):
@@ -43,18 +37,13 @@ def rejectTutor():
     data = request.get_json()
     token = data['token']
     payload = {'token': token}
-    # url = "http://10.124.9.182:5000/validateToken"
-    # url = "http://10.124.141.82:5000/validateToken"
-
+    url = "http://admin:5000/validateToken"
     response = requests.get(url, params=payload)
     validation = response.json()
-    if (validation['status'] and validation['token']['isAdmin']):
+    if (validation['code'] < 300 and validation['token']['isAdmin']):
         email = data['email']
         payload = {'email': email, "action": "delete"}
-        # url = "http://10.124.9.182:5003/manageTutor"
-        # url = "http://10.124.139.76:5000/manageTutor"
         url = "http://tutor:5003/manageTutor"
-
         response = requests.delete(url, params=payload)
         status = response.json()
         if (status['status']):
