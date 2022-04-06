@@ -4,8 +4,6 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt ./
 
-RUN pip install pika
-
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
 COPY ./approveTutorQR.py ./amqp_setup.py ./mailchimpFunctions.py ./ 
