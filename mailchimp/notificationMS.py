@@ -4,8 +4,7 @@ from flask_cors import CORS
 import os, sys
 
 import requests
-
-import amqp
+import amqp_setup
 import pika
 import json
 
@@ -38,7 +37,7 @@ def approveTutorNotification():
     # message = {"email": "studenttuitioncentre1@gmail.com"}
     data = json.dumps(message)
     #send the data into queue
-    amqp.channel.basic_publish(exchange=amqp.exchangename, routing_key="tutor.approveTutor", 
+    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="tutor.approveTutor", 
             body=data, properties=pika.BasicProperties(delivery_mode = 2)) 
     return data
 
@@ -48,7 +47,7 @@ def rejectTutorNotification():
     # message = {"email": "studenttuitioncentre1@gmail.com"}
     data = json.dumps(message)
     #send the data into queue
-    amqp.channel.basic_publish(exchange=amqp.exchangename, routing_key="tutor.rejectTutor", 
+    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="tutor.rejectTutor", 
             body=data, properties=pika.BasicProperties(delivery_mode = 2)) 
     return data
 
@@ -71,10 +70,10 @@ def paymentSuccessfulNotification():
     # }
     message = request.get_json()
     data = json.dumps(message)
-    amqp.channel.basic_publish(exchange=amqp.exchangename, routing_key="payment.paymentSuccessful", 
+    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="payment.paymentSuccessful", 
             body=data, properties=pika.BasicProperties(delivery_mode = 2)) 
     return data
 
 if __name__ == '__main__':
     print("This is flask " + os.path.basename(__file__) + " for sending an notification...")
-    app.run(host="0.0.0.0", port=5009, debug=True)
+    app.run(host="0.0.0.0", port=5010, debug=True)
