@@ -66,42 +66,25 @@ def processPayment(body):
         paymentID = str(message['paymentID'])
         paymentAmount = str(message['paymentAmount'])
         paymentDateTime = str(message['paymentDatetime'])
-         #check if contact already exists
-        print("checking if member exist")
-        checkIfMemberStatus, checkIfMemberResponse = mailchimpFunctions.checkIfMember(email)
-        print(checkIfMemberStatus)
-        print(checkIfMemberResponse)
-        #if member not found, 
-        if checkIfMemberStatus == 400:
-            print("adding new contact")
-            addNewStudentStatus, addNewStudentResponse = mailchimpFunctions.addContact(email)
-            print(addNewStudentStatus)
-            print(addNewStudentResponse)
-        else:
-            addNewStudentStatus = 200
-        #check if student in payment segment
+        print("adding new contact")
+        addNewStudentStatus, addNewStudentResponse = mailchimpFunctions.addContact(email)
+        print(addNewStudentStatus)
+        print(addNewStudentResponse)
+        #add approved tutors into reject segment
         if addNewStudentStatus == 200:
-            print("checking if student in payment segment")
-            checkIfMemberInSegmentStatus = mailchimpFunctions.checkIfMemberInSegment("paymemt", email)
-            print(checkIfMemberInSegmentStatus)
-            if checkIfMemberInSegmentStatus == 200:
-                #in segment
-                addMemberIntoSegmentStatus = 200
-            else:
-                #add approved tutors into payment segment
-                print("add student into payment segment:")
-                segment_id, addMemberIntoSegmentStatus, addMemberIntoSegmentResponse = mailchimpFunctions.addMemberIntoSegment("payment", email)
-                print(addMemberIntoSegmentStatus)
-                print(addMemberIntoSegmentResponse)
-                print(segment_id)
+            print("add student into payment segment:")
+            segment_id, createSegmentStatus, createSegmentResponse = mailchimpFunctions.addMemberIntoSegment("payment", email)
+            print(createSegmentStatus)
+            print(createSegmentResponse)
+            print(segment_id)
             #create campaign
-            if addMemberIntoSegmentStatus == 200:
+            if createSegmentStatus == 200:
                 campaign_name = "Successful payment"
                 from_name = "Tuition Centre"
                 reply_to = "esdtuitioncentre@gmail.com"
                 print("Creating new user campaign:")
                 campaign_id, createCampaignStatus, createCampaignResponse = mailchimpFunctions.createCampaign(campaign_name, from_name, reply_to, segment_id)
-
+ 
                 print(campaign_id)
                 print(createCampaignStatus)
                 print(createCampaignResponse)
@@ -126,11 +109,6 @@ def processPayment(body):
                             print(sendEmailStatus)
                             print(sendEmailResponse)
                             #archive contact
-                            # if sendEmailStatus == 200:
-                            #     print("archive tutor contact in audience")
-                            #     archiveContactStatus, archiveContactResponse = mailchimpFunctions.archiveContact(email)
-                            #     print(archiveContactStatus)
-                            #     print(archiveContactResponse)
 
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')    
