@@ -118,20 +118,7 @@ services:
       - classSchedule
     ports:
       - "5002:5002"
-
   
-
-  ####################################
-  # amqp_setup: The amqp_setup broker   
-  ####################################
-  amqp_setup:
-    image: amqp_setup:0.21
-    build:
-      context: ./
-      dockerfile: "./Docker/Dockerfile.amqp_setup"
-    environment:
-      rabbit_host: rabbitmq
-      rabbit_port: 5672
   # ###################################
   # # Notification: The Notification microservice
   # ###################################
@@ -191,6 +178,7 @@ services:
     
     depends_on:
       - rabbitmq
+      - mailchimpfunctions
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
