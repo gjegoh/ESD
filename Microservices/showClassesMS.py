@@ -141,7 +141,7 @@ def showStudentClasses():
         if (len(data['bookedSchedules']) == 0):
             return jsonify(
                 {
-                    "code": 305,
+                    "code": 202,
                     "message": "There are no schedule for viewing. Please enrol into new class."
                 })
         # Produces http 500, database error, return as it is
