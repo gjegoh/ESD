@@ -6,6 +6,7 @@ COPY requirements.txt ./
 
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
-COPY mailchimp/paymentSuccessQR.py ./
+
+COPY ./amqp_setup.py ./mailchimpFunctions.py ./paymentSuccessQR.py ./
 
 CMD [ "python", "./paymentSuccessQR.py" ]

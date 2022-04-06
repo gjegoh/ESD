@@ -6,6 +6,6 @@ COPY requirements.txt ./
 
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
-COPY mailchimp/approveTutorQR.py ./
+COPY ./amqp_setup.py ./mailchimpFunctions.py ./approveTutorQR.py ./ 
 
 CMD [ "python", "./approveTutorQR.py" ]
