@@ -58,6 +58,19 @@ mailchimp.set_config({
 #see what routing key to use for registation + what should be included in the message
 #  -> maybe can include params to call a certain function -> like to send account creation email
 
+
+@app.route('/checkIfMember')
+def checkIfMember(email):
+    list_id = "d61191e75f"
+    subscriber_hash = hashlib.md5(email.lower().encode()).hexdigest()
+    try:
+      status = 200
+      response = client.lists.get_list_member(list_id, subscriber_hash)
+      return status, response
+    except ApiClientError as error:
+      status = 400
+      return status, error.text
+
 @app.route('/addContact', methods=['POST'])
 def addContact(email):
 
@@ -89,6 +102,21 @@ def addContact(email):
 #       segment_id = "nil"
 #       return segment_id, status, error.text
 
+@app.route("/checkIfMemberInSegment")
+def checkIfMemberInSegment(segmentName, email):
+      list_id = "d61191e75f"
+      subscriber_hash = hashlib.md5(email.lower().encode()).hexdigest()
+      response = client.lists.get_list_member_tags(list_id, subscriber_hash)
+      segments = response['tags']
+      for segment in segments:
+          name = segment['name']
+          if name == segmentName:
+              status = 200
+              return status
+      status = 400
+      return status
+      
+
 @app.route('/addMemberIntoSegment', methods=['POST'])
 def addMemberIntoSegment(segmentName, email):
       list_id = "d61191e75f"
@@ -109,6 +137,18 @@ def addMemberIntoSegment(segmentName, email):
         status = 400
         segment_id = "nil"
         return segment_id, status, error.text
+
+@app.route("/deleteTag", methods=['DELETE'])
+def deleteTag(segmentName, email):
+      list_id = "d61191e75f"
+      subscriber_hash = hashlib.md5(email.lower().encode()).hexdigest()
+      try:
+        status = 200
+        response = client.lists.update_list_member_tags(list_id, subscriber_hash, {"tags": [{"name": segmentName, "status": "inactive"}]})
+        return status, response
+      except ApiClientError as error:
+        status = 400
+        return status, error.text  
 
 @app.route('/createCampaign', methods=['POST'])
 def createCampaign(campaign_name,from_name,reply_to, segment_id):
