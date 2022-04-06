@@ -29,30 +29,6 @@ print("exchange set up")
 # Here can be a place to set up all queues needed by the microservices,
 # - instead of setting up the queues using RabbitMQ UI.
 
-############   newTutor queue   #############
-#delcare newTutor queue
-queue_name = 'newTutor'
-channel.queue_declare(queue=queue_name, durable=True) 
-    # 'durable' makes the queue survive broker restarts
-
-#bind newTutor queue
-channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='*.newTutor') 
-print("newTutor queue set up")
-    # bind the queue to the exchange via the key
-    # any routing_key with two words and ending with '.newTutor' will be matched
-
-
-############   newStudent queue   #############
-#delcare newStudent queue
-queue_name = 'newStudent'
-channel.queue_declare(queue=queue_name, durable=True) 
-    # 'durable' makes the queue survive broker restarts
-
-#bind newStudent queue
-channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='*.newStudent') 
-print("new student queue set up")
-    # bind the queue to the exchange via the key
-    # any routing_key with two words and ending with '.newStudent' will be matched
 
 
 ############   approveTutor queue    #############
@@ -81,20 +57,6 @@ print("reject tutor queue set up")
     # bind the queue to the exchange via the key
     # 'routing_key=#' => any routing_key would be matched
 
-
-
-############   alertNewClassSchedule queue    #############
-#delcare alertNewClassSchedule queue
-queue_name = 'newClassSchedule'
-channel.queue_declare(queue=queue_name, durable=True)
-    # 'durable' makes the queue survive broker restarts
-
-#bind alertNewClassSchedule queue
-channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='*.newClassSchedule') 
-print("new class schedule queue set up")
-    # bind the queue to the exchange via the key
-    # 'routing_key=#' => any routing_key would be matched
-    
 
 ############   paymentSuccessful queue   #############
 #delcare paymentSuccessful queue
