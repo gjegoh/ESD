@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Registration</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../CSS/style script.css">
+    <link rel="stylesheet" href="../CSS/darkPages.css">
+    <link rel="stylesheet" href="../CSS/regLog.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="bodyContent">
+        <!-- standard nav bar -->
+        <nav class="navbar navbar-expand-lg navbar-light ">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../index.html">Tuition Centre</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <!-- right navbar links -->
+                    <!-- <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a id="navbar" class="nav-link active" aria-current="page" href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="navbar" class="nav-link" href="#">About</a>
+                        </li>
+                    </ul> -->
+
+                    <!-- left navbar links -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Register
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="nav-dropdown">
+                                <a class="dropdown-item  text-dark" href="../StudentUI/studentRegistration.html">Register
+                                    as
+                                    Student</a>
+                                <!-- <a class="dropdown-item  text-dark" href="TutorUI/tutorRegistration.html">Register as
+                                    Tutor</a> -->
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Login
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="nav-dropdown">
+                                <a class="dropdown-item" href="../StudentUI/studentlogin.html">Login as
+                                    Student</a>
+                                <a class="dropdown-item text-dark" href="./tutorLogin.html">Login as Tutor</a>
+                                <a class="dropdown-item text-dark" href="../AdminUI/adminLogin.html">Login as Admin</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="regContainer">
+            <div id="main-container" class="container childContainer pt-3">
+                <div class="container">
+                    <h1 class="display-6 text-center regText">Tutor Registration</h1>
+                </div>
+                <p class="text-center regText">Already have an account? <a href="tutorLogin.html">Sign In</a></p>
+                <form id='registerTutor'>
+                    <div class="input-group mb-3" id="namebody">
+                        <span class="input-group-text ">Last Name</span>
+                        <input type="text" id="lastName" class="form-control" placeholder="" aria-label="lastName">
+                        <span class="input-group-text">First Name</span>
+                        <input type="text" id="firstName" class="form-control" placeholder=""
+                            aria-label="firstName">
+                    </div>
+                    <label for="educationLevel" class="form-label regText">Your Teaching Qualifications</label>
+                    <select class="form-select mb-3" onchange="showSubjects()" id="educationLevel"
+                        label="Default select example">
+                        <option value="" id="firstOption">Select an Education Level</option>
+                        <option value="Primary">Primary</option>
+                        <option value="Secondary">Secondary</option>
+                        <option value="Junior College">Junior College</option>
+                    </select>
+                    <div id='edulevelbody'></div>
+                    <div id="subjects" onclick="subjectSelected()" class="btn-group mb-3 btn-light" role="group"
+                        aria-label="Basic checkbox toggle button group ">
+                    </div>
+                    <div class="mb-3" id="summarybody">
+                        <label for="execSummary" class="form-label regText">Executive Summary of Resume</label>
+                        <textarea class="form-control" id="execSummary" rows="3" maxlength="250"></textarea>
+                    </div>
+                    <div class="mb-3 form-outline" id="phonebody"> 
+                        <label for="phoneNumberTb" class="form-label regText">Phone Number</label>
+                        <input type="text" id="phoneNumberTb" class="form-control"/>
+                    </div>
+                    <div class="mb-3" id="emailbody">
+                        <label for="emailTb" class="form-label regText">Email address</label>
+                        <input type="email" class="form-control" id="emailTb" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3" id="passbody">
+                        <label for="passwordTb" class="form-label regText">Password</label>
+                        <input type="password" class="form-control" id="passwordTb">
+                    </div>
+                    <div class="d-flex justify-content-center" id="submitbody">
+                        <button type="submit" class="btn btn-primary buttonsubmit" id="submit">Submit</button>
+                        <h2 id="loadingmsg" style="display:none">Loading... Please Wait!</h2>
+                    </div>
+                </form>
+                <label id="error" class="text-danger"></label>
+            </div>
+        </div>
+        <footer class="pt-1 text-center text-lg-start bg-light text-muted mt-4">
+            <!-- Section: Links  -->
+            <section class="mt-3">
+                <div class="container text-center text-md-start mt-5">
+                    <!-- Grid row -->
+                    <div class="row mt-3">
+                        <!-- Grid column -->
+                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                            <!-- Content -->
+                            <h6 class="text-uppercase fw-bold mb-4">
+                                Tuition Centre
+                            </h6>
+                            <p class="text-dark">
+                                We teach you good, choose us, you become smart!
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold mb-4">
+                                <i class="bi bi-telephone-fill"></i> +65 1234 5678
+                            </h6>
+                            <!-- <p class="text-body"><i class="bi bi-geo-alt-fill"></i> Location</p> -->
+                            <p class="text-body">
+                                <i class="bi bi-envelope-fill"></i>
+                                esdtuitioncentre@gmail.com
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+                    </div>
+                    <!-- Grid row -->
+                </div>
+            </section>
+            <!-- Section: Links  -->
+
+            <!-- Copyright -->
+            <!-- <div class="text-center p-4" style="background-color: #F8F9FA;">
+                © 2022 Copyright:
+                <a class="text-reset fw-bold" href="../home.html">tutor.com</a>
+            </div> -->
+            <!-- Copyright -->
+        </footer>
+    </div>
+
+    <script>
+        function showError(message) {
+            $('#main-container')
+                .append("<label>" + message + "</label>");
+        }
+
+        var result = []
+        function subjectSelected() {
+            var checkBox = document.getElementById('subjects');
+            var checkBoxes = checkBox.querySelectorAll('input[type="checkbox"]');
+            var subjectSelected = []
+            checkBoxes.forEach(subject => {
+                if (subject.checked) {
+                    subjectSelected.push(subject.value)
+                }
+            })
+            result = subjectSelected
+        }
+
+        function showSubjects() {
+            let pri = ['English', 'Mathematics', 'Science']
+            let sec = ['English', 'Mathematics', 'Science', 'History', 'Geography']
+            let jc = ['Mathematics', 'Chemistry', 'Biology', 'Physics', 'Economics']
+            var educationLevel = document.getElementById("educationLevel").value
+            document.getElementById("subjects").innerHTML = ""
+            if (educationLevel == 'Primary') {
+                for (let sub of pri) {
+                    document.getElementById("firstOption").style.display = 'none'
+                    document.getElementById("subjects").innerHTML += `  <input type="checkbox" class="btn-check" id="${sub}_opt" autocomplete="off" value="${sub}">
+                                                                        <label class="btn btn-outline-primary" for="${sub}_opt">${sub}</label>`
+                }
+            }
+            else if (educationLevel == 'Secondary') {
+                for (let sub of sec) {
+                    document.getElementById("subjects").innerHTML += `  <input type="checkbox" class="btn-check" id="${sub}_opt" autocomplete="off" value="${sub}">
+                                                                        <label class="btn btn-outline-primary" for="${sub}_opt">${sub}</label>`
+                }
+            }
+            else if (educationLevel == 'Junior College') {
+                for (let sub of jc) {
+                    document.getElementById("subjects").innerHTML += `  <input type="checkbox" class="btn-check" id="${sub}_opt" autocomplete="off" value="${sub}">
+                                                                        <label class="btn btn-outline-primary" for="${sub}_opt">${sub}</label>`
+                }
+            }
+        }
+
+        $("#registerTutor").submit(async (event) => {
+            event.preventDefault()
+            document.getElementById('submit').style.display = 'none'
+            document.getElementById('loadingmsg').style.display = 'block'
+            var firstName = document.getElementById("firstName").value
+            var lastName = document.getElementById("lastName").value
+            if (firstName == '' || lastName == '') {
+                document.getElementById('namebody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                        Please include your name
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>`
+            }
+            var email = document.getElementById("emailTb").value
+            const validateEmail = (email) => {
+                return email.match(
+                    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+            }
+            validEmail = validateEmail(email)
+            if (validEmail == null) {
+                document.getElementById('emailbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                        Please include a valid email
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>`
+            }
+            var phoneNumber = document.getElementById("phoneNumberTb").value
+            const validatePhone = (phoneNumber) => {
+                return phoneNumber.match(/^\(?([689])\)?([0-9]{7})$/);
+            }
+            validPhone = validatePhone(phoneNumber)
+            
+            if (validPhone == null) {
+                document.getElementById('phonebody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                        Please a valid Singaporean phone number without spaces
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>`
+            }
+            var eduLevel = document.getElementById("educationLevel").value
+            if (eduLevel == '') {
+                document.getElementById('edulevelbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                        Please select a education level
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>`
+            }
+            var taughtSubjects = result.toString()
+            if (eduLevel) {
+                if (taughtSubjects == '') {
+                    document.getElementById('subjects').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                            Please select at least one subject
+                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>`
+                }
+            }
+            var execSummary = document.getElementById("execSummary").value
+            if (execSummary == '') {
+                document.getElementById('summarybody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                        Please include an executive summary of your resume
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>`
+            }
+            var password = document.getElementById("passwordTb").value
+            if (password == '') {
+                document.getElementById('passbody').innerHTML += `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                        Please include a password
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>`
+            }
+            if (firstName != '' && lastName != '' && email != '' && phoneNumber != '' && eduLevel != '' && taughtSubjects != '' && execSummary != '' && password != '') {
+                try {
+                    var url = "http://localhost:5003/tutorRegister"
+                    const response =
+                        await fetch(
+                            url, {
+                            method: 'POST',
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                'firstName': firstName,
+                                'lastName': lastName,
+                                'email': email,
+                                'phoneNumber': phoneNumber,
+                                'eduLevel': eduLevel,
+                                'taughtSubjects': taughtSubjects,
+                                'execSummary': execSummary,
+                                'password': password
+                            })
+                        });
+                    const data = await response.json();
+                    if (data['code'] == 500) {
+                        alert("This email address is being used. Please enter a different email address.")
+                        document.getElementById('submit').style.display = 'block'
+                        document.getElementById('loadingmsg').style.display = 'none'
+                    }
+                    
+                    else if (data['code'] = 201) {
+                        alert('Successfully registered!')
+                        document.getElementById('submit').style.display = 'block'
+                        document.getElementById('loadingmsg').style.display = 'none'
+                        return false
+                    } 
+                    else {
+                        alert("Services are currently unavailable, please try again in a moment")
+                        document.getElementById('submit').style.display = 'block'
+                        document.getElementById('loadingmsg').style.display = 'none'
+                    }
+                } 
+                catch (error) {
+                    alert("Services are currently unavailable, please try again in a moment")
+                    document.getElementById('submit').style.display = 'block'
+                    document.getElementById('loadingmsg').style.display = 'none'
+                }
+            }
+            else {
+                document.getElementById('submit').style.display = 'block'
+                document.getElementById('loadingmsg').style.display = 'none'
+            }
+        })
+    </script>
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
+        integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' crossorigin='anonymous'>
+        </script>
+</body>
+
+</html>
