@@ -63,9 +63,9 @@ def processPayment(body):
     #create new contact
     if apiKeyStatus == 200:
         email = message['paymentEmail']
-        paymentID = message['paymentID']
-        paymentAmount = message['paymentAmount']
-        paymentDateTime = message['paymentDatetime']
+        paymentID = str(message['paymentID'])
+        paymentAmount = str(message['paymentAmount'])
+        paymentDateTime = str(message['paymentDatetime'])
         print("adding new contact")
         addNewStudentStatus, addNewStudentResponse = mailchimpFunctions.addContact(email)
         print(addNewStudentStatus)
@@ -91,7 +91,7 @@ def processPayment(body):
                 #add content
                 if createCampaignStatus == 200:
                     print("adding content")
-                    addContentStatus, addContentResponse = mailchimpFunctions.addContent(campaign_id, "<body><h1>Your payment is successful</h1><p>Your payment " + paymentID + " at " + paymentDateTime + " of $" + paymentAmount + " is successful</p><p>You can now attend the tuition class.</p></body>""")
+                    addContentStatus, addContentResponse = mailchimpFunctions.addContent(campaign_id, "<body><h1>Your payment is successful</h1><p>Your payment " + paymentID + " at " + paymentDateTime + " of $" + paymentAmount + " is successful</p><p>You can now attend the tuition class.</p></body>")
                     print(addContentStatus)
                     print(addContentResponse)
                     #checklist

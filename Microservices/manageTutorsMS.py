@@ -30,7 +30,7 @@ def approveTutor():
         response = requests.patch(url, params=payload)
         status = response.json()
         #call notiMS and send tutor email
-        approveTutorURL = "notification:5010/approveTutorNotification"
+        approveTutorURL = "http://notification:5010/approveTutorNotification"
         response = requests.post(approveTutorURL, json=payload)
         if (status['status']):
             return jsonify(data)
@@ -50,7 +50,7 @@ def rejectTutor():
         response = requests.delete(url, params=payload)
         status = response.json()
         #call notiMS and send tutor email
-        rejectTutorURL = "notification:5010/rejectTutorNotification"
+        rejectTutorURL = "http://notification:5010/rejectTutorNotification"
         response = requests.post(rejectTutorURL, json=payload)
         if (status['status']):
             return jsonify(data)

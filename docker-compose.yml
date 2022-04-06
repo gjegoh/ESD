@@ -137,11 +137,11 @@ services:
     build:
       context: .
       dockerfile: './Docker/Dockerfile.notification'
-   
+  
     depends_on:
-      - approveTutor
-      - rejectTutor
-      - paymentSuccess
+      - approvetutor
+      - rejecttutor
+      - paymentsuccess
       - rabbitmq
     environment:
       rabbit_host: rabbitmq
@@ -191,7 +191,6 @@ services:
     
     depends_on:
       - rabbitmq
-      - mailchimpfunctions
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672

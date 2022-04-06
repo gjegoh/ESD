@@ -104,7 +104,14 @@ def stripeWebHook():
         response = requests.post(url, json=payload)
         data = response.json()
         #call notiMS using paymentEmail, amount, datatime, paymentid, status
-        paymentSuccessfulURL = "notification:5010/paymentSuccessfulNotification"
+        payload = {
+            'paymentEmail': paymentEmail,
+            'paymentID': paymentID,
+            'paymentAmount': paymentAmount,
+            'paymentDatetime': paymentDatetime,
+            'paymentStatus': paymentStatus
+        }
+        paymentSuccessfulURL = "http://notification:5010/paymentSuccessfulNotification"
         response = requests.post(paymentSuccessfulURL, json=payload)
     return {}
 
