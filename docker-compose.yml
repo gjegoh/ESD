@@ -18,6 +18,7 @@ services:
       - "15672:15672"
     volumes: 
       - rabbitmq_data:/var/lib/rabbitmq
+      
   ###################################
   # Admin: The Admin microservice
   ###################################
@@ -97,22 +98,6 @@ services:
     ports:
       - "5008:5008"
 
-  ###################################
-  # manageTutors: The manageTutors microservice
-  ###################################
-  manageTutors:
-    image: managetutors:0.21
-    restart: always
-    build:
-      context: ./
-      dockerfile: './Docker/Dockerfile.manageTutors'
-    depends_on:
-      - admin
-      - tutor
-      - notification
-    ports:
-      - "5001:5001"
-
   # ###################################
   # # manageClasses: The manageClasses microservice
   # ###################################
@@ -127,6 +112,55 @@ services:
       - classSchedule
     ports:
       - "5002:5002"
+
+  # ###################################
+  # # paymentSuccess: The paymentSuccess queue receiver microservice
+  # ###################################
+  paymentsuccess:
+    image: paymentsuccess:0.21
+    restart: always
+    build:
+      context: .
+      dockerfile: './Docker/Dockerfile.paymentSuccess'
+    
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+
+
+  # ###################################
+  # # approveTutor: The approveTutor queue receiver microservice
+  # ###################################
+  approvetutor:
+    image: approvetutor:0.21
+    restart: always
+    build:
+      context: .
+      dockerfile: './Docker/Dockerfile.approveTutor'
+    
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+
+  # ###################################
+  # # rejectTutor: The rejectTutor queue receiver microservice
+  # ###################################
+  rejecttutor: 
+    image: rejecttutor:0.21
+    restart: always
+    build:
+      context: .
+      dockerfile: './Docker/Dockerfile.rejectTutor'
+    
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
   
   # ###################################
   # # Notification: The Notification microservice
@@ -146,54 +180,31 @@ services:
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
     ports:
       - "5010:5010"
 
-  # ###################################
-  # # approveTutor: The approveTutor queue receiver microservice
-  # ###################################
-  approvetutor:
-    image: approvetutor:0.21
+    
+
+
+  ###################################
+  # manageTutors: The manageTutors microservice
+  ###################################
+  manageTutors:
+    image: managetutors:0.21
     restart: always
     build:
-      context: .
-      dockerfile: './Docker/Dockerfile.approveTutor'
-    
+      context: ./
+      dockerfile: './Docker/Dockerfile.manageTutors'
     depends_on:
-      - rabbitmq
-    environment:
-      rabbit_host: rabbitmq
-      rabbit_port: 5672
-  # ###################################
-  # # rejectTutor: The rejectTutor queue receiver microservice
-  # ###################################
-  rejecttutor: 
-    image: rejecttutor:0.21
-    restart: always
-    build:
-      context: .
-      dockerfile: './Docker/Dockerfile.rejectTutor'
-    
-    depends_on:
-      - rabbitmq
-    environment:
-      rabbit_host: rabbitmq
-      rabbit_port: 5672
-  # ###################################
-  # # paymentSuccess: The paymentSuccess queue receiver microservice
-  # ###################################
-  paymentsuccess:
-    image: paymentsuccess:0.21
-    restart: always
-    build:
-      context: .
-      dockerfile: './Docker/Dockerfile.paymentSuccess'
-    
-    depends_on:
-      - rabbitmq
-    environment:
-      rabbit_host: rabbitmq
-      rabbit_port: 5672
+      - admin
+      - tutor
+      - notification
+    ports:
+      - "5001:5001"
+
+  
+  
   # ###################################
   # # transaction: The transaction microservice
   # ###################################
