@@ -8,7 +8,9 @@ RUN pip install pika
 
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
+COPY ./paymentSuccessQR.py ./mailchimpFunctions.py ./amqp_setup.py ./
 
-COPY ./amqp_setup.py ./mailchimpFunctions.py ./paymentSuccessQR.py ./
+# 
 
 CMD [ "python", "./paymentSuccessQR.py" ]
+# CMD [ "python", "./paymentSuccessQR.py" ]

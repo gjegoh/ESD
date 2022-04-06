@@ -8,6 +8,9 @@ RUN pip install pika
 
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
-COPY ./amqp_setup.py ./mailchimpFunctions.py  ./rejectTutorQR.py ./
+COPY ./rejectTutorQR.py ./mailchimpFunctions.py ./amqp_setup.py ./
+
+# 
 
 CMD [ "python", "./rejectTutorQR.py" ]
+# CMD [ "python", "./rejectTutorQR.py" ]

@@ -3,13 +3,13 @@ from os import environ
 # These module-level variables are initialized whenever a new instance of python interpreter imports the module;
 # In each instance of python interpreter (i.e., a program run), the same module is only imported once (guaranteed by the interpreter).
 
-hostname = environ.get('rabbit_host') or 'localhost' ###
+hostname = environ.get('rabbit_host') or 'localhost' or 'rabbitmq' ###
 port = environ.get('rabbit_port') or 5672
 # connect to the broker and set up a communication channel in the connection
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(
         host=hostname, port=port,
-        heartbeat=3600, blocked_connection_timeout=3600, # these parameters to prolong the expiration time (in seconds) of the connection
+        heartbeat=3600, blocked_connection_timeout=5600, # these parameters to prolong the expiration time (in seconds) of the connection
 ))
     # Note about AMQP connection: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
     # If "pika.exceptions.AMQPConnectionError" happens, may try again after disconnecting the wifi and/or disabling firewalls.

@@ -12,3 +12,4 @@ urllib3==1.26.9
 PyMySQL==1.0.2
 PyJWT==2.3.0
 stripe==2.69.0
+pika==1.2.0
