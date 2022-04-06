@@ -125,8 +125,8 @@
                 //     </td>
                 // </tr>`
                 document.getElementById('schedules').innerHTML +=
-                    `<div class="col" m-0>
-                        <div class="card" style="width: 18rem;" id="${schedule['scheduleID']}">
+                    `<div class="col">
+                        <div class="card" style="width: 15rem;" id="${schedule['scheduleID']}">
                             <div class="card-body">
                                 <h5 class="card-title" id="Grade">${classDict[schedule['classID']][1]}</h5>
                                 <h6 class="card-title" id="Subject">${classDict[schedule['classID']][0]}</h6>
@@ -218,7 +218,7 @@
                             </div>
                         </div> -->
             
-                        <div class="row row-cols-2 row-cols-md-3 g-4 mt-3" id="schedules"  style="display:none">
+                        <div class="row g-4 mt-3" id="schedules"  style="display:none">
                             
                         </div>
                     </div>

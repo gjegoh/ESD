@@ -100,6 +100,7 @@
             let scheduleList = data["scheduleList"]
             let classDict = data['classDict']
             studentID.push(data['studentID'])
+            console.log(scheduleList)
             for (let schedule of scheduleList) {
                 document.getElementById('schedules').innerHTML +=
                 //     `<tr id="${schedule['scheduleID']}-${schedule['classID']}">
@@ -210,7 +211,7 @@
                     </div> -->
                 
                 
-                    <div class="row row-cols-2 row-cols-md-3 g-4 mt-3" id="schedules"></div>
+                    <div class="row  g-4 mt-3" id="schedules"></div>
                     
                 </div>
             </div>
