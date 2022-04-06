@@ -32,11 +32,11 @@ def approveTutor():
         #call notiMS and send tutor email
         approveTutorURL = "http://notification:5010/approveTutorNotification"
         response = requests.post(approveTutorURL, json=payload)
-        if (status['status']):
+        if (status['code'] < 300):   
             return jsonify(data)
 
 @app.route('/rejectTutor', methods=['DELETE'])
-def rejectTutor():
+def rejectTutor():     
     data = request.get_json()
     token = data['token']
     payload = {'token': token}
@@ -52,7 +52,7 @@ def rejectTutor():
         #call notiMS and send tutor email
         rejectTutorURL = "http://notification:5010/rejectTutorNotification"
         response = requests.post(rejectTutorURL, json=payload)
-        if (status['status']):
+        if (status['code'] < 300):
             return jsonify(data)
             
 
