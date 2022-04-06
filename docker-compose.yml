@@ -9,15 +9,15 @@ services:
   ####################################
   # RabbitMQ: The messaging broker   
   ####################################
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   hostname: esd-rabbit
-  #   restart: always
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-  #   volumes: 
-  #     - rabbitmq_data:/var/lib/rabbitmq
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
 
   ###################################
   # Admin: The Admin microservice
@@ -133,8 +133,12 @@ services:
       - approveTutor
       - rejectTutor
       - paymentSuccess
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
     ports:
-      - "5009:5009"
+      - "5010:5010"
 
   # ###################################
   # # approveTutor: The approveTutor queue receiver microservice
@@ -144,6 +148,11 @@ services:
     build:
       context: .
       dockerfile: './Docker/Dockerfile.approveTutor'
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
   # ###################################
   # # rejectTutor: The rejectTutor queue receiver microservice
   # ###################################
@@ -152,6 +161,11 @@ services:
     build:
       context: .
       dockerfile: './Docker/Dockerfile.rejectTutor'
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
   # ###################################
   # # paymentSuccess: The paymentSuccess queue receiver microservice
   # ###################################
@@ -160,6 +174,11 @@ services:
     build:
       context: .
       dockerfile: './Docker/Dockerfile.paymentSuccess'
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
   # ###################################
   # # transaction: The transaction microservice
   # ###################################
