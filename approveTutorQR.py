@@ -103,12 +103,12 @@ def processApproveTutor(body):
                             print(sendEmailStatus)
                             print(sendEmailResponse)
                             #archive contact
-                            if sendEmailStatus == 200:
-                                time.sleep(30)
-                                print("archive tutor contact in audience")
-                                archiveContactStatus, archiveContactResponse = mailchimpFunctions.archiveContact(email)
-                                print(archiveContactStatus)
-                                print(archiveContactResponse)
+                            # if sendEmailStatus == 200:
+                            #     time.sleep(30)
+                            #     print("archive tutor contact in audience")
+                            #     archiveContactStatus, archiveContactResponse = mailchimpFunctions.archiveContact(email)
+                            #     print(archiveContactStatus)
+                            #     print(archiveContactResponse)
                                     
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')    

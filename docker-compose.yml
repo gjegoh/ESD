@@ -128,6 +128,7 @@ services:
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
 
 
   # ###################################
@@ -145,6 +146,7 @@ services:
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
 
   # ###################################
   # # rejectTutor: The rejectTutor queue receiver microservice
@@ -161,6 +163,7 @@ services:
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
   
   # ###################################
   # # Notification: The Notification microservice

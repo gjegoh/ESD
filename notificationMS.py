@@ -62,7 +62,7 @@ def rejectTutorNotification():
 @app.route("/paymentSuccessfulNotification", methods=['POST'])
 def paymentSuccessfulNotification():
     # message = {
-    #     'paymentEmail': "studenttuitioncentre1@gmail.com",
+    #     'paymentEmail': "ffdad@gmail.com",
     #     'paymentID': "12345",
     #     'paymentAmount': "45.06",
     #     'paymentDatetime': "3 April 2022",

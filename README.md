@@ -13,16 +13,24 @@ Additionally, we would also provide the ability and flexibility for tutors to de
 This will be done via a UX-first approach, through the use of our web application that can be easily accessed and utilized by all stakeholders. Furthermore, it will be deployable for any tuition centre as their enterprise solution.
 
 ![Business Scenario Demo!](images/Business_Scenario.png)
+   
+# Database connections on RDS
+- Database_connection URL = studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com 
+- Port Number = 3306 
+- Hostname = admin 
+- Password = thisismypw
 
 # Stateless Architecture (Token-Based Authentication)
 Token-based authentication is stateless. The server does not keep a record of which users are logged in or which JWTs have been issued. Instead, every request to the server is accompanied by a token which the server uses to verify the authenticity of the request. The token is generally sent as an addition Authorization header in form of Bearer {JWT}, but can additionally be sent in the body of a POST request or even as a query parameter. Let's see how this flow works:
 
-    1 - User enters their login credentials.
-    2 - Server verifies the credentials are correct and returns a signed token.
-    3 - This token is stored client-side, most commonly in local storage - but can be stored in session storage or a cookie as well.
-    4 - Subsequent requests to the server include this token as an additional Authorization header or through one of the other methods mentioned above.
-    5 - The server decodes the JWT and if the token is valid processes the request.
-    6 - Once a user logs out, the token is destroyed client-side, no interaction with the server is necessary.
+    1- User enters their login credentials
+    2- Server verifies the credentials are correct and returns a signed token
+    3- This token is stored client-side, most commonly in local storage - but can be stored in session storage
+    or acookie as well
+    4- Subsequent requests to the server include this token as an additional Authorization header or through
+    one of the other methods mentioned above
+    5- The server decodes the JWT and if the token is valid processes the request
+    6- Once a user logs out, the token is destroyed client-side, no interaction with the server is necessary.
 
    ## Stateless advantages:
 
@@ -33,31 +41,12 @@ Token-based authentication is stateless. The server does not keep a record of wh
 **3.Url Linkability** Some sites store the ID of what the user is looking at in the sessions. This makes it impossible for users to simply copy and paste the URL or send it to friends.
 
 # Technologies and features
-- [x] HTML, Vanilla CSS and Bootstrap theme 
-- [x] Python & Flask & MySQL Database (AWS RDS)
-- [x] Student, Tutor sign up and login via JWT authentication
-- [x] Notifications for users (Student, Tutor)
-- [x] MailChimp and AMQP (Email Marketing Services)
-- [x] Stripe Payment and Stripe Webhook 
-- [x] Docker: Fully split into microservices. Runs with Docker Compose.
-
-# Database connections on RDS
-- Database_connection URL = studentdb2.cw0jtpvjeb4t.us-east-1.rds.amazonaws.com 
-- Port Number = 3306 
-- Hostname = admin 
-- Password = thisismypw
-
-# MailChimp
-1. To send email to notify tutor of approval or rejection 
-Parameters used: 
-`tutor email`
-2. To send email to notify student of successful payment
-Parameters used: 
-`student email`
-`paymentid` 
-`payment amount`
-`payment date time`
-`payment status`
+- [x] Python & Flask & MySQL Database
+- [x] Stripe Subscriptions (Create, Cancel, Reactivate, Update supported)
+- [x] HTML theme 
+- [x] Docker: Fully split into microservices. Runs with Docker Compose, but can **[easily be translated to Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/)**
+- [x] User sign up and login (Email Address)
+- [x] Notifications for users (Student, Tutor and Admin)
 
 # How To Run The Application
 You should make sure that your database is running first and foremost, else the following will fail. Look under installation for Windows or Mac/Linux for how to run the database locally. It just needs to be running in the background, all the databases and tables are created programmatically.
@@ -65,23 +54,24 @@ You should make sure that your database is running first and foremost, else the 
 1. Run `docker-compose build` for your first build and when you have made changes.
 2. Run `docker-compose up` to run all the services.
 
+Scaling is made easy with `docker-compose.yml` file.
+
 # Microservices
 | Simple | Ports |
 | ------ | ------ |
-| adminMS | 5000 |
-| NotificationMS | 5001 |
-| tutorMS | 5003 |
+| studentMS | 5001 |
+| tutorMS | 5002 |
 | classScheduleMS | 5004 |
-| studentMS | 5005 |
-| transactionMS | 5007 |
+| adminMS | 5008 |
+| NotificationMS | 5009 |
 
 | Complex | Ports |
 | ------ | ------ |
-| manageTutorsMS | 5001 |
-| manageClassesMS | 5002 |
-| bookClassMS | 5006 |
-| showClassesMS | 5008 |
-| registerClassMS | 5009 |
+| registerClassMS | 5003 |
+| showClassesMS | 5005 |
+| manageTutorsMS | 5006 |
+| manageClassesMS | 5007 |
+
 
 # Error Codes
 401 = Unauthorised credentials [haven't login]

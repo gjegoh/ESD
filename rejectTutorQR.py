@@ -111,13 +111,13 @@ def processRejectTutor(body):
                             #     deleteSegmentStatus, deleteSegmentResponse = mailchimpFunctions.deleteSegment(segment_id)
                             #     print(deleteSegmentStatus)
                             #     print(deleteSegmentResponse)
-                                #delete contact
-                            if sendEmailStatus == 200:
-                                time.sleep(30)
-                                print("archive tutor contact in audience")
-                                archiveContactStatus, archiveContactResponse = mailchimpFunctions.archiveContact(email)
-                                print(archiveContactStatus)
-                                print(archiveContactResponse)
+                            #     #delete contact
+                            # if sendEmailStatus == 200:
+                            #     time.sleep(30)
+                            #     print("archive tutor contact in audience")
+                            #     archiveContactStatus, archiveContactResponse = mailchimpFunctions.archiveContact(email)
+                            #     print(archiveContactStatus)
+                            #     print(archiveContactResponse)
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')    
     print("\nThis is " + os.path.basename(__file__), end='')
