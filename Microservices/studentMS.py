@@ -214,8 +214,13 @@ def getStudentNames():
                     sql = "SELECT student_id, firstName, lastName FROM student WHERE student_id={studentList}".format(studentList=studentList)
                 cursor.execute(sql)
                 result = cursor.fetchall()
-                result['code'] = 201
-            return jsonify(result)
+            return jsonify(
+                {
+                    "code": 201,
+                    "data": result
+                    
+                }
+            )
             
 
 if __name__ == '__main__':

@@ -36,7 +36,8 @@ def logTransaction():
             connection.commit()
     return jsonify(
         {
-            'status': True
+            'code': 200,
+            'message': 'Payment transaction is logged successfully.'
         }
     )
 

@@ -161,7 +161,8 @@ def tutorLogin():
                     # This error is unlikely to happen
                     return jsonify(
                         {   
-                            'code': 403
+                            'code': 403,
+                            "message": "Wrong user credentials, please try again"
                         }
                     )
             else:
@@ -169,6 +170,7 @@ def tutorLogin():
                 return jsonify(
                         {   
                             'code': 401,
+                            "message": "Missing values, please try again"
                         }
                     )
 
@@ -250,7 +252,12 @@ def getTutorName():
                 sql = "SELECT tutorID, firstName, lastName FROM tutor WHERE tutorID={tutorList}".format(tutorList=tutorList)
             cursor.execute(sql)
             result = cursor.fetchall()
-            return jsonify(result)
+            return jsonify(
+                {
+                    "code": 201,
+                    "data":result
+                }
+            )
 
 
 if __name__ == '__main__':

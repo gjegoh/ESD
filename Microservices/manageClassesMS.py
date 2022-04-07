@@ -37,11 +37,15 @@ def scheduleCreation():
         data = response.json()
         # include notiMS
         # data['code'] = 200
-        return jsonify(data)
+        return jsonify({
+            'code': 200,
+            'message': 'Successful creation of class schedules.'
+
+        })
     else:
         return jsonify(
             {
-            'code': validation['code'],
+            'code': 401,
             'message': 'Invalid authorisation. Please re-login.'
             }
         )
@@ -63,7 +67,8 @@ def getStudents():
         result = response.json()
         return jsonify(
             {
-                'students': result
+                'code': 200,
+                'students': result['data']
             }
         )
     else:

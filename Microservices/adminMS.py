@@ -84,14 +84,17 @@ def adminLogin():
                         # failed match of new_key and get_key
                         return jsonify(
                             {   
-                                'code': 403
+                                'code': 403,
+                                "message": "Wrong user credentials, please try again."
+
                             }
                         )
                 else:
                     # login-ed but result = 0
                     return jsonify(
                             {   
-                                'code': 401
+                                'code': 401,
+                                "message": "Missing values, please try again"
                             }
                         )
     except:

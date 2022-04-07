@@ -53,7 +53,12 @@ def rejectTutor():
         rejectTutorURL = "http://notification:5010/rejectTutorNotification"
         response = requests.post(rejectTutorURL, json=payload)
         if (status['code'] < 300):
-            return jsonify(data)
+            return jsonify(
+                {
+                    "code": 200,
+                    'message': 'Tutor is rejected successfully.'
+                }
+            )
             
 
 if __name__ == '__main__':

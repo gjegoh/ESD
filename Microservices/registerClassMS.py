@@ -33,7 +33,8 @@ def registerClass():
         return jsonify(result)
     else: 
         return jsonify ({
-            'code':401
+            'code':401,
+            "message": 'Error in registering class, try again'
         })
 
 if __name__ == '__main__':

@@ -273,7 +273,8 @@ def enrollStudent():
             connection.commit()
             return jsonify(
                 {
-                    'code': 201
+                    'code': 201,
+                    "message": 'Student has been successfully enrolled into class schedule.'
                 }
             )
 
